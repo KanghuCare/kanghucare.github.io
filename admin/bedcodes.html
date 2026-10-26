@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>床头码打印｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="bedcodes" data-title="床头码打印">
+<main>
+  <section class="panel bc-tools">
+    <h2 class="panel-title">床头码打印 <span class="aside" id="bc-count"></span></h2>
+    <p class="hint">每张床头码对应一个床位（二维码内容为 KHT-BED:科室代码-床号）。打印后贴在床头，护工上岗时用手机扫码核验床位。</p>
+    <form class="filters filters-3" id="bc-filters" onsubmit="return false">
+      <label>科室<select name="dept"></select></label>
+      <label>床位<select name="range"><option value="active">仅有在护病人的床位</option><option value="1-12">1～12 床</option><option value="13-24">13～24 床</option><option value="25-40">25～40 床</option></select></label>
+      <div style="align-self:end"><button class="btn btn-primary" type="button" data-print>打印床头码</button></div>
+    </form>
+  </section>
+  <div class="bc-grid" id="bc-grid"></div>
+</main>
+<script src="vendor/qrcode.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

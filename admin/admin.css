@@ -382,3 +382,27 @@ table.sched tfoot td, table.sched tfoot th { color: var(--ink-soft); font-weight
 table.bill-table tr.refund td { color: var(--teal-text); }
 .grid-2 > .panel + .panel { margin-top: 0; }
 .grid-2 + .panel { margin-top: 1rem; }
+
+/* ---------- Bed codes and scanning ---------- */
+.bc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.bed-card { background: var(--white); border: 1px solid #c9d6e2; border-radius: 12px; padding: 0.8rem 0.9rem 0.7rem; text-align: center; break-inside: avoid; }
+.bed-card header { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-weight: 700; color: var(--brand); font-size: 13px; padding-bottom: 0.45rem; border-bottom: 2px solid transparent; border-image: var(--gradient) 1; }
+.bed-card header img { width: 20px; height: 20px; border-radius: 5px; }
+.bed-no { display: flex; justify-content: center; align-items: baseline; gap: 0.5rem; margin: 0.5rem 0 0.2rem; }
+.bed-no span { color: var(--ink-soft); font-weight: 600; }
+.bed-no b { font-size: 34px; line-height: 1; color: var(--ink); }
+.bed-no small { font-size: 15px; margin-left: 2px; }
+.bed-card svg { width: 150px; height: 150px; display: block; margin: 0 auto; }
+.bed-card p { margin: 0.2rem 0; font: 600 12px/1.4 ui-monospace, Menlo, Consolas, monospace; color: var(--ink-soft); letter-spacing: 0.04em; }
+.bed-card footer { font-size: 12px; color: var(--ink-soft); }
+.scan-box { position: relative; margin: 0.4rem 0 0.8rem; border-radius: 10px; overflow: hidden; background: #000; aspect-ratio: 4 / 3; }
+.scan-box video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-frame { position: absolute; inset: 18% 22%; border: 3px solid rgba(255, 255, 255, 0.9); border-radius: 12px; box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.35); }
+.log-day { border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.9rem; margin-top: 0.6rem; }
+.log-day summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; align-items: center; }
+.log-day summary span:not(.tag) { color: var(--ink-soft); }
+@media print {
+  .bc-tools { display: none !important; }
+  .bc-grid { grid-template-columns: repeat(3, 1fr); gap: 8mm; margin: 0; }
+  .bed-card { border: 1px dashed #888; }
+}
