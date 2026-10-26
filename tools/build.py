@@ -22,7 +22,7 @@ SRC = ROOT / "src" / "pages"
 # Site settings: change these before launch.
 # ---------------------------------------------------------------------------
 SITE = {
-    "url": "https://www.example.com",       # production domain, no trailing slash
+    "url": "https://mevia00.github.io/my-website-MIS",      # production domain, no trailing slash
     "phone": "400-000-0000",                 # service line shown on the site
     "tel": "4000000000",                     # same number, digits only, for tel: links
     "email": "service@example.com",
