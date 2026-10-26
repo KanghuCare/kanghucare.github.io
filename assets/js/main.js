@@ -273,6 +273,136 @@
     renderEst();
   }
 
+  /* ---------- Opening: remove the intro layer once it has played ---------- */
+  if (root.classList.contains("intro-on")) {
+    setTimeout(function () { var intro = document.querySelector(".intro"); if (intro) intro.remove(); }, 2000);
+  }
+
+  /* ---------- Large-text mode ---------- */
+  document.querySelectorAll(".text-size").forEach(function (btn) {
+    btn.setAttribute("aria-pressed", String(root.classList.contains("large-text")));
+    btn.addEventListener("click", function () {
+      var on = root.classList.toggle("large-text");
+      btn.setAttribute("aria-pressed", String(on));
+      try { localStorage.setItem("khtLarge", on ? "1" : "0"); } catch (e) { /* storage unavailable */ }
+    });
+  });
+
+  /* ---------- Reading progress ---------- */
+  var bar = document.querySelector(".read-progress span");
+  if (bar) {
+    var progTick = false;
+    var onProg = function () {
+      if (progTick) return;
+      progTick = true;
+      requestAnimationFrame(function () {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ")";
+        progTick = false;
+      });
+    };
+    window.addEventListener("scroll", onProg, { passive: true });
+    window.addEventListener("resize", onProg);
+    onProg();
+  }
+
+  /* ---------- Site search ---------- */
+  var dlg = document.getElementById("site-search");
+  if (dlg && typeof dlg.showModal === "function") {
+    var sInput = document.getElementById("search-input");
+    var sList = document.getElementById("search-results");
+    var sStatus = document.getElementById("search-status");
+    var index = null;
+    var escH = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var mark = function (text, q) {
+      var i = text.toLowerCase().indexOf(q);
+      return i < 0 ? escH(text) : escH(text.slice(0, i)) + "<mark>" + escH(text.slice(i, i + q.length)) + "</mark>" + escH(text.slice(i + q.length));
+    };
+    var runSearch = function () {
+      var q = sInput.value.trim().toLowerCase();
+      if (!q || !index) { sList.innerHTML = ""; sStatus.textContent = ""; return; }
+      var en = isEn();
+      var hits = index.filter(function (e) {
+        return [e.zh, e.en, e.pz, e.pe].some(function (v) { return v && v.toLowerCase().indexOf(q) !== -1; });
+      }).slice(0, 12);
+      sList.innerHTML = hits.map(function (e) {
+        var title = en && e.en ? e.en : e.zh;
+        return '<li><a href="' + escH(e.u) + '"><strong>' + mark(title, q) + "</strong><small>" + escH(en ? e.pe : e.pz) + "</small></a></li>";
+      }).join("");
+      sStatus.textContent = hits.length
+        ? (en ? hits.length + " results" : "找到 " + hits.length + " 条结果")
+        : (en ? "No results. Try another word, or call us." : "没有找到相关内容，换个词试试，或直接致电我们。");
+    };
+    var openSearch = function () {
+      if (dlg.open) return;
+      dlg.showModal();
+      sInput.focus();
+      if (!index) {
+        fetch("assets/data/search.json").then(function (r) { return r.json(); })
+          .then(function (d) { index = d; runSearch(); })
+          .catch(function () { sStatus.textContent = isEn() ? "Search is unavailable right now." : "搜索暂时不可用。"; });
+      }
+    };
+    document.querySelectorAll(".search-toggle").forEach(function (b) { b.addEventListener("click", openSearch); });
+    document.addEventListener("keydown", function (e) {
+      var typing = /input|textarea|select/i.test((e.target && e.target.tagName) || "") || (e.target && e.target.isContentEditable);
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && !typing)) { e.preventDefault(); openSearch(); }
+    });
+    sInput.addEventListener("input", runSearch);
+    // In a search field Escape would only clear the text; close the dialog straight away instead.
+    sInput.addEventListener("keydown", function (e) { if (e.key === "Escape") { e.preventDefault(); dlg.close(); } });
+    dlg.addEventListener("click", function (e) {
+      if (e.target === dlg) dlg.close();                        // click on the backdrop
+      if (e.target.closest && e.target.closest(".search-results a, .search-suggest a")) dlg.close();
+    });
+  }
+
+  /* ---------- Count up the standards figures when they come into view ---------- */
+  var figs = document.querySelectorAll(".standard-figure");
+  if (figs.length && "IntersectionObserver" in window && !reduceMotion) {
+    var countIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        countIO.unobserve(entry.target);
+        var node = entry.target.firstChild;
+        if (!node || node.nodeType !== 3) return;
+        var target = parseFloat(node.nodeValue);
+        if (isNaN(target) || /:/.test(node.nodeValue)) return;
+        var decimals = (node.nodeValue.split(".")[1] || "").length;
+        var start = null, dur = 1200;
+        var step = function (t) {
+          if (start === null) start = t;
+          var k = Math.min(1, (t - start) / dur);
+          var eased = 1 - Math.pow(1 - k, 3);
+          node.nodeValue = (target * eased).toFixed(decimals);
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.6 });
+    figs.forEach(function (f) { countIO.observe(f); });
+  }
+
+  /* ---------- Staggered reveal for headings and card groups ---------- */
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var groups = [".section-head", ".section-head-row", ".needs > li", ".answers > .answer", ".standards > .standard",
+      ".steps > li", ".card-grid > *", ".org > div", ".duo > *", ".path > li", ".care-check", ".service-block > div"];
+    var rvIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add("is-visible"); rvIO.unobserve(entry.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    groups.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        if (el.closest(".hero") || (sel === ".section-head" && el.parentElement.classList.contains("section-head-row"))) return;
+        var sibs = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+        el.classList.add("rv");
+        el.style.setProperty("--d", Math.min(sibs, 5));
+        rvIO.observe(el);
+      });
+    });
+  }
+
   /* ---------- Footer year ---------- */
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 

@@ -15,19 +15,23 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0b6489">
+<meta name="theme-color" content="#0b6f7c">
 <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="assets/fonts/kht-serif-cjk-500.woff2" as="font" type="font/woff2" crossorigin>
+<script>try{var d=document.documentElement;if(localStorage.getItem("khtLarge")==="1")d.classList.add("large-text");if(!sessionStorage.getItem("khtIntro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){d.classList.add("intro-on");sessionStorage.setItem("khtIntro","1")}}catch(e){}</script>
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="assets/js/main.js" defer></script>
 </head>
 <body>
+<div class="intro" aria-hidden="true"><div class="intro-mark"><img src="assets/img/logo.svg" alt="" width="64" height="64"><span class="intro-name">康护通</span><span class="intro-rule"></span></div></div>
+<div class="read-progress" aria-hidden="true"><span></span></div>
 <a class="skip-link" href="#main" data-en="Skip to main content">跳到主要内容</a>
 <div class="utility-bar">
   <div class="container utility-inner">
     <a class="utility-phone" href="tel:4000000000"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-phone"/></svg><span data-en="Care line 400-000-0000">服务热线 400-000-0000</span></a>
+    <button class="text-size" type="button" aria-pressed="false" data-en="A+ Larger text">A+ 大字模式</button>
     <span class="utility-links">
       <a href="news.html" data-en="News">新闻动态</a>
     </span>
@@ -47,7 +51,21 @@
     </a>
     <nav class="site-nav" id="site-nav" aria-label="主导航" data-en-aria-label="Main">
       <ul>
-          <li><a href="services.html" data-en="Services">服务项目</a></li>
+          <li class="has-mega"><a href="services.html" data-en="Services">服务项目</a>
+          <div class="mega" role="group" aria-label="服务项目" data-en-aria-label="Services">
+            <div class="mega-grid">
+            <a class="mega-item" href="services.html#hospital"><span class="mega-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-bed"/></svg></span><span><strong data-en="Hospital companion care">医院陪护</strong><small data-en="Certified caregivers at the bedside, day or night">持证护工床旁陪护，白天夜间都可以</small></span></a>
+            <a class="mega-item" href="services.html#rehab"><span class="mega-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-walk"/></svg></span><span><strong data-en="Rehabilitation care">康复护理</strong><small data-en="Bedside rehab after surgery, fractures or stroke">术后、骨折与卒中后的床旁康复</small></span></a>
+            <a class="mega-item" href="services.html#home"><span class="mega-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-home"/></svg></span><span><strong data-en="Home care">居家照护</strong><small data-en="Care and company at home after discharge">出院回家后的上门照护与陪伴</small></span></a>
+            <a class="mega-item" href="services.html#health"><span class="mega-icon"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-pulse"/></svg></span><span><strong data-en="Health management">健康管理</strong><small data-en="Records, reminders and regular check-ins">体征记录、用药提醒与定期回访</small></span></a>
+            </div>
+            <div class="mega-side">
+              <p data-en="Not sure which service fits?">不确定选哪项服务？</p>
+              <a class="text-link" href="./#care-check-title"><span data-en="Take the 1-minute care check">1 分钟照护自测</span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg></a>
+              <a class="text-link" href="how-it-works.html#pricing"><span data-en="See pricing">查看收费标准</span><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-arrow"/></svg></a>
+            </div>
+          </div>
+          </li>
           <li><a href="how-it-works.html" data-en="How it works">流程与收费</a></li>
           <li><a href="locations.html" data-en="Locations">服务网点</a></li>
           <li><a href="guides.html" data-en="Care guides">照护知识</a></li>
@@ -64,6 +82,7 @@
       </div>
     </nav>
     <div class="header-actions">
+      <button class="search-toggle" type="button" aria-label="搜索" data-en-aria-label="Search" aria-haspopup="dialog"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-search"/></svg></button>
       <button class="lang-toggle" type="button" lang="en" aria-label="Switch to English">EN</button>
       <a class="btn btn-primary header-cta" href="book.html" data-en="Book care">预约照护</a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="菜单" data-en-aria-label="Menu">
@@ -73,6 +92,23 @@
     </div>
   </div>
 </header>
+<dialog class="search-dialog" id="site-search" aria-labelledby="search-title">
+  <form method="dialog" class="search-box" role="search">
+    <h2 id="search-title" class="visually-hidden" data-en="Search the site">站内搜索</h2>
+    <svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-search"/></svg>
+    <input id="search-input" type="search" autocomplete="off" aria-controls="search-results" aria-describedby="search-status" placeholder="搜索服务、收费、照护知识…" data-en-placeholder="Search services, pricing, care guides…">
+    <button class="search-close" type="submit" value="close" aria-label="关闭" data-en-aria-label="Close"><svg class="icon" aria-hidden="true"><use href="assets/img/icons.svg#i-x"/></svg></button>
+  </form>
+  <p id="search-status" class="search-status" role="status"></p>
+  <ul id="search-results" class="search-results"></ul>
+  <div class="search-suggest">
+    <p data-en="Popular">常用</p>
+    <a href="services.html#hospital" data-en="Hospital companion care">医院陪护</a>
+    <a href="how-it-works.html#pricing" data-en="Pricing">收费标准</a>
+    <a href="./#care-check-title" data-en="1-minute care check">1 分钟照护自测</a>
+    <a href="locations.html" data-en="Locations">服务网点</a>
+  </div>
+</dialog>
 <main id="main" tabindex="-1">
 <section class="page-hero">
   <div class="container">
@@ -260,6 +296,7 @@
         </div>
       </div>
     </div>
+    <p class="footer-wordmark" aria-hidden="true">康护通</p>
     <div class="footer-base">
       <p>&copy; <span data-year>2026</span> <span data-en="Kang Hutong. All rights reserved.">康护通 版权所有</span></p>
       <ul>

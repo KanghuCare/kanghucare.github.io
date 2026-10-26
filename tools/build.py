@@ -93,11 +93,39 @@ def icon(name, cls="icon"):
     return f'<svg class="{cls}" aria-hidden="true"><use href="assets/img/icons.svg#i-{name}"/></svg>'
 
 
+# Services dropdown on desktop: anchor, icon, zh title, en title, zh line, en line
+MEGA = [
+    ("hospital", "bed", "医院陪护", "Hospital companion care", "持证护工床旁陪护，白天夜间都可以", "Certified caregivers at the bedside, day or night"),
+    ("rehab", "walk", "康复护理", "Rehabilitation care", "术后、骨折与卒中后的床旁康复", "Bedside rehab after surgery, fractures or stroke"),
+    ("home", "home", "居家照护", "Home care", "出院回家后的上门照护与陪伴", "Care and company at home after discharge"),
+    ("health", "pulse", "健康管理", "Health management", "体征记录、用药提醒与定期回访", "Records, reminders and regular check-ins"),
+]
+
+
+def mega_panel():
+    items = "\n".join(
+        f'            <a class="mega-item" href="services.html#{k}"><span class="mega-icon">{icon(ic)}</span>'
+        f'<span><strong data-en="{esc(en)}">{zh}</strong><small data-en="{esc(den)}">{dzh}</small></span></a>'
+        for k, ic, zh, en, dzh, den in MEGA)
+    return (
+        '\n          <div class="mega" role="group" aria-label="服务项目" data-en-aria-label="Services">\n'
+        '            <div class="mega-grid">\n' + items + '\n            </div>\n'
+        '            <div class="mega-side">\n'
+        '              <p data-en="Not sure which service fits?">不确定选哪项服务？</p>\n'
+        f'              <a class="text-link" href="./#care-check-title"><span data-en="Take the 1-minute care check">1 分钟照护自测</span>{icon("arrow")}</a>\n'
+        f'              <a class="text-link" href="how-it-works.html#pricing"><span data-en="See pricing">查看收费标准</span>{icon("arrow")}</a>\n'
+        '            </div>\n'
+        '          </div>')
+
+
 def nav_items(current):
     out = []
     for key, zh, en in NAV:
         cur = ' aria-current="page"' if key == current else ""
-        out.append(f'          <li><a href="{key}.html"{cur} data-en="{esc(en)}">{zh}</a></li>')
+        if key == "services":
+            out.append(f'          <li class="has-mega"><a href="{key}.html"{cur} data-en="{esc(en)}">{zh}</a>{mega_panel()}\n          </li>')
+        else:
+            out.append(f'          <li><a href="{key}.html"{cur} data-en="{esc(en)}">{zh}</a></li>')
     return "\n".join(out)
 
 
@@ -136,19 +164,23 @@ def head(key, tzh, ten, dzh, den, nav_key):
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0b6489">
+<meta name="theme-color" content="#0b6f7c">
 <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="assets/fonts/kht-serif-cjk-500.woff2" as="font" type="font/woff2" crossorigin>
+<script>try{{var d=document.documentElement;if(localStorage.getItem("khtLarge")==="1")d.classList.add("large-text");if(!sessionStorage.getItem("khtIntro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){{d.classList.add("intro-on");sessionStorage.setItem("khtIntro","1")}}}}catch(e){{}}</script>
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="assets/js/main.js" defer></script>{jsonld}
 </head>
 <body>
+<div class="intro" aria-hidden="true"><div class="intro-mark"><img src="assets/img/logo.svg" alt="" width="64" height="64"><span class="intro-name">康护通</span><span class="intro-rule"></span></div></div>
+<div class="read-progress" aria-hidden="true"><span></span></div>
 <a class="skip-link" href="#main" data-en="Skip to main content">跳到主要内容</a>
 <div class="utility-bar">
   <div class="container utility-inner">
     <a class="utility-phone" href="tel:{SITE["tel"]}">{icon("phone")}<span data-en="Care line {SITE["phone"]}">服务热线 {SITE["phone"]}</span></a>
+    <button class="text-size" type="button" aria-pressed="false" data-en="A+ Larger text">A+ 大字模式</button>
     <span class="utility-links">
       <a href="news.html" data-en="News">新闻动态</a>
     </span>
@@ -181,6 +213,7 @@ def head(key, tzh, ten, dzh, den, nav_key):
       </div>
     </nav>
     <div class="header-actions">
+      <button class="search-toggle" type="button" aria-label="搜索" data-en-aria-label="Search" aria-haspopup="dialog">{icon("search")}</button>
       <button class="lang-toggle" type="button" lang="en" aria-label="Switch to English">EN</button>
       <a class="btn btn-primary header-cta" href="book.html" data-en="Book care">预约照护</a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="菜单" data-en-aria-label="Menu">
@@ -190,6 +223,23 @@ def head(key, tzh, ten, dzh, den, nav_key):
     </div>
   </div>
 </header>
+<dialog class="search-dialog" id="site-search" aria-labelledby="search-title">
+  <form method="dialog" class="search-box" role="search">
+    <h2 id="search-title" class="visually-hidden" data-en="Search the site">站内搜索</h2>
+    {icon("search")}
+    <input id="search-input" type="search" autocomplete="off" aria-controls="search-results" aria-describedby="search-status" placeholder="搜索服务、收费、照护知识…" data-en-placeholder="Search services, pricing, care guides…">
+    <button class="search-close" type="submit" value="close" aria-label="关闭" data-en-aria-label="Close">{icon("x")}</button>
+  </form>
+  <p id="search-status" class="search-status" role="status"></p>
+  <ul id="search-results" class="search-results"></ul>
+  <div class="search-suggest">
+    <p data-en="Popular">常用</p>
+    <a href="services.html#hospital" data-en="Hospital companion care">医院陪护</a>
+    <a href="how-it-works.html#pricing" data-en="Pricing">收费标准</a>
+    <a href="./#care-check-title" data-en="1-minute care check">1 分钟照护自测</a>
+    <a href="locations.html" data-en="Locations">服务网点</a>
+  </div>
+</dialog>
 <main id="main" tabindex="-1">
 """
 
@@ -251,6 +301,7 @@ def foot(key):
         </div>
       </div>
     </div>
+    <p class="footer-wordmark" aria-hidden="true">康护通</p>
     <div class="footer-base">
       <p>&copy; <span data-year>{date.today().year}</span> <span data-en="Kang Hutong. All rights reserved.">康护通 版权所有</span></p>
       <ul>
@@ -329,7 +380,7 @@ class SerifText(HTMLParser):
     """Collects the text (both languages) of elements set in the serif face, so the font subset stays small."""
     SERIF_TAGS = {"h1", "h2", "h3"}
     SERIF_CLASSES = {"brand-name", "care-report-title", "standard-figure", "sum", "big", "footer-phone",
-                     "phone-big", "big-num", "serif", "statement", "estimate-total"}
+                     "phone-big", "big-num", "serif", "statement", "estimate-total", "footer-wordmark", "intro-name"}
     VOID = {"img", "input", "br", "meta", "link", "use", "hr", "source"}
 
     def __init__(self):
@@ -355,6 +406,90 @@ class SerifText(HTMLParser):
     def handle_data(self, data):
         if self._serif():
             self.text.append(data)
+
+
+class HeadingIndex(HTMLParser):
+    """Collects h1-h3 text in both languages with the nearest anchor, for the site search."""
+    VOID = SerifText.VOID
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []        # ids of open elements ("" when none)
+        self.cap = None        # heading being captured
+        self.depth = 0
+        self.items = []
+
+    SKIP = {"guide-meta", "guide-summary"}   # labels and summaries inside a guide heading
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if self.cap is not None:
+            if self.cap.get("skip") or self.SKIP & set((a.get("class") or "").split()):
+                if tag not in self.VOID:
+                    self.cap["skip"] = self.cap.get("skip", 0) + 1
+                    self.depth += 1
+                return
+            if a.get("data-en") and not self.cap["whole_en"]:
+                self.cap["en"].append(html.unescape(a["data-en"]))
+            if tag not in self.VOID:
+                self.depth += 1
+            return
+        if tag in ("h1", "h2", "h3") and "visually-hidden" not in (a.get("class") or ""):
+            anchor = next((i for i in reversed(self.stack) if i and i != "main"), "")
+            whole = html.unescape(a.get("data-en", ""))
+            self.cap = {"tag": tag, "anchor": anchor, "zh": [], "en": [whole] if whole else [], "whole_en": bool(whole)}
+            self.depth = 1
+            return
+        if tag not in self.VOID:
+            self.stack.append(a.get("id", ""))
+
+    def handle_endtag(self, tag):
+        if self.cap is not None:
+            if tag in self.VOID:
+                return
+            self.depth -= 1
+            if self.cap.get("skip"):
+                self.cap["skip"] -= 1
+                return
+            if self.depth == 0:
+                zh = re.sub(r"\s+", " ", "".join(self.cap["zh"])).strip()
+                en = re.sub(r"<[^>]+>", "", " ".join(self.cap["en"])).strip()
+                if zh:
+                    self.items.append({"level": self.cap["tag"], "anchor": self.cap["anchor"], "zh": zh, "en": en})
+                self.cap = None
+            return
+        if tag not in self.VOID and self.stack:
+            self.stack.pop()
+
+    def handle_data(self, data):
+        if self.cap is not None and not self.cap.get("skip"):
+            self.cap["zh"].append(data)
+
+
+def build_search():
+    entries = []
+    for key, tzh, ten, *_rest in PAGES:
+        if key in ("404",):
+            continue
+        idx = HeadingIndex()
+        idx.feed((ROOT / f"{key}.html").read_text(encoding="utf-8"))
+        url = "./" if key == "index" else f"{key}.html"
+        page_zh = tzh.split("｜")[0] if key != "index" else "首页"
+        page_en = ten.split(" | ")[0] if key != "index" else "Home"
+        seen = set()
+        for it in idx.items:
+            if it["level"] == "h1":
+                href = url
+            else:
+                href = url + ("#" + it["anchor"] if it["anchor"] else "")
+            k = (href, it["zh"])
+            if k in seen:
+                continue
+            seen.add(k)
+            entries.append({"u": href, "zh": it["zh"], "en": it["en"], "pz": page_zh, "pe": page_en})
+    out = ROOT / "assets" / "data" / "search.json"
+    out.write_text(json.dumps(entries, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"search index: {len(entries)} entries")
 
 
 def build_fonts():
@@ -391,4 +526,5 @@ def build_fonts():
 if __name__ == "__main__":
     build_pages()
     build_meta()
+    build_search()
     build_fonts()
