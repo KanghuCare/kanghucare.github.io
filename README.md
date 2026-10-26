@@ -45,7 +45,7 @@ python3 tools/build.py
 
 1. **站点设置**：在 `tools/build.py` 顶部的 `SITE` 中填写正式域名、服务热线、邮箱和 ICP 备案号，然后重新构建。
 2. **照片**：把照片放进 `assets/img/photos/`，文件名与占位框上标注的一致（如 `hero.jpg`），建议宽 1600px 以内、压缩到 300 KB 以下。照片放好后，占位说明会自动消失。共 13 张，每张的建议画面写在占位框里。
-3. **表单接口**：在 `SITE` 中填写 `book_endpoint`、`careers_endpoint`。表单以 JSON 方式 POST 到该地址。可用一个云函数或自有后台接收，再转发到企业微信、邮箱或 CRM（企业微信机器人的格式不同，不能直接作为接收地址）。未配置时，表单会提示用户“请致电预约”，不会丢失客户。
+3. **在线预约**：按 `server/booking/README.md` 部署接收服务（腾讯云云函数 + 企业微信群机器人，约 15 分钟），把得到的地址填入 `SITE` 的 `book_endpoint` 和 `careers_endpoint`，重新构建。之后每条预约、回电请求和护工报名都会实时推送到企业微信群。未配置时，表单会提示用户“请致电预约”，不会丢失客户。
 4. **服务网点**：编辑 `assets/data/locations.json`，替换示例网点。
 5. **新闻**：删除 `src/pages/news.html` 中带“示例”标记的条目。
 6. **隐私政策**：由法务审阅 `src/pages/privacy.html`，补充公司主体名称与生效日期。

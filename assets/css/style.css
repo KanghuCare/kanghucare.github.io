@@ -933,3 +933,6 @@ html.large-text { font-size: 128%; }
 .org > div { border-top-color: var(--accent); }
 .fit-for { background: var(--warm-50); }
 .answer-icon { background: var(--warm-50); border-color: var(--accent-soft); }
+
+/* Honeypot field for bots: kept out of sight and out of the tab order */
+.hp { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
