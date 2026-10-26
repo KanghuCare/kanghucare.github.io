@@ -99,7 +99,7 @@
     function weighted(pairs) { var x = r(), acc = 0; for (var i = 0; i < pairs.length; i++) { acc += pairs[i][1]; if (x <= acc) return pairs[i][0]; } return pairs[pairs.length - 1][0]; }
     var surnames = "王李张刘陈杨黄赵吴周徐孙马朱胡郭何高林罗郑梁谢宋唐许韩冯邓曹彭曾萧田董袁潘蒋蔡余杜叶程苏魏吕丁任沈姚卢姜崔钟谭陆汪范金石廖贾夏韦付方白邹孟熊秦邱江尹薛闫段雷侯龙史陶黎贺顾毛郝龚邵万钱严覃武戴莫孔向汤".split("");
     var given = "秀兰桂芳玉梅红英华敏静丽娟霞凤琴云莲珍燕萍芬洁淑明建国伟强军平志永春海".split("");
-    var db = { v: 4, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
+    var db = { v: 5, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
     var taken = [];
 
     // Caregivers: a few named ones used in the walkthrough, then a generated roster
@@ -213,12 +213,26 @@
     db.logs[mine.id + "@" + iso(y)] = { clockIn: iso(y) + " 07:52", submittedAt: iso(y) + " 21:36", vitals: [
         { at: iso(y) + " 10:35", temp: 36.7, pulse: "76", bp: "132/80" }, { at: iso(y) + " 16:20", temp: 36.9, pulse: "80", bp: "128/78" }],
       items: planFor(mine).map(function (p, i) { var m = minutes(p[0]) + 2 + (i * 3) % 11; return { time: p[0], name: p[1], doneAt: pad(Math.floor(m / 60)) + ":" + pad(m % 60) }; }) };
+    var prev = db.orders.filter(function (o) { return o.caregiver === li.id && (o.status === 2 || o.status === 3); }).sort(function (a, b) { return endDate(a) < endDate(b) ? 1 : -1; })[0];
+    if (prev) {
+      var notes = [{ late: null, temp: [36.6, 36.8] }, { late: 4, temp: [37.4, 36.9] }, { late: null, temp: [36.5, 36.7], skipNight: true }];
+      for (var back = 0; back < Math.min(3, prev.days); back++) {
+        var day = addDays(endDate(prev), -back), n = notes[back], plan = planFor(prev);
+        db.logs[prev.id + "@" + iso(day)] = { clockIn: iso(day) + " 07:" + (48 + back * 3), submittedAt: iso(day) + " 21:" + (30 + back * 7),
+          vitals: [{ at: iso(day) + " 10:3" + (2 + back), temp: n.temp[0], pulse: String(74 + back * 3), bp: (126 + back * 4) + "/" + (78 + back) }, { at: iso(day) + " 16:1" + (5 + back), temp: n.temp[1], pulse: String(72 + back * 2), bp: (124 + back * 3) + "/7" + (6 + back) }],
+          items: plan.map(function (p, i) {
+            if (n.skipNight && i === plan.length - 1) return { time: p[0], name: p[1], doneAt: null };
+            var m = minutes(p[0]) + 3 + (i * 5 + back * 2) % 12 + (i === n.late ? 38 : 0);
+            return { time: p[0], name: p[1], doneAt: pad(Math.floor(m / 60)) + ":" + pad(m % 60) };
+          }) };
+      }
+    }
     db.alerts.push({ id: 3, order: db.orders[3].id, type: "护工上报", detail: "患者夜间躁动，已通知值班护士", time: iso(addDays(T, -6)) + " 02:10", handled: true });
     return db;
   }
 
   function load() {
-    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 4) return db; } catch (e) {}
+    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 5) return db; } catch (e) {}
     var fresh = seed(); save(fresh); return fresh;
   }
   function save(db) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
@@ -814,7 +828,7 @@
         '<div class="field"><label for="pulse">脉搏</label><input id="pulse" name="pulse" type="number" inputmode="numeric" placeholder="次/分"></div>' +
         '<div class="field" style="margin-top:.6rem"><label for="bp">血压</label><input id="bp" name="bp" type="text" placeholder="如 128/80"></div>' +
         '<button class="btn" type="submit" style="margin-top:.8rem;width:100%">记录体征</button><ul class="hint" id="vitals-log"></ul></form>' +
-        '<div class="duo today-actions"><button class="btn btn-primary" type="button" data-submit-log>提交护理日报</button><button class="btn btn-danger" type="button" data-report>异常上报</button></div>' +
+        '<div class="duo today-actions"><button class="btn btn-primary" type="button" data-submit-log>提交护理日志</button><button class="btn btn-danger" type="button" data-report>异常上报</button></div>' +
         "</div></div>";
       box.innerHTML = html;
 
@@ -879,7 +893,7 @@
       });
       $("[data-submit-log]").addEventListener("click", function () {
         var pr = progress(lg); lg.submittedAt = now(); save(db); render();
-        toast("护理日报已推送家属（完成 " + pr.done + "/" + pr.total + " 项）", "ok"); renderLogs();
+        toast("护理日志已提交并推送家属（完成 " + pr.done + "/" + pr.total + " 项）", "ok"); renderLogs();
       });
       render();
       clearInterval(timer); timer = setInterval(render, 60000);
@@ -899,14 +913,14 @@
           if (!lg) return "";
           var p = progress(lg), isToday = iso(d) === iso(T), done = lg.items.filter(function (x) { return x.doneAt; }).length;
           return '<details class="log-day"' + (isToday ? " open" : "") + "><summary><b>" + iso(d) + (isToday ? "（今天）" : "") + "</b><span>上岗 " + (lg.clockIn ? lg.clockIn.slice(11) : "—") + "　完成 " + done + " / " + lg.items.filter(function (x) { return !x.skipped; }).length + " 项　体征 " + lg.vitals.length + " 次</span>" +
-            (lg.submittedAt ? '<span class="tag tag-3">日报已推送 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日报</span>') + '</summary><ul class="timeline">' +
+            (lg.submittedAt ? '<span class="tag tag-3">日志已提交 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日志</span>') + '</summary><ul class="timeline">' +
             lg.items.map(function (it) { return '<li class="' + (it.doneAt ? "is-done" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : isToday ? (minutes(it.time) <= nowMinutes() ? "待执行" : "未到时间") : "未打卡") + "</em></li>"; }).join("") + "</ul>" +
             '<p class="hint">' + (isToday ? "截至现在应完成 " + p.due + " 项，已完成 " + done + " 项" + (p.late ? "，漏打卡 " + p.late + " 项" : "") + "。" : "") + "</p>" +
             (lg.vitals.length ? '<p class="hint">体征：' + lg.vitals.map(function (v) { return v.at.slice(11) + " 体温 " + v.temp + "℃" + (v.bp ? " 血压 " + esc(v.bp) : ""); }).join("；") + "</p>" : "") + "</details>";
         }).join("");
         if (cards) html += panel(esc(o.patient.name) + " · " + bedLabel(o), cards, o.start + " 至 " + iso(endDate(o)));
       });
-      box.innerHTML = '<p class="role-note">护理日志按日期汇总你在“今日护理”中的打卡与体征记录，可查看今天和以往每一天的护理情况；护士站、客服可在管理端查看，提交日报后推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并在“今日护理”中上岗打卡后，这里会按天生成护理日志。</p></section>');
+      box.innerHTML = '<p class="role-note">护理日志按日期汇总你在“今日护理”中的打卡与体征记录，可查看今天和以往每一天的护理情况；护士站、客服可在管理端查看，提交日志后推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并在“今日护理”中上岗打卡后，这里会按天生成护理日志。</p></section>');
     }
 
     /* ---- 接单：派单确认 + 适合我的订单 ---- */
@@ -1158,7 +1172,7 @@
           var late = !it.doneAt && !it.skipped && nm - minutes(it.time) > 120;
           return '<li class="' + (it.doneAt ? "is-done" : late ? "is-late" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : late ? "漏打卡" : minutes(it.time) <= nm ? "待执行" : "未到时间") + "</em></li>";
         }).join("") + "</ul>" + (lg.vitals.length ? "<p><b>体征记录</b></p><ul>" + lg.vitals.map(function (v) { return "<li>" + v.at.slice(11) + "　体温 " + v.temp + "℃" + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") + "</li>"; }).join("") + "</ul>" : "") +
-        (lg.submittedAt ? '<p class="hint">护理日报已于 ' + lg.submittedAt.slice(11) + " 推送家属</p>" : ""));
+        (lg.submittedAt ? '<p class="hint">护理日志已于 ' + lg.submittedAt.slice(11) + " 提交并推送家属</p>" : ""));
     }
     f.addEventListener("change", render);
     $("#logs").addEventListener("click", function (e) { var b = e.target.closest("[data-log]"); if (b) show(b.getAttribute("data-log")); });
