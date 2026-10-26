@@ -304,7 +304,6 @@ def foot(key):
         </div>
       </div>
     </div>
-    <p class="footer-wordmark" aria-hidden="true">康护通</p>
     <div class="footer-base">
       <p>&copy; <span data-year>{date.today().year}</span> <span data-en="KanghuCare. All rights reserved.">康护通 版权所有</span></p>
       <ul>
@@ -383,7 +382,7 @@ class SerifText(HTMLParser):
     """Collects the text (both languages) of elements set in the serif face, so the font subset stays small."""
     SERIF_TAGS = {"h1", "h2", "h3"}
     SERIF_CLASSES = {"brand-name", "care-report-title", "standard-figure", "sum", "big", "footer-phone",
-                     "phone-big", "big-num", "serif", "statement", "estimate-total", "footer-wordmark", "intro-name"}
+                     "phone-big", "big-num", "serif", "statement", "estimate-total", "intro-name"}
     VOID = {"img", "input", "br", "meta", "link", "use", "hr", "source"}
 
     def __init__(self):
