@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>运营统计分析｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="stats" data-title="运营统计分析" data-crumb="统计决策 › 运营统计">
+<main>
+  <section class="panel" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+    <label for="period" style="color:var(--ink-soft)">统计期间</label>
+    <select id="period" style="width:auto"><option value="30">近 30 天</option><option value="month">本月</option><option value="7">近 7 天</option></select>
+    <span class="hint" id="period-text"></span>
+    <span style="margin-left:auto"><button class="btn btn-sm" type="button" data-print>打印报表</button></span>
+  </section>
+  <div class="kpis six" style="margin-top:1rem">
+    <div class="kpi"><span>订单数</span><strong data-s="orders"></strong></div>
+    <div class="kpi"><span>服务天数</span><strong data-s="days"></strong></div>
+    <div class="kpi is-teal"><span>营业收入（已结清）</span><strong data-s="income"></strong></div>
+    <div class="kpi"><span>护工在岗率</span><strong data-s="duty"></strong></div>
+    <div class="kpi is-teal"><span>满意度</span><strong data-s="sat"></strong></div>
+    <div class="kpi is-alert"><span>异常预警</span><strong data-s="alerts"></strong></div>
+  </div>
+  <div class="grid-2">
+    <section class="panel"><h2 class="panel-title">各科室订单量</h2><div id="chart-dept"></div></section>
+    <section class="panel"><h2 class="panel-title">满意度分布</h2><div class="donut-wrap"><div id="chart-sat"></div><div class="legend" id="legend-sat"></div></div></section>
+  </div>
+  <section class="panel"><h2 class="panel-title">每日新增订单</h2><div id="chart-trend"></div></section>
+  <section class="panel"><h2 class="panel-title">科室汇总</h2>
+    <div class="table-wrap"><table class="data" id="dept-table"><thead><tr><th>科室</th><th class="num">订单数</th><th class="num">服务天数</th><th class="num">收入（元）</th><th class="num">满意度</th></tr></thead><tbody></tbody></table></div>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

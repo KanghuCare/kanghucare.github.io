@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>用户登录｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="login">
+<main class="login">
+  <div class="login-card">
+    <section class="login-side" aria-label="系统简介">
+      <div class="brand"><img src="../assets/img/logo.svg" alt=""><div>康护通<small>医院陪护管理信息系统</small></div></div>
+      <ul>
+        <li>线上预约受理，自动校验床位与护理等级</li>
+        <li>按判断表智能派单，自动检测排班冲突</li>
+        <li>护工扫码打卡，体温与漏打卡异常实时预警</li>
+        <li>按天数、日价与折扣自动计费，生成电子结算单</li>
+        <li>运营与质量报表实时生成，辅助管理决策</li>
+      </ul>
+      <p class="foot">KanghuCare · 内部系统，仅限授权员工使用</p>
+    </section>
+    <form class="login-form" id="login-form" novalidate>
+      <h1>用户登录</h1>
+      <p class="sub">请选择角色并输入账号密码</p>
+      <div class="field"><label for="role">角　色</label>
+        <select id="role" name="role"><option>客服专员</option><option>排班专员</option><option>护工</option><option>护士站</option><option>运营经理</option><option>系统管理员</option></select></div>
+      <div class="field"><label for="account">账　号</label><input id="account" name="account" type="text" autocomplete="username" placeholder="员工账号或护工编号"></div>
+      <div class="field"><label for="password">密　码</label><input id="password" name="password" type="password" autocomplete="current-password"></div>
+      <div class="field"><label for="captcha">验证码</label>
+        <div class="captcha-row"><input id="captcha" name="captcha" type="text" autocomplete="off" maxlength="4"><span class="captcha" role="button" tabindex="0" title="看不清，换一张" aria-label="验证码，点击更换"></span></div></div>
+      <p class="login-msg" role="alert"></p>
+      <button class="btn btn-primary" type="submit">登 录</button>
+      <div class="demo-accounts">
+        <p style="margin:0 0 .3rem">演示账号（密码均为 123456，点击账号自动填入）：</p>
+        <table>
+          <tr><td>客服专员</td><td><button type="button" data-fill="kf001">kf001</button></td><td>排班专员</td><td><button type="button" data-fill="pb001">pb001</button></td></tr>
+          <tr><td>护工</td><td><button type="button" data-fill="" data-carer-account></button></td><td>护士站</td><td><button type="button" data-fill="hs001">hs001</button></td></tr>
+          <tr><td>运营经理</td><td><button type="button" data-fill="yy001">yy001</button></td><td>系统管理员</td><td><button type="button" data-fill="admin">admin</button></td></tr>
+        </table>
+        <p style="margin:.4rem 0 0">连续 3 次密码错误将锁定账号。<button type="button" data-unlock>解除锁定</button>　<a href="../index.html">返回官网</a></p>
+      </div>
+    </form>
+  </div>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -308,6 +308,7 @@ def foot(key):
       <p>&copy; <span data-year>{date.today().year}</span> <span data-en="KanghuCare. All rights reserved.">康护通 版权所有</span></p>
       <ul>
         <li><a href="privacy.html" data-en="Privacy policy">隐私政策</a></li>
+        <li><a href="admin/" data-en="Staff login">员工登录</a></li>
         <li>{icp}</li>
       </ul>
     </div>
@@ -375,7 +376,7 @@ def build_meta():
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "\n".join(urls) + "\n</urlset>\n", encoding="utf-8")
-    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE['url']}/sitemap.xml\n", encoding="utf-8")
+    (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: {SITE['url']}/sitemap.xml\n", encoding="utf-8")
 
 
 class SerifText(HTMLParser):
