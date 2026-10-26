@@ -193,6 +193,9 @@ def head(key, tzh, ten, dzh, den, nav_key):
     <span class="utility-links">
       <a href="locations.html#hospitals" data-en="For hospitals">医院合作</a>
     </span>
+    <span class="utility-links">
+      <a href="admin/" data-en="Staff login">员工登录</a>
+    </span>
   </div>
 </div>
 <header class="site-header">
