@@ -953,4 +953,7 @@ html.large-text { font-size: 128%; }
   .utility-inner { flex-wrap: nowrap; justify-content: space-between; }
   .utility-phone { margin-right: 0; white-space: nowrap; }
   .utility-bar .text-size { white-space: nowrap; flex-shrink: 0; }
+  .utility-inner { gap: 0.5rem; }
+  .utility-phone .icon { display: none; }
 }
+@media (max-width: 22.5rem) { .utility-inner { flex-wrap: wrap; } }
