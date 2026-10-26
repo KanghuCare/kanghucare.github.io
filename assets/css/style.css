@@ -8,24 +8,24 @@
 @font-face { font-family: "KHT Serif"; font-weight: 600; font-display: swap; src: url("../fonts/kht-serif-latin-600.woff2") format("woff2"); unicode-range: U+0000-2E7F; }
 
 :root {
-  /* Two-tone palette.
-     Teal = professional trust: structure, buttons, links, data.
-     Apricot = warmth and companionship: family moments, icons, highlights. */
-  --brand: #1f7a8c;
-  --brand-mid: #2b8a9c;
-  --brand-deep: #186271;
-  --brand-ink: #123e47;
-  --brand-200: #bfe0e6;
-  --brand-100: #def0f3;
-  --brand-50: #f1f8f9;
-  --accent: #e0915f;         /* apricot: dots, rules, icon tints (decorative only) */
-  --accent-ink: #a85a32;     /* apricot dark enough for small text on white (5:1) */
-  --accent-soft: #f8e2d2;
-  --warm-100: #f5e8db;
-  --warm-50: #fcf7f2;
-  --ink: #1b2a2e;
-  --ink-soft: #4e5d61;
-  --line: #e2e9eb;
+  /* Blue-green is the dominant tone: actions, section tints, cards, top bar, footer.
+     Warm amber is an accent only: a few family-facing details and one section. */
+  --brand: #0b6f7c;
+  --brand-mid: #13808d;
+  --brand-deep: #085966;
+  --brand-ink: #063d46;
+  --brand-200: #b5dde1;
+  --brand-100: #d8eef0;
+  --brand-50: #eef8f9;
+  --brand-tint: #e3f2f3;     /* alternate section background */
+  --accent: #d4954a;         /* warm amber: dots, icon tints (decorative only) */
+  --accent-ink: #95601d;     /* amber dark enough for small text on white (5.3:1) */
+  --accent-soft: #f7e6cf;
+  --warm-100: #f4e6d4;
+  --warm-50: #fcf6ee;
+  --ink: #10262b;
+  --ink-soft: #45595e;
+  --line: #d9e9eb;
   --white: #ffffff;
   --alert: #b3261e;
   --focus: #e0a43a;
@@ -38,24 +38,24 @@
   --fs-sm: 0.889rem;
   --fs-md: 1.2rem;
   --fs-lg: 1.5rem;
-  --fs-xl: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
-  --fs-2xl: clamp(2.2rem, 1.4rem + 3.2vw, 4rem);
+  --fs-xl: clamp(1.9rem, 1.35rem + 2.1vw, 3rem);
+  --fs-2xl: clamp(2.4rem, 1.3rem + 4.2vw, 4.75rem);
 
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2rem;
   --space-5: 3rem;
-  --space-6: clamp(3.75rem, 2.5rem + 4.5vw, 7rem);
+  --space-6: clamp(4.5rem, 2.75rem + 5.5vw, 8.5rem);
 
   --gutter: clamp(1rem, 4vw, 3rem);
-  --max: 76rem;
+  --max: 80rem;
   --radius-sm: 8px;
   --radius: 16px;
   --radius-lg: 28px;
   --shadow: 0 30px 60px -36px rgba(24, 48, 44, 0.45);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --header-h: 4.5rem;
+  --header-h: 4.75rem;
   color-scheme: light;
 }
 
@@ -144,10 +144,10 @@ strong { font-weight: 700; }
 .text-link:hover .icon { transform: translateX(3px); }
 
 /* ---------- Header ---------- */
-.utility-bar { background: var(--brand-50); color: var(--ink-soft); font-size: var(--fs-sm); border-bottom: 1px solid var(--line); }
+.utility-bar { background: var(--brand-deep); color: rgba(255, 255, 255, 0.82); font-size: var(--fs-sm); }
 .utility-inner { display: flex; justify-content: flex-end; align-items: center; gap: 0.25rem 1.25rem; min-height: 2.5rem; flex-wrap: wrap; }
-.utility-bar a { color: var(--ink-soft); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.5rem; }
-.utility-bar a:hover { color: var(--brand); text-decoration: underline; }
+.utility-bar a { color: rgba(255, 255, 255, 0.92); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.5rem; }
+.utility-bar a:hover { color: var(--white); text-decoration: underline; }
 .utility-bar .icon { width: 1rem; height: 1rem; }
 .utility-phone { margin-right: auto; }
 @media (max-width: 47.99rem) { .utility-links { display: none; } }
@@ -227,14 +227,15 @@ strong { font-weight: 700; }
 .section { padding-block: var(--space-6); }
 .section-tight { padding-block: var(--space-5); }
 .section-mist { background: var(--brand-50); }
-.section-sand { background: var(--warm-50); }
+.section-sand { background: var(--brand-tint); }
+.section-warm { background: var(--warm-50); }
 /* "Feature" sections: a light, rounded panel instead of a dark band */
 .section-deep { padding-block: var(--space-5); }
-.section-deep > .container { background: linear-gradient(155deg, var(--brand-50) 0%, var(--warm-50) 100%); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(2rem, 1rem + 4vw, 4.5rem); }
+.section-deep > .container { background: linear-gradient(155deg, var(--brand-50) 0%, var(--brand-100) 100%); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(2rem, 1rem + 4vw, 4.5rem); }
 .section-deep .btn-light { background: var(--brand); color: var(--white); }
 .section-deep .btn-light:hover { background: var(--brand-deep); color: var(--white); }
 .section-deep a:not(.btn) { color: var(--brand); }
-.section-head { margin-bottom: var(--space-5); max-width: 44rem; }
+.section-head { margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); max-width: 48rem; }
 .section-head p { color: var(--ink-soft); font-size: var(--fs-md); line-height: 1.65; margin: 0; }
 
 .section-head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-2) var(--space-4); margin-bottom: var(--space-5); }
@@ -249,7 +250,7 @@ strong { font-weight: 700; }
   border-radius: var(--radius-lg);
   background:
     radial-gradient(90% 70% at 20% 15%, rgba(255, 255, 255, 0.55), transparent 60%),
-    linear-gradient(150deg, var(--warm-100), var(--brand-100) 60%, var(--brand-200));
+    linear-gradient(150deg, var(--brand-50), var(--brand-100) 55%, var(--brand-200));
 }
 .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .photo-brief {
@@ -261,10 +262,10 @@ strong { font-weight: 700; }
 .photo.has-photo .photo-brief { display: none; }
 
 /* ---------- Home hero ---------- */
-.hero { padding-block: clamp(2rem, 1.5rem + 3vw, 4.5rem) var(--space-5); }
+.hero { padding-block: clamp(2.5rem, 1.5rem + 4vw, 6rem) var(--space-5); }
 .hero-grid { display: grid; gap: var(--space-5); align-items: center; }
 @media (min-width: 60rem) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; gap: clamp(2.5rem, 5vw, 5rem); } }
-.hero h1 { max-width: 13em; }
+.hero h1 { max-width: 13em; margin-bottom: var(--space-3); }
 .hero .lead { max-width: 31em; margin-bottom: var(--space-4); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 .hero-visual { position: relative; padding-bottom: 5rem; }
@@ -366,7 +367,7 @@ strong { font-weight: 700; }
 @media (min-width: 40rem) { .standards { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 64rem) { .standards { grid-template-columns: repeat(4, 1fr); } .standards-3 { grid-template-columns: repeat(3, 1fr); } }
 .standard { border-top: 1px solid var(--brand-200); padding-top: var(--space-3); }
-.standard-figure { display: block; font-family: var(--serif); font-weight: 500; line-height: 1; font-size: clamp(2.6rem, 2rem + 2.4vw, 3.8rem); color: var(--brand); margin-bottom: 0.9rem; }
+.standard-figure { display: block; font-family: var(--serif); font-weight: 500; line-height: 1; font-size: clamp(3rem, 2.2rem + 3vw, 4.6rem); color: var(--brand); margin-bottom: 1rem; }
 .standard-figure small { font-family: var(--sans); font-size: 0.36em; font-weight: 600; margin-left: 0.2em; color: var(--ink-soft); }
 .standard h3 { font-family: var(--sans); font-size: 1.02rem; font-weight: 700; margin-bottom: 0.35rem; letter-spacing: 0; }
 .standard p { font-size: 0.95rem; margin: 0; color: var(--ink-soft); }
@@ -446,7 +447,7 @@ strong { font-weight: 700; }
 .service-kicker { color: var(--brand); font-weight: 700; font-size: var(--fs-sm); margin-bottom: 0.4rem; }
 .included { display: grid; gap: 0.6rem 2rem; margin: var(--space-3) 0; }
 @media (min-width: 36rem) { .included { grid-template-columns: 1fr 1fr; } }
-.fit-for { padding: 1.1rem 1.3rem; border-left: 2px solid var(--accent); background: var(--warm-50); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: var(--space-3); }
+.fit-for { padding: 1.1rem 1.3rem; border-left: 2px solid var(--accent); background: var(--brand-50); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: var(--space-3); }
 .fit-for p { margin: 0; }
 
 /* ---------- Tables ---------- */
@@ -617,18 +618,18 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
 }
 
 /* =====================================================================
-   Warmth: apricot marks the family and companionship moments
+   Warm accent: gold marks the family-facing moments
    ===================================================================== */
 .need-icon { background: var(--accent-soft); color: var(--accent-ink); }
 .answer .worry { color: var(--accent-ink); }
 .care-report-day { color: var(--accent-ink); }
-.duo-item:not(.is-deep) { background: var(--warm-50); }
+.duo-item:not(.is-deep) { background: var(--white); }
 .section-sand .duo-item:not(.is-deep) { background: var(--white); }
 
-/* Soft warm light behind the hero photo */
+/* Soft light behind the hero photo */
 .hero-visual::before {
   content: ""; position: absolute; z-index: -1; inset: -8% -12% 10% 8%;
-  background: radial-gradient(closest-side, var(--accent-soft), transparent 75%);
+  background: radial-gradient(closest-side, var(--brand-100), transparent 75%);
   opacity: 0.8; pointer-events: none;
 }
 .hero { position: relative; isolation: isolate; overflow: clip; }
