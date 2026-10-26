@@ -99,7 +99,7 @@
     function weighted(pairs) { var x = r(), acc = 0; for (var i = 0; i < pairs.length; i++) { acc += pairs[i][1]; if (x <= acc) return pairs[i][0]; } return pairs[pairs.length - 1][0]; }
     var surnames = "王李张刘陈杨黄赵吴周徐孙马朱胡郭何高林罗郑梁谢宋唐许韩冯邓曹彭曾萧田董袁潘蒋蔡余杜叶程苏魏吕丁任沈姚卢姜崔钟谭陆汪范金石廖贾夏韦付方白邹孟熊秦邱江尹薛闫段雷侯龙史陶黎贺顾毛郝龚邵万钱严覃武戴莫孔向汤".split("");
     var given = "秀兰桂芳玉梅红英华敏静丽娟霞凤琴云莲珍燕萍芬洁淑明建国伟强军平志永春海".split("");
-    var db = { v: 3, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
+    var db = { v: 4, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
     var taken = [];
 
     // Caregivers: a few named ones used in the walkthrough, then a generated roster
@@ -194,8 +194,10 @@
     var hot = ortho[0] || live[0], miss = live.filter(function (o) { return o !== hot; })[0];
     if (hot) { hot.sim = "temp"; db.alerts.push({ id: 1, order: hot.id, type: "体温异常", detail: "体温 38.6℃（≥38.5℃）", time: iso(T) + " 07:42", handled: false }); }
     if (miss) db.alerts.push({ id: 2, order: miss.id, type: "漏打卡", detail: "昨日 23:00“夜间巡视与翻身”超过 2 小时未打卡", time: iso(T) + " 01:05", handled: false });
-    var entry = ortho.filter(function (o) { return o !== hot; }).sort(function (a, b) { return a.start < b.start ? 1 : -1; })[0];
-    if (entry) entry.entryConfirmed = false;
+    ["03", "05", "08", "06"].forEach(function (dept) {
+      var e = live.filter(function (o) { return o.dept === dept && o !== hot && o !== miss; }).sort(function (a, b) { return a.start < b.start ? 1 : -1; })[0];
+      if (e) e.entryConfirmed = false;
+    });
     // Complaints waiting for a follow-up call
     var low = db.orders.filter(function (o) { return o.status === 3 && o.rating && o.rating <= 3; }).slice(-2);
     ["夜间呼叫后护工响应较慢", "交接班时与家属沟通不到位"].forEach(function (t, i) {
@@ -206,7 +208,7 @@
     db.orders.forEach(function (o) { if (o.status === 1 && o.dept === "03" && o.bed === 8) o.bed = 41; });
     var mine = { id: newOrderId(db, "03", y), created: iso(y), dept: "03", bed: 8, level: 0, status: 1, caregiver: li.id, accepted: true, entryConfirmed: true,
       patient: { name: "张*明", gender: "男", age: 81, contact: "张*（女儿）", phone: "137****2086" }, inpatient: "ZY" + ymd6(y).slice(0, 4) + "077",
-      start: iso(y), days: 10, needs: ["turning", "tube", "night"], slot: "24小时", note: "脑梗后左侧肢体偏瘫，需每 2 小时翻身，鼻饲喂养", acceptedAt: iso(y) + " 07:20", entryAt: iso(y) + " 07:35" };
+      start: iso(y), days: 2, needs: ["turning", "tube", "night"], slot: "24小时", note: "脑梗后左侧肢体偏瘫，需每 2 小时翻身，鼻饲喂养；今日出院", acceptedAt: iso(y) + " 07:20", entryAt: iso(y) + " 07:35" };
     db.orders.push(mine);
     db.logs[mine.id + "@" + iso(y)] = { clockIn: iso(y) + " 07:52", submittedAt: iso(y) + " 21:36", vitals: [
         { at: iso(y) + " 10:35", temp: 36.7, pulse: "76", bp: "132/80" }, { at: iso(y) + " 16:20", temp: 36.9, pulse: "80", bp: "128/78" }],
@@ -216,7 +218,7 @@
   }
 
   function load() {
-    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 3) return db; } catch (e) {}
+    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 4) return db; } catch (e) {}
     var fresh = seed(); save(fresh); return fresh;
   }
   function save(db) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
@@ -290,10 +292,10 @@
   var ACCOUNTS = {
     kf001: { name: "陈晓", role: "客服专员", dept: "客户服务部" },
     pb001: { name: "何静", role: "排班专员", dept: "人员排班部" },
-    hs001: { name: "骨科护士站", role: "护士站", dept: "医院护士站（骨科）", ward: "03" },
     yy001: { name: "周敏", role: "运营经理", dept: "运营管理部" },
     admin: { name: "管理员", role: "系统管理员", dept: "信息中心" }
   };
+  Object.keys(DEPTS).forEach(function (k) { ACCOUNTS["hs" + k] = { name: DEPTS[k] + "护士站", role: "护士站", dept: "医院护士站（" + DEPTS[k] + "）", ward: k }; });
   ACCOUNTS[db.caregivers[0].id] = { name: db.caregivers[0].name, role: "护工", dept: "高级护工", carer: db.caregivers[0].id, home: "nurse.html" };
   var PASSWORD = "123456";
   var ROLE_KEY = { "客服专员": "cs", "排班专员": "sched", "护士站": "station", "运营经理": "ops", "系统管理员": "admin", "护工": "carer" };
@@ -414,6 +416,11 @@
     $all("[data-fill]").forEach(function (b) {
       b.addEventListener("click", function () { form.account.value = b.getAttribute("data-fill"); form.password.value = PASSWORD; form.captcha.value = code; form.role.value = ACCOUNTS[b.getAttribute("data-fill")].role; msg.textContent = ""; form.account.focus(); });
     });
+    var st = $("[data-station]");
+    if (st) {
+      st.innerHTML = Object.keys(DEPTS).map(function (k) { return '<option value="hs' + k + '"' + (k === "03" ? " selected" : "") + ">hs" + k + " " + DEPTS[k] + "</option>"; }).join("");
+      st.addEventListener("change", function () { form.account.value = st.value; form.password.value = PASSWORD; form.captcha.value = code; form.role.value = "护士站"; msg.textContent = ""; });
+    }
     var acct = $("[data-carer-account]"); if (acct) { acct.setAttribute("data-fill", db.caregivers[0].id); acct.textContent = db.caregivers[0].id; }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -807,7 +814,7 @@
         '<div class="field"><label for="pulse">脉搏</label><input id="pulse" name="pulse" type="number" inputmode="numeric" placeholder="次/分"></div>' +
         '<div class="field" style="margin-top:.6rem"><label for="bp">血压</label><input id="bp" name="bp" type="text" placeholder="如 128/80"></div>' +
         '<button class="btn" type="submit" style="margin-top:.8rem;width:100%">记录体征</button><ul class="hint" id="vitals-log"></ul></form>' +
-        '<section class="panel"><h2 class="panel-title">今日小结</h2><p class="hint" id="summary"></p><div class="duo"><button class="btn btn-primary" type="button" data-submit-log>提交护理日报</button><button class="btn btn-danger" type="button" data-report>异常上报</button></div></section>' +
+        '<div class="duo today-actions"><button class="btn btn-primary" type="button" data-submit-log>提交护理日报</button><button class="btn btn-danger" type="button" data-report>异常上报</button></div>' +
         "</div></div>";
       box.innerHTML = html;
 
@@ -826,7 +833,6 @@
         });
         $("#vitals-log").innerHTML = lg.vitals.map(function (v) { return "<li>" + v.at.slice(11) + "　体温 " + v.temp + "℃" + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") + (v.temp >= 38.5 ? '　<span class="pill pill-late">已预警</span>' : "") + "</li>"; }).join("");
         if (typeof renderLogs === "function") renderLogs();
-        $("#summary").textContent = "今日应完成 " + pr.due + " 项，已完成 " + pr.done + " 项" + (pr.late ? "，漏打卡 " + pr.late + " 项" : "") + "；体征记录 " + lg.vitals.length + " 次。" + (lg.submittedAt ? "日报已于 " + lg.submittedAt.slice(11) + " 推送家属。" : "");
         save(db);
       }
       function raise(type, detail) {
@@ -895,11 +901,12 @@
           return '<details class="log-day"' + (isToday ? " open" : "") + "><summary><b>" + iso(d) + (isToday ? "（今天）" : "") + "</b><span>上岗 " + (lg.clockIn ? lg.clockIn.slice(11) : "—") + "　完成 " + done + " / " + lg.items.filter(function (x) { return !x.skipped; }).length + " 项　体征 " + lg.vitals.length + " 次</span>" +
             (lg.submittedAt ? '<span class="tag tag-3">日报已推送 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日报</span>') + '</summary><ul class="timeline">' +
             lg.items.map(function (it) { return '<li class="' + (it.doneAt ? "is-done" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : isToday ? (minutes(it.time) <= nowMinutes() ? "待执行" : "未到时间") : "未打卡") + "</em></li>"; }).join("") + "</ul>" +
+            '<p class="hint">' + (isToday ? "截至现在应完成 " + p.due + " 项，已完成 " + done + " 项" + (p.late ? "，漏打卡 " + p.late + " 项" : "") + "。" : "") + "</p>" +
             (lg.vitals.length ? '<p class="hint">体征：' + lg.vitals.map(function (v) { return v.at.slice(11) + " 体温 " + v.temp + "℃" + (v.bp ? " 血压 " + esc(v.bp) : ""); }).join("；") + "</p>" : "") + "</details>";
         }).join("");
         if (cards) html += panel(esc(o.patient.name) + " · " + bedLabel(o), cards, o.start + " 至 " + iso(endDate(o)));
       });
-      box.innerHTML = '<p class="role-note">护理日志由护工在“护理打卡”中逐项打卡自动生成；护士站、客服可在管理端查看，提交日报后推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并上岗打卡后，这里会按天生成护理日志。</p></section>');
+      box.innerHTML = '<p class="role-note">护理日志按日期汇总你在“今日护理”中的打卡与体征记录，可查看今天和以往每一天的护理情况；护士站、客服可在管理端查看，提交日报后推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并在“今日护理”中上岗打卡后，这里会按天生成护理日志。</p></section>');
     }
 
     /* ---- 接单：派单确认 + 适合我的订单 ---- */
