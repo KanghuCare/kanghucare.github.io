@@ -957,7 +957,9 @@ html.large-text { font-size: 128%; }
 
 /* Footer: a very pale sky-to-teal wash; the base row stays plain */
 .site-footer { background: linear-gradient(120deg, #eef7fe 0%, #f2fafd 50%, #e9f7f5 100%); border-top-color: #dcebf5; }
-.footer-base { border-top: 1px solid #dcebf5; }
+.footer-base { border-top: 1px solid #dcebf5; margin-top: clamp(3.5rem, 2.5rem + 3vw, 5rem); padding-top: 1.75rem; }
+.site-footer { padding-bottom: clamp(3rem, 2rem + 2.5vw, 4.5rem); }
+@media (min-width: 48rem) { .footer-base { padding-right: 4.5rem; } }
 
 /* Theme: the logo's sky-to-teal gradient on every brand fill */
 :root { --theme-gradient: linear-gradient(120deg, #2e9be6 0%, #22a7c4 55%, #17a99c 100%); --theme-gradient-hover: linear-gradient(120deg, #1f87d0 0%, #1896b2 55%, #11968b 100%); }
