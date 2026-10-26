@@ -956,4 +956,9 @@ html.large-text { font-size: 128%; }
   .utility-inner { gap: 0.5rem; }
   .utility-phone .icon { display: none; }
 }
-@media (max-width: 22.5rem) { .utility-inner { flex-wrap: wrap; } }
+@media (max-width: 22.5rem) {
+  .utility-inner { flex-wrap: wrap; }
+  .header-actions { gap: 0.3rem; }
+  .lang-toggle { padding-inline: 0.5rem; }
+  .brand-sub { display: none; }
+}
