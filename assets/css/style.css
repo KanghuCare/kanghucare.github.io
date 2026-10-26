@@ -917,3 +917,19 @@ html.large-text { font-size: 128%; }
 .choice input:checked + span { background: var(--brand-fill); border-color: var(--brand-fill); }
 .check-progress span.is-done { background: var(--brand-fill); }
 @media (min-width: 67rem) { .site-nav li > a::after { background: var(--brand-fill); } }
+
+/* More warmth: amber carries family-facing sections and small marks */
+.section-sand { background: var(--warm-50); }
+.section-deep > .container { background: linear-gradient(155deg, var(--warm-50) 0%, #fffdfa 45%, var(--brand-50) 100%); }
+.duo-item:not(.is-deep) { background: var(--white); }
+.duo-item.is-deep { background: var(--accent-soft); }
+.hero-visual::before { background: radial-gradient(closest-side, var(--accent-soft), transparent 75%); }
+.photo { background: radial-gradient(90% 70% at 20% 15%, rgba(255, 255, 255, 0.7), transparent 60%), linear-gradient(150deg, var(--warm-50), var(--brand-100) 60%, var(--teal-soft)); }
+.journey-stage, .service-kicker, .story-card .meta, .guide-meta { color: var(--accent-ink); }
+.steps > li::before { border-color: var(--accent); }
+.steps > li::after { border-top-color: var(--accent-soft); }
+.standard-figure small { color: var(--accent-ink); }
+.standard { border-top-color: var(--accent-soft); }
+.org > div { border-top-color: var(--accent); }
+.fit-for { background: var(--warm-50); }
+.answer-icon { background: var(--warm-50); border-color: var(--accent-soft); }
