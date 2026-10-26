@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>护工档案｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="carers" data-title="护工档案">
+<main>
+  <section class="panel">
+    <h2 class="panel-title">护工档案 <span class="aside" id="carer-count"></span></h2>
+    <form class="filters filters-3" id="carer-filters" onsubmit="return false">
+      <label>姓名 / 编号<input name="q" type="search"></label>
+      <label>护工等级<select name="grade"><option value="">全部</option><option value="1">高级</option><option value="2">中级</option><option value="3">初级</option></select></label>
+      <label>筛选<select name="view"><option value="">全部护工</option><option value="cert">证书 60 天内到期（资质审核）</option><option value="idle">当前有档期</option><option value="over">本月服务超时（＞26 天）</option></select></label>
+    </form>
+  </section>
+  <section class="panel">
+    <div class="table-wrap"><table class="data" id="carers">
+      <thead><tr><th>护工编号</th><th>姓名</th><th>性别</th><th>等级</th><th>星级</th><th>好评率</th><th>科室经验</th><th>证书有效期</th><th class="num">本月天数</th><th>当前状态</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -299,3 +299,86 @@ table.bill-table tr.pay td { font-weight: 700; font-size: 16px; color: var(--ale
   body, .main { background: #fff; padding: 0; }
   .bill { border: 0; box-shadow: none; padding: 0; }
 }
+
+/* ---------- Role dashboards and new pages ---------- */
+.role-note { margin: 0 0 1rem; padding: 0.7rem 1rem; border-radius: var(--radius); background: var(--brand-50); border: 1px solid var(--brand-200); color: var(--ink-soft); }
+.role-note b { color: var(--brand); }
+.empty-state { text-align: center; padding: 2.2rem 1.25rem; }
+.empty-state h2 { font-size: 18px; margin-bottom: 0.5rem; }
+.empty-state p { color: var(--ink-soft); margin: 0.4rem 0; }
+.watch { list-style: none; margin: 0; padding: 0; }
+.watch li { display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: center; padding: 0.62rem 0; border-bottom: 1px solid var(--line); }
+.watch li:last-child { border-bottom: 0; }
+.watch b { font-variant-numeric: tabular-nums; }
+.watch b.bad { color: var(--alert); }
+.watch b.warn { color: var(--accent-ink); }
+.filters-3 { grid-template-columns: repeat(3, minmax(0, 260px)); justify-content: start; }
+.filters label.check { display: flex; align-items: center; gap: 0.4rem; color: var(--ink); align-self: center; padding-top: 1.2rem; }
+.bar { display: inline-block; width: 70px; height: 6px; border-radius: 3px; background: #e9eef3; margin-right: 0.5rem; vertical-align: middle; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--gradient); }
+.timeline { list-style: none; margin: 0.5rem 0 1rem; padding: 0; }
+.timeline li { display: grid; grid-template-columns: 3.5em 1fr auto; gap: 0.6rem; padding: 0.4rem 0; border-bottom: 1px dashed var(--line); }
+.timeline time { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.timeline em { font-style: normal; font-size: 12.5px; color: var(--accent-ink); }
+.timeline li.is-done em { color: var(--teal-text); }
+.timeline li.is-late em { color: var(--alert); font-weight: 700; }
+table.sched th small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 12px; }
+table.sched tbody th { background: var(--white); text-align: left; }
+table.sched td { vertical-align: top; min-width: 96px; }
+table.sched .is-today { background: var(--brand-50); }
+table.sched td.is-clash { background: var(--alert-soft); }
+table.sched tfoot td, table.sched tfoot th { color: var(--ink-soft); font-weight: 600; }
+.chip { display: block; margin: 0.1rem 0; padding: 0.1rem 0.45rem; border-radius: 6px; background: var(--brand-100); color: var(--brand); font-size: 12.5px; white-space: nowrap; }
+.chip.is-wait { background: var(--accent-soft); color: var(--accent-ink); }
+
+/* ---------- Caregiver portal ---------- */
+.portal { background: var(--surface); }
+.portal-top { position: sticky; top: 0; z-index: 30; }
+.portal-tabs { display: flex; gap: 0.25rem; padding: 0 1rem; background: var(--white); border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 52px; z-index: 29; }
+.portal-tabs a { padding: 0.75rem 1rem; color: var(--ink); text-decoration: none; font-weight: 600; border-bottom: 2px solid transparent; white-space: nowrap; }
+.portal-tabs a.is-current { color: var(--brand); border-bottom-color: var(--fill); }
+.badge { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--alert); color: var(--white); font-size: 11px; font-weight: 700; vertical-align: 1px; }
+.portal-main { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+.preview { margin: 0 0 1rem; color: var(--ink-soft); }
+.preview select { width: auto; min-height: 30px; }
+.banner { display: block; margin-bottom: 1rem; padding: 0.75rem 1rem; border-radius: var(--radius); background: var(--accent-soft); color: var(--accent-ink); text-decoration: none; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.chip-btn { padding: 0.35rem 0.85rem; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--ink); text-decoration: none; }
+.chip-btn.is-current { background: var(--fill-gradient); color: var(--white); border-color: transparent; }
+.portal-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1rem; align-items: start; }
+.portal-grid > div > .panel + .panel, .portal-grid > div > .panel + form, .portal-grid > div > form + .panel { margin-top: 1rem; }
+.patient-head { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; align-items: baseline; margin-bottom: 0.6rem; }
+.patient-head b { font-size: 20px; }
+.patient-head span { color: var(--ink-soft); }
+.patient dl, .order-card dl { display: grid; grid-template-columns: 5.5em 1fr; gap: 0.35rem 0.75rem; margin: 0; }
+.patient dt, .order-card dt { color: var(--ink-soft); }
+.patient dd, .order-card dd { margin: 0; }
+.clock-in { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+.clock-in p { margin: 0; color: var(--ink-soft); }
+.clock-in strong { color: var(--ink); }
+#vitals .field { grid-template-columns: 4.5em 1fr; }
+#vitals .err { margin: 0.2rem 0 0.4rem 5.1em; }
+#vitals-log { margin: 0.6rem 0 0; padding-left: 1.1rem; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.9rem; }
+.order-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 0.9rem 1rem; background: var(--white); }
+.order-card header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem; margin-bottom: 0.6rem; }
+.order-actions { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
+.day { border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem; display: grid; gap: 0.2rem; text-align: center; background: var(--white); }
+.day span { color: var(--ink-soft); font-size: 12.5px; }
+.day em { font-style: normal; font-size: 12.5px; padding: 0.1rem 0.3rem; border-radius: 6px; background: var(--brand-100); color: var(--brand); }
+.day em.free { background: var(--teal-soft); color: var(--teal-text); }
+.day.is-today { border-color: var(--fill); box-shadow: inset 0 0 0 1px var(--fill); }
+@media (max-width: 900px) {
+  .portal-grid { grid-template-columns: minmax(0, 1fr); }
+  .week { grid-template-columns: repeat(4, 1fr); }
+  .portal-top .topbar-brand small { display: inline; }
+  .portal-tabs { top: 52px; }
+  .filters-3 { grid-template-columns: 1fr; }
+  .watch li { grid-template-columns: 1fr auto; }
+  .watch li a { grid-column: 1 / -1; }
+}
+table.bill-table tr.refund td { color: var(--teal-text); }
+.grid-2 > .panel + .panel { margin-top: 0; }
+.grid-2 + .panel { margin-top: 1rem; }
