@@ -164,7 +164,7 @@ def head(key, tzh, ten, dzh, den, nav_key):
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0b6f7c">
+<meta name="theme-color" content="#1b74ad">
 <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
