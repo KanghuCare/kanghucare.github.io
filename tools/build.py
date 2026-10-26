@@ -136,7 +136,7 @@ def head(key, tzh, ten, dzh, den, nav_key):
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#1f4d47">
+<meta name="theme-color" content="#1f7a8c">
 <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
@@ -194,7 +194,12 @@ def head(key, tzh, ten, dzh, den, nav_key):
 """
 
 
-def foot():
+def foot(key):
+    action_bar = "" if key in ("book", "404") else f"""<div class="action-bar" aria-label="快捷操作" data-en-aria-label="Quick actions" role="region">
+  <a class="btn btn-secondary" href="tel:{SITE["tel"]}">{icon("phone")}<span data-en="Call">致电</span></a>
+  <a class="btn btn-primary" href="book.html" data-en="Book care">预约照护</a>
+</div>
+"""
     icp = (f'<a href="https://beian.miit.gov.cn/" rel="noopener">{esc(SITE["icp"])}</a>' if SITE["icp"]
            else '<span data-en="ICP filing number to be added">ICP 备案号待填写</span>')
     return f"""</main>
@@ -208,6 +213,10 @@ def foot():
         </a>
         <p style="margin-top:1.25rem" data-en="Care for older adults from hospital to home: companion care, rehabilitation, home care and health management.">从医院到家，为长者提供陪护、康复、居家照护与健康管理。</p>
         <a class="footer-phone" href="tel:{SITE["tel"]}">{SITE["phone"]}</a>
+        <div class="wechat">
+          <div class="wechat-code"><img src="assets/img/wechat-qr.png" alt="康护通微信公众号二维码" data-en-alt="Kang Hutong WeChat QR code" width="88" height="88" onerror="this.replaceWith(document.createTextNode('二维码待放置'))"></div>
+          <p data-en="Follow us on WeChat to book care and receive daily care reports.">微信扫码关注，在线预约、接收护理日报。</p>
+        </div>
       </div>
       <div class="footer-cols">
         <div>
@@ -251,6 +260,7 @@ def foot():
     </div>
   </div>
 </footer>
+{action_bar}<button class="to-top" type="button" aria-label="回到顶部" data-en-aria-label="Back to top">{icon("chev")}</button>
 </body>
 </html>
 """
@@ -293,7 +303,7 @@ def expand(body):
 def build_pages():
     for key, tzh, ten, dzh, den, nav_key, _ in PAGES:
         body = expand((SRC / f"{key}.html").read_text(encoding="utf-8"))
-        out = head(key, tzh, ten, dzh, den, nav_key) + body + foot()
+        out = head(key, tzh, ten, dzh, den, nav_key) + body + foot(key)
         leftover = re.findall(r"<kht-[\w-]+|\{\{[A-Z_]+\}\}", out)
         if leftover:
             raise SystemExit(f"{key}: unexpanded {leftover}")
@@ -319,7 +329,7 @@ class SerifText(HTMLParser):
     """Collects the text (both languages) of elements set in the serif face, so the font subset stays small."""
     SERIF_TAGS = {"h1", "h2", "h3"}
     SERIF_CLASSES = {"brand-name", "care-report-title", "standard-figure", "sum", "big", "footer-phone",
-                     "phone-big", "big-num", "serif"}
+                     "phone-big", "big-num", "serif", "statement", "estimate-total"}
     VOID = {"img", "input", "br", "meta", "link", "use", "hr", "source"}
 
     def __init__(self):

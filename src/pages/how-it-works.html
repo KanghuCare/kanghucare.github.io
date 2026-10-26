@@ -89,6 +89,30 @@
         <p class="note" data-en="Amount due = days of care × daily rate × discount + extra services − deposit. Home care and health management are quoted after an assessment.">应付金额 = 实际天数 × 日价 × 折扣 + 附加服务费 − 押金。居家照护和健康管理在评估后单独报价。</p>
       </div>
     </div>
+    <div class="split split-top" style="margin-top:var(--space-5)">
+      <div>
+        <h3 data-en="Estimate your cost">估算您的费用</h3>
+        <p data-en="Once a care adviser has confirmed your daily rate, enter it here to see the total with any discount.">护理顾问确认日价后，在这里输入，即可看到含折扣的总费用。</p>
+        <p class="note" data-en="This is an estimate. Your bill is based on actual days of care.">此为估算，实际以服务天数结算为准。</p>
+      </div>
+      <form class="estimator" id="estimator" onsubmit="return false" aria-label="费用估算" data-en-aria-label="Cost estimator">
+        <div class="estimator-fields">
+          <div class="field">
+            <label for="est-rate" data-en="Daily rate (¥)">日价（元）</label>
+            <input id="est-rate" type="number" inputmode="decimal" min="1" step="1" value="280">
+          </div>
+          <div class="field">
+            <label for="est-days" data-en="Days of care">陪护天数</label>
+            <input id="est-days" type="number" inputmode="numeric" min="1" max="365" step="1" value="10">
+          </div>
+        </div>
+        <output for="est-rate est-days" aria-live="polite">
+          <span class="note" data-en="Estimated total">预计总费用</span>
+          <span class="estimate-total" id="est-total">¥2,520</span>
+          <span class="estimate-detail" id="est-detail"></span>
+        </output>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -115,6 +139,10 @@
       <details class="disclosure">
         <summary><h3 data-en="How do I see the daily care report?">如何查看护理日报？</h3><span class="chev" aria-hidden="true"><kht-icon name="chev"></kht-icon></span></summary>
         <div class="disclosure-body"><p data-en="Once care begins, reports appear in our WeChat mini program and are sent to the contact you gave us.">服务开始后，护理日报会出现在微信小程序中，并推送给您留下的联系人。</p></div>
+      </details>
+      <details class="disclosure">
+        <summary><h3 data-en="Can we use long-term care insurance?">可以使用长期护理保险吗？</h3><span class="chev" aria-hidden="true"><kht-icon name="chev"></kht-icon></span></summary>
+        <div class="disclosure-body"><p data-en="Some cities run long-term care insurance schemes. Whether they apply depends on local policy and the patient’s assessment. Ask a care adviser and we’ll help you check.">部分城市已开展长期护理保险试点，能否使用取决于当地政策和患者的失能评估结果。请咨询护理顾问，我们会协助您了解。</p></div>
       </details>
       <details class="disclosure">
         <summary><h3 data-en="Can we end care early?">可以提前结束服务吗？</h3><span class="chev" aria-hidden="true"><kht-icon name="chev"></kht-icon></span></summary>

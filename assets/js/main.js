@@ -143,6 +143,136 @@
     if (radio) radio.checked = true;
   }
 
+  /* ---------- Preselect care level from ?level= on the booking page ---------- */
+  var preLevel = new URLSearchParams(location.search).get("level");
+  if (preLevel) {
+    var lv = document.querySelector('input[name="level"][value="' + preLevel.replace(/[^a-z0-9]/g, "") + '"]');
+    if (lv) lv.checked = true;
+  }
+
+  /* ---------- Mobile action bar and back-to-top ---------- */
+  var actionBar = document.querySelector(".action-bar");
+  var toTop = document.querySelector(".to-top");
+  if (actionBar) document.body.classList.add("has-action-bar");
+  if (actionBar || toTop) {
+    var floatTick = false;
+    var onFloat = function () {
+      if (floatTick) return;
+      floatTick = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        if (actionBar) actionBar.classList.toggle("is-shown", y > 420);
+        if (toTop) toTop.classList.toggle("is-shown", y > 1400);
+        floatTick = false;
+      });
+    };
+    window.addEventListener("scroll", onFloat, { passive: true });
+    onFloat();
+  }
+  if (toTop) {
+    toTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      var main = document.getElementById("main");
+      if (main) main.focus({ preventScroll: true });
+    });
+  }
+
+  /* ---------- Care needs check ---------- */
+  var check = document.getElementById("care-check");
+  if (check) {
+    var resultBox = document.getElementById("check-result");
+    var bars = resultBox.querySelectorAll(".check-progress span");
+    var L = function (zh, en) { return isEn() ? en : zh; };
+    var SERVICE = {
+      hospital: ["医院陪护", "Hospital companion care"],
+      rehab: ["康复护理", "Rehabilitation care"],
+      home: ["居家照护", "Home care"],
+      health: ["健康管理", "Health management"]
+    };
+    var CAREGIVER = {
+      "0": ["高级护工，一对一", "Senior caregiver, one-to-one"],
+      "1": ["中级护工，一对一", "Intermediate caregiver, one-to-one"],
+      "2": ["初级护工，一对多（最多 3 床）", "Junior caregiver, shared (up to 3 beds)"]
+    };
+    var PRICE = {
+      short: ["标准日价", "Standard daily rate"],
+      mid: ["九五折（3 至 7 天）", "5% off (3 to 7 days)"],
+      long: ["九折（超过 7 天）", "10% off (over 7 days)"],
+      unsure: ["预约 3 天以上享折扣", "Discounts from 3 days"]
+    };
+    var val = function (name) { var r = check.querySelector('input[name="' + name + '"]:checked'); return r ? r.value : ""; };
+
+    var renderCheck = function (animate) {
+      var where = val("where"), help = val("help"), days = val("days"), recovery = val("recovery");
+      var answered = [where, help, days, recovery].filter(Boolean).length;
+      bars.forEach(function (b, i) { b.classList.toggle("is-done", i < answered); });
+      var body = resultBox.querySelector(".result-body");
+      if (!where || !help) {
+        body.innerHTML = "<h3>" + L("回答前两个问题，即可看到建议", "Answer the first two questions to see our suggestion") + "</h3><p>" +
+          L("不需要填写任何个人信息。", "No personal details needed.") + "</p>";
+        return;
+      }
+      var services = [];
+      var primary;
+      if (where === "hospital") { primary = "hospital"; services.push("hospital"); }
+      else if (where === "home") { primary = "home"; services.push("home"); }
+      else { primary = "health"; services.push("health"); if (help !== "2") services.push("home"); }
+      if (recovery === "yes") services.push("rehab");
+
+      var rows = [[L("推荐服务", "Suggested care"), services.map(function (k) { return L(SERVICE[k][0], SERVICE[k][1]); }).join(L("＋", " + "))]];
+      if (where === "hospital") {
+        rows.push([L("护工安排", "Caregiver"), L(CAREGIVER[help][0], CAREGIVER[help][1])]);
+        rows.push([L("收费", "Pricing"), L(PRICE[days || "unsure"][0], PRICE[days || "unsure"][1])]);
+      } else {
+        rows.push([L("护工安排", "Caregiver"), L("上门评估后安排", "Arranged after a home assessment")]);
+      }
+      var levelParam = help;
+      var href = "book.html?service=" + primary + "&level=" + levelParam;
+      body.innerHTML =
+        '<p class="result-label">' + L("我们的建议", "Our suggestion") + "</p>" +
+        "<h3>" + L(SERVICE[primary][0], SERVICE[primary][1]) + "</h3>" +
+        "<dl>" + rows.map(function (r) { return "<dt>" + r[0] + "</dt><dd>" + r[1] + "</dd>"; }).join("") + "</dl>" +
+        '<p class="note">' + L("最终方案由护理顾问与您确认，开始前不收取任何费用。", "A care adviser confirms the final plan with you. Nothing is charged before care begins.") + "</p>" +
+        '<div class="hero-actions"><a class="btn btn-primary" href="' + href + '">' + L("按此建议预约", "Book with this plan") + "</a>" +
+        '<a class="btn btn-secondary" href="tel:' + check.getAttribute("data-tel") + '">' + L("先打电话问问", "Call us first") + "</a></div>";
+      if (animate && !reduceMotion) {
+        resultBox.classList.remove("is-updated");
+        void resultBox.offsetWidth;
+        resultBox.classList.add("is-updated");
+      }
+    };
+    check.addEventListener("change", function () { renderCheck(true); });
+    document.addEventListener("kht:lang", function () { renderCheck(false); });
+    renderCheck(false);
+  }
+
+  /* ---------- Cost estimator ---------- */
+  var est = document.getElementById("estimator");
+  if (est) {
+    var rateIn = document.getElementById("est-rate");
+    var daysIn = document.getElementById("est-days");
+    var totalOut = document.getElementById("est-total");
+    var detailOut = document.getElementById("est-detail");
+    var fmt = function (n) { return "¥" + Math.round(n).toLocaleString("en-US"); };
+    var renderEst = function () {
+      var rate = parseFloat(rateIn.value), days = parseInt(daysIn.value, 10);
+      if (!(rate > 0) || !(days > 0)) {
+        totalOut.textContent = "—";
+        detailOut.textContent = isEn() ? "Enter a daily rate and number of days." : "请输入日价和天数。";
+        return;
+      }
+      var k = days > 7 ? 0.9 : days >= 3 ? 0.95 : 1;
+      var tier = days > 7 ? (isEn() ? "10% off for over 7 days" : "超过 7 天九折")
+        : days >= 3 ? (isEn() ? "5% off for 3 to 7 days" : "3 至 7 天九五折")
+        : (isEn() ? "standard rate under 3 days" : "少于 3 天按标准日价");
+      totalOut.textContent = fmt(rate * days * k);
+      detailOut.textContent = rate + " × " + days + (isEn() ? " days" : " 天") + (k < 1 ? " × " + k : "") + (isEn() ? " (" + tier + ")" : "（" + tier + "）");
+    };
+    est.addEventListener("input", renderEst);
+    document.addEventListener("kht:lang", renderEst);
+    renderEst();
+  }
+
   /* ---------- Footer year ---------- */
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
