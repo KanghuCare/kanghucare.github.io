@@ -1,0 +1,4 @@
+#!/bin/bash
+# Tencent Cloud SCF Web function entry point: start the receiver on port 9000.
+export PORT=9000
+/var/lang/node18/bin/node app.js
