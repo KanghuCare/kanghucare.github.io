@@ -941,8 +941,9 @@ html.large-text { font-size: 128%; }
 .demo-note { flex-basis: 100%; order: 3; color: var(--ink-soft); }
 .demo-tag { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: var(--fs-sm); font-weight: 600; }
 
-/* Sky-blue top: blue bar and a soft sky wash behind the hero */
-.utility-bar { background: linear-gradient(90deg, var(--brand-fill-hover) 0%, var(--brand-fill) 55%, #1e9cbd 100%); color: var(--white); border-bottom: 0; font-weight: 500; }
+/* Sky-blue top: the logo's sky-to-teal gradient on the top bar (and footer base), a soft sky wash behind the hero */
+:root { --logo-gradient: linear-gradient(90deg, #3aa6ee 0%, #19b1a4 100%); }
+.utility-bar { background: var(--logo-gradient); color: var(--white); border-bottom: 0; font-weight: 600; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.14); }
 .utility-bar a { color: var(--white); }
 .utility-bar a:hover { color: var(--white); text-decoration: underline; }
 .utility-bar .text-size { color: var(--white); border-color: rgba(255, 255, 255, 0.55); background: transparent; }
@@ -962,3 +963,23 @@ html.large-text { font-size: 128%; }
   .lang-toggle { padding-inline: 0.5rem; }
   .brand-sub { display: none; }
 }
+
+/* Footer base: full-width strip in the logo gradient, matching the top bar */
+.site-footer { padding-bottom: 0; overflow-x: clip; }
+.footer-base {
+  margin-inline: calc(50% - 50vw); padding: 1rem calc(50vw - 50%);
+  background: var(--logo-gradient); border-top: 0;
+  color: var(--white); font-weight: 600; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.14);
+}
+.footer-base a, .footer-base a:hover { color: var(--white); }
+
+/* Theme: the logo's sky-to-teal gradient on every brand fill */
+:root { --theme-gradient: linear-gradient(120deg, #2e9be6 0%, #22a7c4 55%, #17a99c 100%); --theme-gradient-hover: linear-gradient(120deg, #1f87d0 0%, #1896b2 55%, #11968b 100%); }
+.btn-primary, .section-deep .btn-light { background: var(--theme-gradient); border-color: transparent; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12); }
+.btn-primary:hover, .section-deep .btn-light:hover { background: var(--theme-gradient-hover); }
+.text-size[aria-pressed="true"], .choice input:checked + span { background: var(--theme-gradient); border-color: transparent; }
+.check-progress span.is-done, .mark-done { background: var(--theme-gradient); }
+@media (min-width: 67rem) { .site-nav li > a::after { background: var(--logo-gradient); } }
+.read-progress span { background: var(--logo-gradient); }
+.standard-figure { background: var(--logo-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--brand); }
+.standard-figure small { -webkit-text-fill-color: var(--accent-ink); }
