@@ -54,7 +54,6 @@ python3 tools/build.py
 ## 课堂演示
 
 - **演示模式**：`tools/build.py` 中 `SITE["demo"] = "1"` 时，未配置提交地址的表单会直接显示“提交成功”，并注明“演示模式：本次提交未发送任何数据”。正式开通在线预约后可改为 `""`。
-- **课程说明**：页脚注明“本网站为《管理信息系统》课程作业演示，康护通为虚构企业”。
 - **离线演示版**：运行 `python3 tools/build.py && python3 tools/offline.py`，生成 `dist/kanghutong-offline.zip`。解压后双击 `index.html` 即可打开，无需联网，所有功能可用。
 
 ## 部署

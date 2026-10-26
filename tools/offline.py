@@ -62,8 +62,7 @@ def main():
         "康护通网站离线演示版\n\n"
         "1. 解压整个文件夹（不要只拿出单个文件）。\n"
         "2. 双击 index.html，用 Chrome、Edge 或 Safari 打开即可，无需联网。\n"
-        "3. 在线预约为演示模式：提交后显示成功，但不会发送任何数据。\n"
-        "4. 本网站为《管理信息系统》课程作业演示，康护通为虚构企业。\n",
+        "3. 在线预约为演示模式：提交后显示成功，但不会发送任何数据。\n",
         encoding="utf-8")
 
     zip_path = OUT.parent / "kanghutong-offline.zip"
