@@ -940,3 +940,17 @@ html.large-text { font-size: 128%; }
 /* Coursework notice in the footer and demo-mode note after a form submission */
 .demo-note { flex-basis: 100%; order: 3; color: var(--ink-soft); }
 .demo-tag { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: var(--fs-sm); font-weight: 600; }
+
+/* Sky-blue top: blue bar and a soft sky wash behind the hero */
+.utility-bar { background: linear-gradient(90deg, var(--brand-fill-hover) 0%, var(--brand-fill) 55%, #1e9cbd 100%); color: var(--white); border-bottom: 0; font-weight: 500; }
+.utility-bar a { color: var(--white); }
+.utility-bar a:hover { color: var(--white); text-decoration: underline; }
+.utility-bar .text-size { color: var(--white); border-color: rgba(255, 255, 255, 0.55); background: transparent; }
+.utility-bar .text-size:hover { color: var(--white); border-color: var(--white); background: rgba(255, 255, 255, 0.12); }
+.utility-bar .text-size[aria-pressed="true"] { background: var(--white); color: var(--brand); border-color: var(--white); }
+.hero, .page-hero { background: linear-gradient(180deg, var(--brand-100) 0%, var(--brand-50) 55%, var(--white) 100%); }
+@media (max-width: 47.99rem) {
+  .utility-inner { flex-wrap: nowrap; justify-content: space-between; }
+  .utility-phone { margin-right: 0; white-space: nowrap; }
+  .utility-bar .text-size { white-space: nowrap; flex-shrink: 0; }
+}
