@@ -1,0 +1,12 @@
+{
+  "name": "康护通 Kang Hutong",
+  "short_name": "康护通",
+  "start_url": "./",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#1f4d47",
+  "icons": [
+    { "src": "assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/img/logo.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

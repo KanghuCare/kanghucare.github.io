@@ -1,0 +1,149 @@
+<section class="page-hero">
+  <div class="container">
+    <kht-crumb zh="预约照护" en="Book care"></kht-crumb>
+    <h1 data-en="Book care">预约照护</h1>
+    <p class="lead" data-en="Tell us about your family member. A care adviser will call you back to confirm the care level, caregiver and price. Nothing is charged until you agree.">告诉我们家人的情况，护理顾问会回电确认护理等级、护工和价格。在您同意之前，不会产生任何费用。</p>
+  </div>
+</section>
+
+<section class="section-tight" id="booking" aria-labelledby="booking-title">
+  <div class="container split split-top split-form">
+    <div class="form-panel">
+      <h2 id="booking-title" class="visually-hidden" data-en="Booking form">预约表单</h2>
+      <div class="form-summary" tabindex="-1" hidden>
+        <h2 data-en="Please check the following">请检查以下内容</h2>
+        <ul></ul>
+      </div>
+      <form data-kht-form="booking" data-endpoint="{{BOOK_ENDPOINT}}" data-success="book-success" data-unavailable="book-unavailable" novalidate>
+        <div class="form-grid">
+          <h3 class="form-section-title" data-en="1. What kind of care?">1. 需要哪种照护</h3>
+          <fieldset class="full" data-msg-required="请选择服务类型" data-msg-required-en="Choose a type of care">
+            <legend><span data-en="Type of care">服务类型</span><span class="req" aria-hidden="true">*</span></legend>
+            <div class="choice-row">
+              <label class="choice"><input type="radio" name="service" id="service-hospital" value="hospital" required><span data-en="Hospital companion care">医院陪护</span></label>
+              <label class="choice"><input type="radio" name="service" value="rehab" required><span data-en="Rehabilitation care">康复护理</span></label>
+              <label class="choice"><input type="radio" name="service" value="home" required><span data-en="Home care">居家照护</span></label>
+              <label class="choice"><input type="radio" name="service" value="health" required><span data-en="Health management">健康管理</span></label>
+              <label class="choice"><input type="radio" name="service" value="unsure" required><span data-en="Not sure">不确定</span></label>
+            </div>
+            <span class="error" id="service-error"></span>
+          </fieldset>
+          <fieldset class="full">
+            <legend data-en="How much help does the patient need?">患者需要多少帮助</legend>
+            <div class="choice-row">
+              <label class="choice"><input type="radio" name="level" value="0"><span data-en="Fully dependent">完全失能</span></label>
+              <label class="choice"><input type="radio" name="level" value="1"><span data-en="Partly dependent">半失能</span></label>
+              <label class="choice"><input type="radio" name="level" value="2"><span data-en="Largely independent">基本自理</span></label>
+              <label class="choice"><input type="radio" name="level" value="unsure" checked><span data-en="Please assess">请帮我评估</span></label>
+            </div>
+            <span class="hint"><a href="guides.html#care-level" data-en="How to tell which level fits">如何判断护理等级</a></span>
+          </fieldset>
+
+          <h3 class="form-section-title" data-en="2. About the patient">2. 患者信息</h3>
+          <div class="field">
+            <label for="patient-name"><span data-en="Patient’s name">患者姓名</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="patient-name" name="patientName" type="text" required autocomplete="off" aria-describedby="patient-name-error" data-msg-required="请填写患者姓名" data-msg-required-en="Enter the patient’s name">
+            <span class="error" id="patient-name-error"></span>
+          </div>
+          <div class="field">
+            <label for="patient-age" data-en="Patient’s age">患者年龄</label>
+            <input id="patient-age" name="age" type="number" inputmode="numeric" min="0" max="120" aria-describedby="patient-age-error" data-msg-format="请填写 0 至 120 之间的年龄" data-msg-format-en="Enter an age between 0 and 120">
+            <span class="error" id="patient-age-error"></span>
+          </div>
+          <div class="field full">
+            <label for="where"><span data-en="Where is the patient?">患者所在位置</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="where" name="where" type="text" required aria-describedby="where-hint where-error" data-msg-required="请填写医院和科室，或家庭住址" data-msg-required-en="Enter the hospital and ward, or a home address">
+            <span class="hint" id="where-hint" data-en="Hospital, ward and bed number, or home address">医院、科室和床号，或家庭住址</span>
+            <span class="error" id="where-error"></span>
+          </div>
+          <div class="field">
+            <label for="start-date"><span data-en="Start date">开始日期</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="start-date" name="startDate" type="date" required data-min-today aria-describedby="start-date-error"
+              data-msg-required="请选择开始日期" data-msg-required-en="Choose a start date"
+              data-msg-format="开始日期不能早于今天" data-msg-format-en="The start date can’t be in the past">
+            <span class="error" id="start-date-error"></span>
+          </div>
+          <div class="field">
+            <label for="days" data-en="Expected days">预计天数</label>
+            <input id="days" name="days" type="number" inputmode="numeric" min="1" max="365" aria-describedby="days-hint days-error" data-msg-format="请填写 1 至 365 之间的天数" data-msg-format-en="Enter between 1 and 365 days">
+            <span class="hint" id="days-hint" data-en="Hospital care: 3–7 days 5% off, over 7 days 10% off.">医院陪护：3 至 7 天九五折，超过 7 天九折</span>
+            <span class="error" id="days-error"></span>
+          </div>
+          <fieldset class="full">
+            <legend data-en="Special needs (optional)">特殊需求（可多选）</legend>
+            <div class="choice-row">
+              <label class="choice"><input type="checkbox" name="needs" value="turning"><span data-en="Turning">翻身拍背</span></label>
+              <label class="choice"><input type="checkbox" name="needs" value="tube"><span data-en="Tube feeding">鼻饲喂养</span></label>
+              <label class="choice"><input type="checkbox" name="needs" value="catheter"><span data-en="Catheter care">导尿护理</span></label>
+              <label class="choice"><input type="checkbox" name="needs" value="night"><span data-en="Overnight">夜间陪护</span></label>
+              <label class="choice"><input type="checkbox" name="needs" value="rehab"><span data-en="Rehab exercises">康复训练</span></label>
+            </div>
+          </fieldset>
+
+          <h3 class="form-section-title" data-en="3. How can we reach you?">3. 联系方式</h3>
+          <div class="field">
+            <label for="contact-name"><span data-en="Your name">您的姓名</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="contact-name" name="contactName" type="text" required autocomplete="name" aria-describedby="contact-name-error" data-msg-required="请填写您的姓名" data-msg-required-en="Enter your name">
+            <span class="error" id="contact-name-error"></span>
+          </div>
+          <div class="field">
+            <label for="phone"><span data-en="Mobile number">手机号码</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="phone" name="phone" type="tel" inputmode="numeric" required autocomplete="tel" pattern="1[3-9][0-9]{9}" aria-describedby="phone-error"
+              data-msg-required="请填写手机号码" data-msg-required-en="Enter your mobile number"
+              data-msg-format="请填写 11 位手机号码，例如 13800000000" data-msg-format-en="Enter an 11-digit mobile number, for example 13800000000">
+            <span class="error" id="phone-error"></span>
+          </div>
+          <div class="field full">
+            <label for="notes" data-en="Anything else we should know? (optional)">补充说明（选填）</label>
+            <textarea id="notes" name="notes" data-en-placeholder="For example: second day after hip surgery, needs help turning, family not here during the day" placeholder="例如：术后第 2 天，需要协助翻身，家属白天不在医院"></textarea>
+          </div>
+          <div class="field full">
+            <label class="consent">
+              <input id="consent" name="consent" type="checkbox" required aria-describedby="consent-error" data-msg-required="请同意信息使用说明后再提交" data-msg-required-en="Please agree to how we use your information">
+              <span data-en="I agree that Kang Hutong may use this information, including health details, to arrange care and contact me. See our &lt;a href=&quot;privacy.html&quot;&gt;privacy policy&lt;/a&gt;.">我同意康护通使用以上信息（包括健康相关信息）安排照护并与我联系。详见<a href="privacy.html">隐私政策</a>。</span>
+            </label>
+            <span class="error" id="consent-error"></span>
+          </div>
+          <div class="full">
+            <button class="btn btn-primary" type="submit" data-en="Send booking request">提交预约</button>
+            <p class="error submit-error" role="alert"></p>
+          </div>
+        </div>
+      </form>
+      <div id="book-success" class="form-result" tabindex="-1" hidden>
+        <h2 data-en="Booking request sent">预约已提交</h2>
+        <p data-en="Thank you. A care adviser will call you shortly to confirm the details. If it’s urgent, call {{PHONE}}.">谢谢您！护理顾问将尽快致电确认细节。如情况紧急，请直接拨打 {{PHONE}}。</p>
+      </div>
+      <div id="book-unavailable" class="form-result" tabindex="-1" hidden>
+        <h2 data-en="Please call us to book">请致电预约</h2>
+        <p data-en="Online booking isn’t open yet. Call {{PHONE}} and a care adviser will take your booking.">在线预约暂未开通，请致电 {{PHONE}}，护理顾问会为您登记。</p>
+      </div>
+    </div>
+
+    <aside aria-labelledby="contact-title">
+      <h2 id="contact-title" data-en="Prefer to talk?">更想直接沟通？</h2>
+      <div class="contact-list">
+        <div class="contact-item">
+          <kht-icon name="phone"></kht-icon>
+          <strong data-en="Care line">服务热线</strong>
+          <a class="big" href="tel:{{TEL}}">{{PHONE}}</a>
+        </div>
+        <div class="contact-item">
+          <kht-icon name="clock"></kht-icon>
+          <strong data-en="Hours">服务时间</strong>
+          <p data-en="Care advisers available daily, 08:00 to 20:00">护理顾问每日 08:00 至 20:00</p>
+        </div>
+        <div class="contact-item">
+          <kht-icon name="mail"></kht-icon>
+          <strong data-en="Email">电子邮箱</strong>
+          <p><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></p>
+        </div>
+        <div class="contact-item">
+          <kht-icon name="pin"></kht-icon>
+          <strong data-en="Service centres">服务网点</strong>
+          <p><a href="locations.html" data-en="Find a centre near you">查找附近的服务网点</a></p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

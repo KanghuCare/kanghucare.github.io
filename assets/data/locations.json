@@ -1,0 +1,27 @@
+{
+  "_readme": "示例数据，上线前替换为真实服务网点。每个网点一条记录；hospitals 列出该网点对接的合作医院。Sample data: replace with real locations before launch.",
+  "locations": [
+    {
+      "city": "示例市",
+      "cityEn": "Sample City",
+      "name": "示例市服务中心（示例）",
+      "nameEn": "Sample City Service Centre (sample)",
+      "address": "地址待补充",
+      "addressEn": "Address to be added",
+      "tel": "400-000-0000",
+      "hospitals": ["合作医院待补充"],
+      "hospitalsEn": ["Partner hospital to be added"]
+    },
+    {
+      "city": "示例区",
+      "cityEn": "Sample District",
+      "name": "示例区社区照护站（示例）",
+      "nameEn": "Sample District Community Care Point (sample)",
+      "address": "地址待补充",
+      "addressEn": "Address to be added",
+      "tel": "400-000-0000",
+      "hospitals": [],
+      "hospitalsEn": []
+    }
+  ]
+}

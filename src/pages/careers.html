@@ -1,0 +1,132 @@
+<section class="page-hero">
+  <div class="container">
+    <kht-crumb zh="加入我们" en="Careers"></kht-crumb>
+    <h1 data-en="Caring is skilled work. We treat it that way.">照护是一门手艺，我们这样对待它。</h1>
+    <p class="lead" data-en="Join Kang Hutong as a certified caregiver: steady assignments, real training and a clear path to a higher grade and better pay.">以持证护工的身份加入康护通：稳定的派单、扎实的培训，以及通往更高等级和更好收入的清晰路径。</p>
+    <div class="page-hero-photo">
+      <kht-photo name="careers" eager w="1600" h="700" alt="护工在培训课上练习护理操作" alt-en="Caregivers practising skills in a training session" brief="培训教室，几位护工在讲师指导下练习翻身与转移操作，氛围专注友好，横构图"></kht-photo>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="why-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="why-title" data-en="Why caregivers join us">护工为什么选择我们</h2>
+    </div>
+    <div class="answers">
+      <div class="answer">
+        <span class="answer-icon"><kht-icon name="clock"></kht-icon></span>
+        <p class="worry" data-en="Work">工作</p>
+        <h3 data-en="Steady assignments, no scrambling">稳定派单，不用抢单</h3>
+        <p data-en="Orders are matched to your grade, ward experience and availability, so you’re not competing in group chats for every job.">订单按您的等级、科室经验和档期匹配，不必在微信群里抢每一单。</p>
+      </div>
+      <div class="answer">
+        <span class="answer-icon"><kht-icon name="tag"></kht-icon></span>
+        <p class="worry" data-en="Pay">收入</p>
+        <h3 data-en="Pay you can check">收入算得明白</h3>
+        <p data-en="Your monthly pay slip shows days worked and your star-rating multiplier. No guessing, no disputes.">每月薪酬单列明服务天数和星级系数，不用猜，也少有争议。</p>
+      </div>
+      <div class="answer">
+        <span class="answer-icon"><kht-icon name="report"></kht-icon></span>
+        <p class="worry" data-en="Training">培训</p>
+        <h3 data-en="Training before and on the job">岗前培训，在岗提升</h3>
+        <p data-en="Pre-job training and ongoing courses, with assessments that count towards your grade.">岗前培训和在岗课程，考核成绩计入等级评定。</p>
+      </div>
+      <div class="answer">
+        <span class="answer-icon"><kht-icon name="shield"></kht-icon></span>
+        <p class="worry" data-en="Support">保障</p>
+        <h3 data-en="Backed by a team">背后有团队支持</h3>
+        <p data-en="If something goes wrong on shift, you report it in the app and the nurses’ station and our quality team respond.">值班时遇到问题，在手机端一键上报，护士站和服务质量部会及时响应。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-sand" aria-labelledby="path-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="path-title" data-en="Your path from junior to senior">从初级到高级的成长路径</h2>
+      <p data-en="Grades are reviewed through training assessments and monthly star ratings from family feedback.">等级根据培训考核和家属评价形成的月度星级进行评定。</p>
+    </div>
+    <ol class="path">
+      <li><h3 data-en="Junior caregiver">初级护工</h3><p data-en="Shared care for patients who are largely independent, up to three beds.">为生活基本自理的患者提供一对多陪护，最多 3 床。</p></li>
+      <li><h3 data-en="Intermediate caregiver">中级护工</h3><p data-en="One-to-one care for partly dependent patients.">为半失能患者提供一对一陪护。</p></li>
+      <li><h3 data-en="Senior caregiver">高级护工</h3><p data-en="One-to-one care for fully dependent patients, including tube feeding and catheter care.">为完全失能患者提供一对一陪护，包括鼻饲与导尿护理。</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="apply" aria-labelledby="apply-title">
+  <div class="container split split-top">
+    <div>
+      <h2 id="apply-title" data-en="Apply">报名加入</h2>
+      <p class="lead" data-en="Leave your details and our training team will call you to arrange an interview.">留下您的信息，培训部会致电与您约定面试时间。</p>
+      <h3 data-en="What you’ll need">报名需要</h3>
+      <ul class="check-list">
+        <li><kht-icon name="check"></kht-icon><span data-en="A valid ID card">有效身份证件</span></li>
+        <li><kht-icon name="check"></kht-icon><span data-en="A caregiving certificate, or willingness to earn one through our training">护理员证书，或愿意通过我们的培训取得</span></li>
+        <li><kht-icon name="check"></kht-icon><span data-en="A recent health check">近期健康体检证明</span></li>
+        <li><kht-icon name="check"></kht-icon><span data-en="Patience, responsibility and respect for older people">耐心、责任心，以及对长者的尊重</span></li>
+      </ul>
+    </div>
+    <div class="form-panel">
+      <div class="form-summary" tabindex="-1" hidden>
+        <h2 data-en="Please check the following">请检查以下内容</h2>
+        <ul></ul>
+      </div>
+      <form data-kht-form="careers" data-endpoint="{{CAREERS_ENDPOINT}}" data-success="careers-success" data-unavailable="careers-unavailable" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="cand-name"><span data-en="Name">姓名</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="cand-name" name="name" type="text" required autocomplete="name" aria-describedby="cand-name-error" data-msg-required="请填写姓名" data-msg-required-en="Enter your name">
+            <span class="error" id="cand-name-error"></span>
+          </div>
+          <div class="field">
+            <label for="cand-phone"><span data-en="Mobile number">手机号码</span><span class="req" aria-hidden="true">*</span></label>
+            <input id="cand-phone" name="phone" type="tel" inputmode="numeric" required autocomplete="tel" pattern="1[3-9][0-9]{9}" aria-describedby="cand-phone-error"
+              data-msg-required="请填写手机号码" data-msg-required-en="Enter your mobile number"
+              data-msg-format="请填写 11 位手机号码" data-msg-format-en="Enter an 11-digit mobile number">
+            <span class="error" id="cand-phone-error"></span>
+          </div>
+          <div class="field">
+            <label for="cand-city" data-en="City you’d like to work in">意向工作城市</label>
+            <input id="cand-city" name="city" type="text" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="cand-years" data-en="Years of caregiving experience">护理工作年限</label>
+            <input id="cand-years" name="years" type="number" inputmode="numeric" min="0" max="50" aria-describedby="cand-years-error"
+              data-msg-format="请填写 0 至 50 之间的数字" data-msg-format-en="Enter a number from 0 to 50">
+            <span class="error" id="cand-years-error"></span>
+          </div>
+          <fieldset class="full">
+            <legend data-en="Do you hold a caregiving certificate?">是否持有护理员证书</legend>
+            <div class="choice-row">
+              <label class="choice"><input type="radio" name="certified" value="yes"><span data-en="Yes">有</span></label>
+              <label class="choice"><input type="radio" name="certified" value="no"><span data-en="Not yet">暂无</span></label>
+            </div>
+          </fieldset>
+          <div class="field full">
+            <label class="consent">
+              <input id="cand-consent" name="consent" type="checkbox" required aria-describedby="cand-consent-error" data-msg-required="请同意信息使用说明后再提交" data-msg-required-en="Please agree to how we use your information">
+              <span data-en="I agree that Kang Hutong may use these details to contact me about this application. See our &lt;a href=&quot;privacy.html&quot;&gt;privacy policy&lt;/a&gt;.">我同意康护通使用以上信息与我联系招聘事宜。详见<a href="privacy.html">隐私政策</a>。</span>
+            </label>
+            <span class="error" id="cand-consent-error"></span>
+          </div>
+          <div class="full">
+            <button class="btn btn-primary" type="submit" data-en="Send application">提交报名</button>
+            <p class="error submit-error" role="alert"></p>
+          </div>
+        </div>
+      </form>
+      <div id="careers-success" class="form-result" tabindex="-1" hidden>
+        <h2 data-en="Application sent">报名已提交</h2>
+        <p data-en="Thank you. Our training team will call you soon.">谢谢您！培训部会尽快与您联系。</p>
+      </div>
+      <div id="careers-unavailable" class="form-result" tabindex="-1" hidden>
+        <h2 data-en="Please call us to apply">请致电报名</h2>
+        <p data-en="Online applications aren’t open yet. Call {{PHONE}} and ask for the training team.">在线报名暂未开通，请致电 {{PHONE}}，转培训部。</p>
+      </div>
+    </div>
+  </div>
+</section>

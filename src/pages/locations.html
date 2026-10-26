@@ -1,0 +1,76 @@
+<section class="page-hero">
+  <div class="container">
+    <kht-crumb zh="服务网点" en="Locations"></kht-crumb>
+    <h1 data-en="Find care near you">查找您附近的服务</h1>
+    <p class="lead" data-en="Our caregivers work on the wards of partner hospitals and visit homes in the surrounding communities.">我们的护工在合作医院的病区工作，也为周边社区的家庭提供上门照护。</p>
+  </div>
+</section>
+
+<section class="section-tight" aria-labelledby="finder-title">
+  <div class="container">
+    <h2 id="finder-title" class="visually-hidden" data-en="Location search">网点查询</h2>
+    <form class="finder" id="location-finder" data-source="assets/data/locations.json" role="search">
+      <div class="field">
+        <label for="city-search" data-en="City, district or centre name">城市、区县或网点名称</label>
+        <input id="city-search" name="city" type="search" autocomplete="address-level2" data-en-placeholder="e.g. Beijing" placeholder="例如：北京">
+      </div>
+      <button class="btn btn-primary" type="submit"><kht-icon name="search"></kht-icon><span data-en="Search">查询</span></button>
+    </form>
+    <p id="location-status" class="note" role="status" aria-live="polite"></p>
+    <ul class="location-list" id="location-results"></ul>
+    <div class="empty-state" id="location-empty" hidden>
+      <h3 data-en="No centre in that area yet">该地区暂无服务网点</h3>
+      <p data-en="We may still be able to help, especially with hospital care. Call us and we’ll check what’s possible.">我们仍可能为您安排服务，尤其是医院陪护。请致电，我们会帮您确认。</p>
+      <a class="btn btn-primary" href="tel:{{TEL}}"><kht-icon name="phone"></kht-icon><span data-en="Call {{PHONE}}">致电 {{PHONE}}</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-mist" aria-labelledby="wards-title">
+  <div class="container split">
+    <div>
+      <h2 id="wards-title" data-en="Hospital wards we cover">已覆盖的医院科室</h2>
+      <p class="lead" data-en="Our caregivers are experienced on these wards, and each ward’s nurses’ station receives our entry notices and alerts directly.">我们的护工熟悉以下科室的护理要求，各科室护士站可直接接收我们的进科报备和异常预警。</p>
+    </div>
+    <ul class="dept-list">
+      <li data-en="General surgery">普外科</li>
+      <li data-en="Orthopaedics">骨科</li>
+      <li data-en="Neurology">神经内科</li>
+      <li data-en="Cardiology">心内科</li>
+      <li data-en="Respiratory">呼吸科</li>
+      <li data-en="Oncology">肿瘤科</li>
+      <li data-en="Intensive rehabilitation">重症康复科</li>
+      <li data-en="Obstetrics and gynaecology">妇产科</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="hospitals" aria-labelledby="hospitals-title">
+  <div class="container split split-top">
+    <div>
+      <h2 id="hospitals-title" data-en="For hospitals">医院合作</h2>
+      <p class="lead" data-en="Unregulated agency caregivers are a safety and management risk on any ward. We give hospitals a certified, monitored companion-care service, run through one system.">无序的中介护工，是病区安全与管理的隐患。我们为医院提供持证、受监管的陪护服务，全部通过同一个系统运行。</p>
+      <a class="btn btn-primary" href="mailto:{{EMAIL}}?subject=%E5%8C%BB%E9%99%A2%E5%90%88%E4%BD%9C%E5%92%A8%E8%AF%A2" data-en="Email our partnerships team">联系医疗合作部</a>
+      <p class="note" style="margin-top:0.75rem" data-en="Or call {{PHONE}} and ask for hospital partnerships.">或致电 {{PHONE}}，转医疗合作部。</p>
+    </div>
+    <ul class="check-list">
+      <li><kht-icon name="check"></kht-icon><span data-en="&lt;strong&gt;Vetting:&lt;/strong&gt; every caregiver’s identity, certificates and training are checked before they enter a ward."><strong>准入审核：</strong>每位护工进入病区前，身份、证书和培训考核均已审核。</span></li>
+      <li><kht-icon name="check"></kht-icon><span data-en="&lt;strong&gt;Ward entry notices:&lt;/strong&gt; the nurses’ station is notified automatically when a caregiver is assigned."><strong>进科报备：</strong>派单后系统自动向护士站推送进科报备。</span></li>
+      <li><kht-icon name="check"></kht-icon><span data-en="&lt;strong&gt;Alerts:&lt;/strong&gt; missed check-ins, high temperatures and reported concerns reach the nurses’ station at once."><strong>异常预警：</strong>漏打卡、体温异常和护工上报的问题，第一时间推送到护士站。</span></li>
+      <li><kht-icon name="check"></kht-icon><span data-en="&lt;strong&gt;Oversight:&lt;/strong&gt; ward inspections, feedback from nurses and a live view of every caregiver on duty."><strong>过程监管：</strong>病区巡查、护士站反馈，并可随时查看在岗护工。</span></li>
+      <li><kht-icon name="check"></kht-icon><span data-en="&lt;strong&gt;Reporting:&lt;/strong&gt; demand by ward, caregiver availability and family satisfaction."><strong>数据报表：</strong>各科室陪护需求、护工在岗率与家属满意度。</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section section-deep" aria-labelledby="cta-title">
+  <div class="container cta-band">
+    <div>
+      <h2 id="cta-title" data-en="Can’t find your area?">没有找到您所在的地区？</h2>
+      <p data-en="Call us. We’re expanding, and may already be able to arrange care where you are.">请致电我们。服务范围在持续扩大，也许我们已经能在您所在的地方安排照护。</p>
+    </div>
+    <div class="cta-actions">
+      <a class="phone-big" href="tel:{{TEL}}"><kht-icon name="phone"></kht-icon>{{PHONE}}</a>
+    </div>
+  </div>
+</section>
