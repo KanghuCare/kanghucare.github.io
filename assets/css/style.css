@@ -8,27 +8,36 @@
 @font-face { font-family: "KHT Serif"; font-weight: 600; font-display: swap; src: url("../fonts/kht-serif-latin-600.woff2") format("woff2"); unicode-range: U+0000-2E7F; }
 
 :root {
-  /* Blue-green is the dominant tone: actions, section tints, cards, top bar, footer.
-     Warm amber is an accent only: a few family-facing details and one section. */
-  --brand: #0b6f7c;
-  --brand-mid: #13808d;
-  --brand-deep: #085966;
-  --brand-ink: #063d46;
-  --brand-200: #b5dde1;
-  --brand-100: #d8eef0;
-  --brand-50: #eef8f9;
-  --brand-tint: #e3f2f3;     /* alternate section background */
-  --accent: #d4954a;         /* warm amber: dots, icon tints (decorative only) */
-  --accent-ink: #95601d;     /* amber dark enough for small text on white (5.3:1) */
-  --accent-soft: #f7e6cf;
-  --warm-100: #f4e6d4;
-  --warm-50: #fcf6ee;
-  --ink: #10262b;
-  --ink-soft: #45595e;
-  --line: #d9e9eb;
+  /* 60 / 30 / 10.
+     60%: white and near-white neutral surfaces.
+     30%: neutral grey text.
+     10%: brand colour, only on buttons, links and a few highlights.
+     Sky blue leads; teal-green partners it; warm amber is a rare accent. */
+  --brand-fill: #2e9be6;     /* sky blue: button and active fills (white text is set bold and large) */
+  --brand-fill-hover: #1f87d0;
+  --brand: #1673b8;          /* sky blue, deepened for links and small text (5:1 on white) */
+  --brand-mid: #4aaaed;
+  --brand-deep: #12609b;
+  --brand-ink: #0f4c7a;
+  --brand-200: #cfe5f6;
+  --brand-100: #e8f3fc;
+  --brand-50: #f4f9fe;
+  --brand-tint: #f7f9fb;
+  --teal: #19b1a4;           /* teal-green partner: ticks, icons, progress */
+  --teal-text: #0d7f78;      /* teal for small text and icons (4.8:1 on white) */
+  --teal-soft: #e3f6f4;
+  --accent: #e0a35a;         /* warm amber: a few dots and marks only */
+  --accent-ink: #95601d;
+  --accent-soft: #f9ecd9;
+  --warm-100: #f4ebdf;
+  --warm-50: #fdfaf6;
+  --surface: #f7f8fa;        /* neutral near-white */
+  --ink: #1f2933;            /* neutral grey text */
+  --ink-soft: #5f6b76;
+  --line: #e6eaee;
   --white: #ffffff;
   --alert: #b3261e;
-  --focus: #e0a43a;
+  --focus: #f0b45a;
 
   --serif: "KHT Serif", "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
   --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
@@ -858,3 +867,69 @@ html.large-text { font-size: 128%; }
 
 .search-box input::-webkit-search-cancel-button { display: none; -webkit-appearance: none; }
 .footer-base ul a { min-height: 0; }
+
+
+/* =====================================================================
+   60 / 30 / 10 colour distribution
+   ===================================================================== */
+.btn { font-weight: 700; font-size: 1.05rem; }
+.btn-primary, .section-deep .btn-light { background: var(--brand-fill); color: var(--white); }
+.btn-primary:hover, .section-deep .btn-light:hover { background: var(--brand-fill-hover); color: var(--white); }
+.btn-secondary { color: var(--brand); border-color: var(--brand-200); }
+.btn-secondary:hover { border-color: var(--brand); background: var(--brand-50); }
+
+/* Light top bar and footer */
+.utility-bar { background: var(--surface); color: var(--ink-soft); border-bottom: 1px solid var(--line); }
+.utility-bar a { color: var(--ink-soft); }
+.utility-bar a:hover { color: var(--brand); }
+.text-size { border-color: var(--line); }
+.text-size:hover { border-color: var(--brand); color: var(--brand); }
+.text-size[aria-pressed="true"] { background: var(--brand-fill); color: var(--white); border-color: var(--brand-fill); }
+.site-footer { background: var(--surface); color: var(--ink-soft); border-top: 1px solid var(--line); }
+.site-footer a { color: var(--ink); }
+.site-footer a:hover { color: var(--brand); }
+.site-footer h2 { color: var(--ink); }
+.site-footer .brand, .site-footer .brand:hover { color: var(--ink); }
+.site-footer .brand-sub { color: var(--ink-soft); }
+.footer-phone { color: var(--ink) !important; }
+.footer-base { border-top-color: var(--line); }
+.footer-wordmark { color: rgba(31, 41, 51, 0.045); }
+.wechat-code { border: 1px solid var(--line); }
+
+/* Neutral surfaces instead of tinted bands */
+.section-mist { background: var(--surface); }
+.section-sand { background: var(--brand-tint); }
+.section-warm { background: var(--warm-50); }
+.section-deep > .container { background: linear-gradient(155deg, #fafbfc 0%, var(--brand-50) 100%); }
+.photo { background: radial-gradient(90% 70% at 20% 15%, rgba(255, 255, 255, 0.7), transparent 60%), linear-gradient(150deg, #f3f7fa, var(--brand-100) 55%, var(--teal-soft)); }
+.duo-item.is-deep { background: var(--brand-50); }
+.standard { border-top-color: var(--line); }
+.dept-list li { border-color: var(--line); }
+
+/* Teal-green partner */
+.mark-done { background: var(--teal); }
+.check-list .icon, .answer-icon { color: var(--teal-text); }
+.journey ul li::before { background: var(--teal); }
+.mega-icon { background: var(--teal-soft); color: var(--teal-text); }
+.read-progress span { background: linear-gradient(90deg, var(--brand-fill), var(--teal)); }
+
+/* Active fills use the bright sky blue */
+.choice input:checked + span { background: var(--brand-fill); border-color: var(--brand-fill); }
+.check-progress span.is-done { background: var(--brand-fill); }
+@media (min-width: 67rem) { .site-nav li > a::after { background: var(--brand-fill); } }
+
+/* More warmth: amber carries family-facing sections and small marks */
+.section-sand { background: var(--warm-50); }
+.section-deep > .container { background: linear-gradient(155deg, var(--warm-50) 0%, #fffdfa 45%, var(--brand-50) 100%); }
+.duo-item:not(.is-deep) { background: var(--white); }
+.duo-item.is-deep { background: var(--accent-soft); }
+.hero-visual::before { background: radial-gradient(closest-side, var(--accent-soft), transparent 75%); }
+.photo { background: radial-gradient(90% 70% at 20% 15%, rgba(255, 255, 255, 0.7), transparent 60%), linear-gradient(150deg, var(--warm-50), var(--brand-100) 60%, var(--teal-soft)); }
+.journey-stage, .service-kicker, .story-card .meta, .guide-meta { color: var(--accent-ink); }
+.steps > li::before { border-color: var(--accent); }
+.steps > li::after { border-top-color: var(--accent-soft); }
+.standard-figure small { color: var(--accent-ink); }
+.standard { border-top-color: var(--accent-soft); }
+.org > div { border-top-color: var(--accent); }
+.fit-for { background: var(--warm-50); }
+.answer-icon { background: var(--warm-50); border-color: var(--accent-soft); }
