@@ -44,7 +44,7 @@ python3 tools/build.py
 ## 上线前清单
 
 1. **站点设置**：在 `tools/build.py` 顶部的 `SITE` 中填写正式域名、服务热线、邮箱和 ICP 备案号，然后重新构建。
-2. **照片**：把照片放进 `assets/img/photos/`，文件名与占位框上标注的一致（如 `hero.jpg`），建议宽 1600px 以内、压缩到 300 KB 以下。照片放好后，占位说明会自动消失。共 13 张，每张的建议画面写在占位框里。
+2. **照片**：`assets/img/photos/` 中的 13 张照片来自 Unsplash（可免费商用），来源与摄影师见 `assets/img/photos/CREDITS.md`。如需替换，保持文件名不变（如 `hero.jpg`），建议宽 1600px 以内、压缩到 300 KB 以下。
 3. **在线预约**：按 `server/booking/README.md` 部署接收服务（腾讯云云函数 + 企业微信群机器人，约 15 分钟），把得到的地址填入 `SITE` 的 `book_endpoint` 和 `careers_endpoint`，重新构建。之后每条预约、回电请求和护工报名都会实时推送到企业微信群。未配置时，表单会提示用户“请致电预约”，不会丢失客户。
 4. **服务网点**：编辑 `assets/data/locations.json`，替换示例网点。
 5. **新闻**：删除 `src/pages/news.html` 中带“示例”标记的条目。
