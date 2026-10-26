@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>排班总览｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="schedule" data-title="排班总览">
+<main>
+  <section class="panel">
+    <h2 class="panel-title">护工排班（未来 7 天） <span class="aside" id="sch-count"></span></h2>
+    <form class="filters filters-3" id="sch-filters" onsubmit="return false">
+      <label>护工等级<select name="grade"><option value="">全部</option><option value="1">高级</option><option value="2">中级</option><option value="3">初级</option></select></label>
+      <label class="check"><input type="checkbox" name="busy" checked> 只看有排班的护工</label>
+    </form>
+    <p class="hint">格子里是护工当天负责的床位；浅黄色为已派单待护工确认；红色表示超出可承担床位（一对一 1 床，一对多 3 床）。</p>
+    <div class="table-wrap" id="sched"></div>
+  </section>
+  <section class="panel" id="swap">
+    <h2 class="panel-title">临时换班</h2>
+    <div class="form-grid" style="grid-template-columns:2fr 1fr">
+      <div class="field"><label for="swap-order">在护订单</label><select id="swap-order"></select></div>
+      <div class="field"><label for="swap-reason">换班原因</label><select id="swap-reason"><option>护工请假</option><option>家属要求更换</option><option>护工身体不适</option><option>其他</option></select></div>
+    </div>
+    <p class="rule-note" id="swap-info"></p>
+    <div class="table-wrap"><table class="data"><thead><tr><th></th><th>护工编号</th><th>姓名</th><th>星级</th><th>本科室经验</th><th>本月服务</th></tr></thead><tbody id="swap-list"></tbody></table></div>
+    <div class="actions"><button class="btn btn-primary" type="button" data-swap>确认换班</button></div>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

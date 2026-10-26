@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>护理日志｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="logs" data-title="护理日志">
+<main>
+  <section class="panel">
+    <h2 class="panel-title">今日护理日志 <span class="aside" id="log-count"></span></h2>
+    <form class="filters filters-3" id="log-filters" onsubmit="return false">
+      <label>科室<select name="dept"></select></label>
+      <label>查看<select name="view"><option value="">全部在护患者</option><option value="alert">有未处理预警</option><option value="late">进度落后 / 漏打卡</option></select></label>
+    </form>
+  </section>
+  <section class="panel">
+    <div class="table-wrap"><table class="data" id="logs">
+      <thead><tr><th>科室床位</th><th>患者</th><th>护理等级</th><th>护工</th><th>上岗</th><th>护理进度（已完成 / 应完成）</th><th>最近打卡</th><th>最近体温</th><th>预警</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>
