@@ -893,7 +893,7 @@
       });
       $("[data-submit-log]").addEventListener("click", function () {
         var pr = progress(lg); lg.submittedAt = now(); save(db); render();
-        toast("护理日志已提交并推送家属（完成 " + pr.done + "/" + pr.total + " 项）", "ok"); renderLogs();
+        toast("护理日志已提交（完成 " + pr.done + "/" + pr.total + " 项），系统已生成护理日报推送家属", "ok"); renderLogs();
       });
       render();
       clearInterval(timer); timer = setInterval(render, 60000);
@@ -913,14 +913,14 @@
           if (!lg) return "";
           var p = progress(lg), isToday = iso(d) === iso(T), done = lg.items.filter(function (x) { return x.doneAt; }).length;
           return '<details class="log-day"' + (isToday ? " open" : "") + "><summary><b>" + iso(d) + (isToday ? "（今天）" : "") + "</b><span>上岗 " + (lg.clockIn ? lg.clockIn.slice(11) : "—") + "　完成 " + done + " / " + lg.items.filter(function (x) { return !x.skipped; }).length + " 项　体征 " + lg.vitals.length + " 次</span>" +
-            (lg.submittedAt ? '<span class="tag tag-3">日志已提交 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日志</span>') + '</summary><ul class="timeline">' +
+            (lg.submittedAt ? '<span class="tag tag-3">已提交 · 日报已推送 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日志</span>') + '</summary><ul class="timeline">' +
             lg.items.map(function (it) { return '<li class="' + (it.doneAt ? "is-done" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : isToday ? (minutes(it.time) <= nowMinutes() ? "待执行" : "未到时间") : "未打卡") + "</em></li>"; }).join("") + "</ul>" +
             '<p class="hint">' + (isToday ? "截至现在应完成 " + p.due + " 项，已完成 " + done + " 项" + (p.late ? "，漏打卡 " + p.late + " 项" : "") + "。" : "") + "</p>" +
             (lg.vitals.length ? '<p class="hint">体征：' + lg.vitals.map(function (v) { return v.at.slice(11) + " 体温 " + v.temp + "℃" + (v.bp ? " 血压 " + esc(v.bp) : ""); }).join("；") + "</p>" : "") + "</details>";
         }).join("");
         if (cards) html += panel(esc(o.patient.name) + " · " + bedLabel(o), cards, o.start + " 至 " + iso(endDate(o)));
       });
-      box.innerHTML = '<p class="role-note">护理日志按日期汇总你在“今日护理”中的打卡与体征记录，可查看今天和以往每一天的护理情况；护士站、客服可在管理端查看，提交日志后推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并在“今日护理”中上岗打卡后，这里会按天生成护理日志。</p></section>');
+      box.innerHTML = '<p class="role-note">护理日志按日期汇总你在“今日护理”中的打卡与体征记录，可查看今天和以往每一天的护理情况；护士站、客服可在管理端查看；提交日志后，系统汇总成护理日报推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并在“今日护理”中上岗打卡后，这里会按天生成护理日志。</p></section>');
     }
 
     /* ---- 接单：派单确认 + 适合我的订单 ---- */
@@ -1172,7 +1172,7 @@
           var late = !it.doneAt && !it.skipped && nm - minutes(it.time) > 120;
           return '<li class="' + (it.doneAt ? "is-done" : late ? "is-late" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : late ? "漏打卡" : minutes(it.time) <= nm ? "待执行" : "未到时间") + "</em></li>";
         }).join("") + "</ul>" + (lg.vitals.length ? "<p><b>体征记录</b></p><ul>" + lg.vitals.map(function (v) { return "<li>" + v.at.slice(11) + "　体温 " + v.temp + "℃" + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") + "</li>"; }).join("") + "</ul>" : "") +
-        (lg.submittedAt ? '<p class="hint">护理日志已于 ' + lg.submittedAt.slice(11) + " 提交并推送家属</p>" : ""));
+        (lg.submittedAt ? '<p class="hint">护理日志已于 ' + lg.submittedAt.slice(11) + " 提交，护理日报已推送家属</p>" : ""));
     }
     f.addEventListener("change", render);
     $("#logs").addEventListener("click", function (e) { var b = e.target.closest("[data-log]"); if (b) show(b.getAttribute("data-log")); });
