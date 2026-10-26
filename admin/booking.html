@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>陪护预约登记｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="booking" data-title="陪护预约登记" data-crumb="客户服务 › 预约受理 › 新建陪护订单">
+<main>
+  <form id="booking-form" novalidate>
+    <section class="panel">
+      <h2 class="panel-title">患者信息</h2>
+      <div class="form-grid">
+        <div class="field"><label for="name" class="req">患者姓名</label><input id="name" name="name" type="text"><p class="err" id="err-name"></p></div>
+        <div class="field"><label for="gender">性　　别</label><select id="gender" name="gender"><option>男</option><option>女</option></select></div>
+        <div class="field"><label for="age">年　　龄</label><input id="age" name="age" type="number" min="0" max="120" inputmode="numeric"><p class="err" id="err-age"></p></div>
+        <div class="field"><label for="inpatient">住 院 号</label><input id="inpatient" name="inpatient" type="text"></div>
+        <div class="field"><label for="dept" class="req">科　　室</label><select id="dept" name="dept"><option value="">请选择</option><option value="01">01 普外科</option><option value="02">02 呼吸科</option><option value="03">03 骨科</option><option value="04">04 肿瘤科</option><option value="05">05 神经内科</option><option value="06">06 重症康复</option><option value="07">07 妇产科</option><option value="08">08 心内科</option></select><p class="err" id="err-dept"></p></div>
+        <div class="field"><label for="bed" class="req">床　　号</label><input id="bed" name="bed" type="number" min="1" max="60" inputmode="numeric"><p class="err" id="err-bed"></p></div>
+        <div class="field"><label for="contact">联 系 人</label><input id="contact" name="contact" type="text" placeholder="如：王先生（儿子）"></div>
+        <div class="field"><label for="phone" class="req">联系电话</label><input id="phone" name="phone" type="tel" inputmode="numeric" maxlength="11"><p class="err" id="err-phone"></p></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2 class="panel-title">陪护需求</h2>
+      <div class="form-grid">
+        <div class="field span-2"><span class="label req" id="lv-label">护理等级</span><div class="choices" role="radiogroup" aria-labelledby="lv-label">
+          <label><input type="radio" name="level" value="0">完全失能</label><label><input type="radio" name="level" value="1">半失能</label><label><input type="radio" name="level" value="2">基本自理</label></div><p class="err" id="err-level"></p></div>
+        <div class="field span-2"><label for="mode">服务方式</label><input id="mode" name="mode" type="text" readonly placeholder="选择护理等级后按判断表自动确定"></div>
+        <div class="field"><label for="start" class="req">开始日期</label><input id="start" name="start" type="date"><p class="err" id="err-start"></p></div>
+        <div class="field"><label for="days" class="req">预计天数</label><input id="days" name="days" type="number" min="1" max="365" inputmode="numeric"><p class="err" id="err-days"></p></div>
+        <div class="field"><label for="slot">服务时段</label><select id="slot" name="slot"><option>24小时</option><option>白天（08:00–20:00）</option><option>夜间（20:00–08:00）</option></select></div>
+        <div class="field"><label for="carerGender">护工性别</label><select id="carerGender" name="carerGender"><option>不限</option><option>女</option><option>男</option></select></div>
+        <div class="field full"><span class="label" id="need-label">特殊需求</span><div class="choices" role="group" aria-labelledby="need-label">
+          <label><input type="checkbox" name="needs" value="turning">翻身拍背</label><label><input type="checkbox" name="needs" value="tube">鼻饲喂养</label><label><input type="checkbox" name="needs" value="catheter">导尿护理</label>
+          <label><input type="checkbox" name="needs" value="night">夜间陪护（+20元/天）</label><label><input type="checkbox" name="needs" value="rehab">康复训练（+30元/天）</label></div></div>
+        <div class="field full"><label for="note">备　　注</label><input id="note" name="note" type="text" placeholder="如：术后第 2 天，需协助翻身，家属白天不在院"></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2 class="panel-title">费用预估（系统自动计算）</h2>
+      <div class="estimate">
+        <div><span>标准日价：</span><b data-est="rate">—</b> 元/天</div>
+        <div><span>预计天数：</span><b data-est="days">—</b> 天</div>
+        <div><span>适用折扣：</span><b data-est="k">—</b></div>
+        <div><span>附加服务：</span><b data-est="extra">—</b> 元</div>
+        <div class="total"><span>预估金额：</span><b data-est="total">—</b> 元</div>
+        <div><span>押金：</span><b data-est="deposit">—</b> 元</div>
+      </div>
+      <p class="rule-note" id="rule-note">选择护理等级并填写预计天数后，系统按判断表确定护工等级与折扣。</p>
+    </section>
+    <div class="actions">
+      <button class="btn" type="button" data-draft>保存草稿</button>
+      <button class="btn btn-primary" type="submit" data-dispatch>提交并派单</button>
+      <button class="btn" type="submit">仅提交</button>
+      <button class="btn" type="reset">重置</button>
+      <a class="btn" href="home.html">返回</a>
+    </div>
+  </form>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

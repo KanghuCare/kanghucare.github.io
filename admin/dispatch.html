@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>智能派单｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="dispatch" data-title="智能派单" data-crumb="调度排班 › 智能派单">
+<main>
+  <div class="dispatch">
+    <section class="panel order-list" aria-labelledby="pending-title">
+      <h2 id="pending-title">待派订单（<span id="pending-count">0</span>）</h2>
+      <ul id="pending"></ul>
+    </section>
+    <div>
+      <section class="panel">
+        <h2 class="panel-title">订单需求</h2>
+        <div class="need" id="order-detail"></div>
+      </section>
+      <section class="panel">
+        <h2 class="panel-title">系统推荐护工 <span class="aside">按综合匹配分降序</span></h2>
+        <div class="table-wrap"><table class="data" id="cand">
+          <thead><tr><th></th><th>护工编号</th><th>姓名</th><th>等级</th><th>星级</th><th>好评率</th><th>科室经验</th><th>档期</th><th>匹配分</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p class="rule-note"><span id="cand-note"></span><br>匹配规则：护理等级 → 护工等级（判断表规则 1～9）；剔除档期冲突、证书过期与本月超时（＞26 天）护工；匹配分 = 星级 × 40% + 好评率 × 30% + 科室经验 × 30%。</p>
+        <div class="actions">
+          <button class="btn btn-primary" type="button" data-confirm>确认派单</button>
+          <button class="btn" type="button" data-profile>查看护工档案</button>
+          <button class="btn" type="button" data-more>换一批</button>
+          <button class="btn" type="button" data-manual>转人工派单</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

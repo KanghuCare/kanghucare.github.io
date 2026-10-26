@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>订单信息查询｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="orders" data-title="订单信息查询" data-crumb="客户服务 › 订单查询">
+<main>
+  <section class="panel">
+    <h2 class="panel-title">查询条件</h2>
+    <form class="filters" id="filters">
+      <label>科室<select name="dept"></select></label>
+      <label>状态<select name="status"></select></label>
+      <label>护工<input name="carer" type="search" placeholder="姓名或编号"></label>
+      <label>开始日期 从<input name="from" type="date"></label>
+      <label>至<input name="to" type="date"></label>
+      <label>订单号 / 患者<input name="q" type="search"></label>
+      <div style="display:flex;gap:.5rem"><button class="btn btn-primary" type="submit">查询</button><button class="btn" type="reset">重置</button></div>
+    </form>
+  </section>
+  <section class="panel">
+    <h2 class="panel-title">订单列表 <span class="aside"><button class="btn btn-sm" type="button" data-export>导出 Excel</button> <button class="btn btn-sm" type="button" data-print>打印</button></span></h2>
+    <div class="table-wrap"><table class="data" id="orders">
+      <thead><tr><th>订单编号</th><th>患者</th><th>科室床位</th><th>护理等级</th><th>护工</th><th>开始日期</th><th class="num">天数</th><th class="num">金额（元）</th><th>状态</th><th>操作</th></tr></thead>
+      <tbody></tbody><tfoot></tfoot>
+    </table></div>
+    <div class="pager"><span id="pager-info"></span><div><button class="btn btn-sm" type="button" data-prev>上一页</button><button class="btn btn-sm" type="button" data-next>下一页</button></div></div>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

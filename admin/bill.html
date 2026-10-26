@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>电子结算单｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="bill" data-title="电子结算单" data-crumb="财务结算 › 费用结算">
+<main>
+  <div class="bill-tools">
+    <label for="bill-order">选择订单</label><select id="bill-order"></select>
+    <button class="btn btn-primary btn-sm" type="button" data-settle hidden>离岗结算</button>
+    <select id="pay-type" hidden aria-label="支付方式" style="width:auto;min-height:28px"><option value="1">微信支付</option><option value="2">支付宝</option><option value="3">银行卡</option></select>
+    <button class="btn btn-primary btn-sm" type="button" data-paid hidden>确认收款</button>
+    <button class="btn btn-sm" type="button" data-push>推送家属</button>
+    <button class="btn btn-sm" type="button" data-print>打印</button>
+  </div>
+  <article class="bill">
+    <header class="bill-head"><h1><img src="../assets/img/logo.svg" alt="">康护通陪护服务结算单</h1></header>
+    <div class="bill-meta"><span>结算单号：<b id="bill-no"></b></span><span id="bill-stamp"></span><span>结算日期：<span id="bill-date"></span></span></div>
+    <table class="bill-table"><tbody id="bill-body"></tbody></table>
+    <table class="bill-table">
+      <thead><tr><th>收费项目</th><th>单价（元）</th><th>数量</th><th>折扣</th><th>金额（元）</th></tr></thead>
+      <tbody id="bill-items"></tbody>
+    </table>
+    <p class="hint" id="bill-rule"></p>
+    <div class="bill-foot"><span id="bill-pay"></span></div>
+    <div class="bill-foot"><span id="bill-family"></span><span id="bill-operator"></span><span>服务监督电话：400-000-0000</span></div>
+  </article>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

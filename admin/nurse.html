@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>护工移动端｜康护通陪护管理信息系统</title>
+<link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body data-page="nurse">
+<main class="phone-page">
+  <div>
+    <div class="phone">
+      <div class="phone-status"><span>09:41</span><span>5G ▮▮▮</span></div>
+      <header class="phone-head"><h1>今日护理任务</h1><p id="who"></p><p id="patient"></p></header>
+      <div class="phone-body" id="task-area">
+        <div class="card clock-in"><p id="clock-state"></p><button class="btn btn-primary btn-sm" type="button" data-clockin>扫码上岗</button></div>
+        <div class="card"><h2>护理项目打卡 <small id="progress"></small></h2><div id="tasks"></div></div>
+        <form class="card" id="vitals" novalidate>
+          <h2>体征与情况记录</h2>
+          <div class="field"><label for="temp">体温℃</label><input id="temp" name="temp" type="number" step="0.1" inputmode="decimal" placeholder="35～42"></div>
+          <p class="err" id="temp-err" style="margin:.2rem 0 .4rem 4.6em"></p>
+          <div class="field"><label for="pulse">脉搏</label><input id="pulse" name="pulse" type="number" inputmode="numeric" placeholder="次/分"></div>
+          <div class="field" style="margin-top:.5rem"><label for="bp">血压</label><input id="bp" name="bp" type="text" placeholder="如 128/80"></div>
+          <button class="btn btn-sm" type="submit" style="margin-top:.6rem;width:100%">记录体征</button>
+          <ul class="hint" id="vitals-log" style="margin:.5rem 0 0;padding-left:1.1rem"></ul>
+        </form>
+        <div class="phone-actions"><button class="btn btn-primary" type="button" data-submit-log>提交日志</button><button class="btn btn-danger" type="button" data-report>异常上报</button></div>
+      </div>
+      <nav class="phone-tabs" aria-label="底部导航"><span class="is-current">任务</span><span>日志</span><span>收益</span><span>我的</span></nav>
+    </div>
+    <p class="phone-note"><span id="carer-switch" hidden>演示：切换护工 <select aria-label="切换护工" style="width:auto;min-height:28px"></select>　</span><a href="home.html">返回管理端</a></p>
+  </div>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>
