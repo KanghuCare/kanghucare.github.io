@@ -10,22 +10,22 @@
 :root {
   /* Blue-green is the dominant tone: actions, section tints, cards, top bar, footer.
      Warm amber is an accent only: a few family-facing details and one section. */
-  --brand: #0b6f7c;
-  --brand-mid: #13808d;
-  --brand-deep: #085966;
-  --brand-ink: #063d46;
-  --brand-200: #b5dde1;
-  --brand-100: #d8eef0;
-  --brand-50: #eef8f9;
-  --brand-tint: #e3f2f3;     /* alternate section background */
+  --brand: #0b6489;
+  --brand-mid: #15739a;
+  --brand-deep: #08506f;
+  --brand-ink: #06374d;
+  --brand-200: #b7d6e6;
+  --brand-100: #dbeaf3;
+  --brand-50: #eff6fa;
+  --brand-tint: #e4f0f6;     /* alternate section background */
   --accent: #d4954a;         /* warm amber: dots, icon tints (decorative only) */
   --accent-ink: #95601d;     /* amber dark enough for small text on white (5.3:1) */
   --accent-soft: #f7e6cf;
   --warm-100: #f4e6d4;
   --warm-50: #fcf6ee;
-  --ink: #10262b;
-  --ink-soft: #45595e;
-  --line: #d9e9eb;
+  --ink: #0f2430;
+  --ink-soft: #44586a;
+  --line: #d8e6ee;
   --white: #ffffff;
   --alert: #b3261e;
   --focus: #e0a43a;
