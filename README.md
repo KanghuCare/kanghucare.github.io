@@ -51,6 +51,12 @@ python3 tools/build.py
 6. **隐私政策**：由法务审阅 `src/pages/privacy.html`，补充公司主体名称与生效日期。
 7. **品牌**：`assets/img/logo.svg` 为设计稿 Logo；如有正式 Logo，替换该文件和 `logo-light.svg`（深色背景用），并重新生成 `og-image.png`、`apple-touch-icon.png`。
 
+## 课堂演示
+
+- **演示模式**：`tools/build.py` 中 `SITE["demo"] = "1"` 时，未配置提交地址的表单会直接显示“提交成功”，并注明“演示模式：本次提交未发送任何数据”。正式开通在线预约后可改为 `""`。
+- **课程说明**：页脚注明“本网站为《管理信息系统》课程作业演示，康护通为虚构企业”。
+- **离线演示版**：运行 `python3 tools/build.py && python3 tools/offline.py`，生成 `dist/kanghutong-offline.zip`。解压后双击 `index.html` 即可打开，无需联网，所有功能可用。
+
 ## 部署
 
 任意静态托管均可：国内云服务器或对象存储（需 ICP 备案），或海外的 GitHub Pages、Vercel、Netlify。站内不引用任何境外 CDN 或字体服务，国内访问不受影响。请把 404 页面配置为 `404.html`。
