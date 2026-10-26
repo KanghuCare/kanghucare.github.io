@@ -406,3 +406,4 @@ table.bill-table tr.refund td { color: var(--teal-text); }
   .bc-grid { grid-template-columns: repeat(3, 1fr); gap: 8mm; margin: 0; }
   .bed-card { border: 1px dashed #888; }
 }
+.today-actions { margin-top: 1rem; }
