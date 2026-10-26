@@ -99,7 +99,7 @@
     function weighted(pairs) { var x = r(), acc = 0; for (var i = 0; i < pairs.length; i++) { acc += pairs[i][1]; if (x <= acc) return pairs[i][0]; } return pairs[pairs.length - 1][0]; }
     var surnames = "王李张刘陈杨黄赵吴周徐孙马朱胡郭何高林罗郑梁谢宋唐许韩冯邓曹彭曾萧田董袁潘蒋蔡余杜叶程苏魏吕丁任沈姚卢姜崔钟谭陆汪范金石廖贾夏韦付方白邹孟熊秦邱江尹薛闫段雷侯龙史陶黎贺顾毛郝龚邵万钱严覃武戴莫孔向汤".split("");
     var given = "秀兰桂芳玉梅红英华敏静丽娟霞凤琴云莲珍燕萍芬洁淑明建国伟强军平志永春海".split("");
-    var db = { v: 2, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
+    var db = { v: 3, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
     var taken = [];
 
     // Caregivers: a few named ones used in the walkthrough, then a generated roster
@@ -201,12 +201,22 @@
     ["夜间呼叫后护工响应较慢", "交接班时与家属沟通不到位"].forEach(function (t, i) {
       if (low[i]) db.complaints.push({ id: i + 1, order: low[i].id, content: t, time: iso(addDays(T, -1 - i)) + " 1" + (4 + i) + ":20", status: "待回访" });
     });
+    // 演示护工李秀兰：昨天开始护理骨科 8 床，今天由她本人扫码上岗、逐项打卡
+    var li = db.caregivers[0], y = addDays(T, -1);
+    db.orders.forEach(function (o) { if (o.status === 1 && o.dept === "03" && o.bed === 8) o.bed = 41; });
+    var mine = { id: newOrderId(db, "03", y), created: iso(y), dept: "03", bed: 8, level: 0, status: 1, caregiver: li.id, accepted: true, entryConfirmed: true,
+      patient: { name: "张*明", gender: "男", age: 81, contact: "张*（女儿）", phone: "137****2086" }, inpatient: "ZY" + ymd6(y).slice(0, 4) + "077",
+      start: iso(y), days: 10, needs: ["turning", "tube", "night"], slot: "24小时", note: "脑梗后左侧肢体偏瘫，需每 2 小时翻身，鼻饲喂养", acceptedAt: iso(y) + " 07:20", entryAt: iso(y) + " 07:35" };
+    db.orders.push(mine);
+    db.logs[mine.id + "@" + iso(y)] = { clockIn: iso(y) + " 07:52", submittedAt: iso(y) + " 21:36", vitals: [
+        { at: iso(y) + " 10:35", temp: 36.7, pulse: "76", bp: "132/80" }, { at: iso(y) + " 16:20", temp: 36.9, pulse: "80", bp: "128/78" }],
+      items: planFor(mine).map(function (p, i) { var m = minutes(p[0]) + 2 + (i * 3) % 11; return { time: p[0], name: p[1], doneAt: pad(Math.floor(m / 60)) + ":" + pad(m % 60) }; }) };
     db.alerts.push({ id: 3, order: db.orders[3].id, type: "护工上报", detail: "患者夜间躁动，已通知值班护士", time: iso(addDays(T, -6)) + " 02:10", handled: true });
     return db;
   }
 
   function load() {
-    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 2) return db; } catch (e) {}
+    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 3) return db; } catch (e) {}
     var fresh = seed(); save(fresh); return fresh;
   }
   function save(db) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
@@ -249,6 +259,9 @@
     if (o.needs.indexOf("night") >= 0) plan.push(["23:00", "夜间巡视与翻身"]);
     return plan;
   }
+  /* 床头码：二维码内容为 KHT-BED:科室代码-床号，例如 KHT-BED:03-08 */
+  function bedCode(dept, bed) { return dept + "-" + pad(bed); }
+  function parseBed(text) { var m = /(\d{2})\s*-\s*(\d{1,2})/.exec(String(text || "")); return m ? { dept: m[1], bed: Number(m[2]) } : null; }
   function strHash(s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
   /* 今日护理日志；示例订单按当前时间模拟护工已完成的打卡，新派的订单由护工本人打卡 */
   function logFor(o) {
@@ -294,13 +307,13 @@
     sched: ["调度排班", [["工作台", "home.html"], ["智能派单", "dispatch.html"], ["排班总览", "schedule.html"], ["临时换班", "schedule.html#swap"]]],
     carers: ["护工管理", [["护工档案", "carers.html"], ["资质审核", "carers.html?filter=cert"]]],
     schedOrders: ["订单查询", [["订单查询", "orders.html"]]],
-    station: ["护士站", [["工作台", "home.html"], ["进科报备", "home.html#entry"], ["异常预警", "home.html#alerts"], ["护理日志", "logs.html"]]],
+    station: ["护士站", [["工作台", "home.html"], ["进科报备", "home.html#entry"], ["异常预警", "home.html#alerts"], ["护理日志", "logs.html"], ["床头码打印", "bedcodes.html"]]],
     ops: ["统计决策", [["经营概览", "home.html"], ["运营统计", "stats.html"], ["质量分析", "stats.html#quality"], ["报表输出", "orders.html"]]],
     opsFin: ["财务结算", [["结算单", "bill.html"], ["收款对账", "orders.html?status=2"]]],
     opsWatch: ["服务监管", [["护理日志", "logs.html"], ["护工档案", "carers.html"]]],
     adminCs: ["客户服务", [["预约受理", "booking.html"], ["订单查询", "orders.html"]]],
     adminSched: ["调度排班", [["智能派单", "dispatch.html"], ["排班总览", "schedule.html"], ["临时换班", "schedule.html#swap"]]],
-    adminWatch: ["服务监管", [["护理日志", "logs.html"], ["护工端预览", "nurse.html"]]],
+    adminWatch: ["服务监管", [["护理日志", "logs.html"], ["床头码打印", "bedcodes.html"], ["护工端预览", "nurse.html"]]],
     adminFin: ["财务结算", [["费用结算", "bill.html"], ["收款对账", "orders.html?status=2"]]],
     adminStats: ["统计决策", [["运营统计", "stats.html"], ["质量分析", "stats.html#quality"]]],
     system: ["系统管理", [["系统主界面", "home.html"], ["用户权限", "users.html"], ["数据备份", "#reset"], ["退出系统", "#logout"]]]
@@ -315,7 +328,7 @@
   var PAGE_ROLES = {
     home: ["cs", "sched", "station", "ops", "admin"], booking: ["cs", "admin"], dispatch: ["sched", "admin"], schedule: ["sched", "admin"],
     carers: ["sched", "ops", "admin"], orders: ["cs", "sched", "ops", "admin"], logs: ["cs", "station", "ops", "admin"],
-    stats: ["ops", "admin"], bill: ["cs", "ops", "admin"], users: ["admin"]
+    stats: ["ops", "admin"], bill: ["cs", "ops", "admin"], users: ["admin"], bedcodes: ["station", "admin"]
   };
   var WAGE = { 1: 180, 2: 140, 3: 90 };          // 护工日薪（元/天）
   var STAR_COEF = { 5: 1.1, 4: 1.0, 3: 0.9 };    // 星级系数
@@ -763,7 +776,7 @@
     /* ---- tabs ---- */
     function show() {
       var t = (location.hash || "#today").slice(1);
-      if (["today", "orders", "schedule", "income"].indexOf(t) < 0) t = "today";
+      if (["today", "logs", "orders", "schedule", "income"].indexOf(t) < 0) t = "today";
       $all("[data-tab]").forEach(function (x) { x.hidden = x.getAttribute("data-tab") !== t; });
       $all(".portal-tabs a").forEach(function (a) { var on = a.getAttribute("href") === "#" + t; a.classList.toggle("is-current", on); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
     }
@@ -800,7 +813,7 @@
 
       function render() {
         var nm = nowMinutes(), pr = progress(lg);
-        $("#clock-state").innerHTML = lg.clockIn ? "已上岗 <strong>" + lg.clockIn.slice(11) + "</strong>（床头码 " + o.dept + "-" + o.bed + " 核验通过）" : o.entryConfirmed ? "尚未打卡上岗，请到床旁扫描床头码" : "待护士站确认进科后方可上岗";
+        $("#clock-state").innerHTML = lg.clockIn ? "已上岗 <strong>" + lg.clockIn.slice(11) + "</strong>（床头码 " + bedCode(o.dept, o.bed) + " 核验通过）" : o.entryConfirmed ? "尚未打卡上岗，请到床旁扫描床头码" : "待护士站确认进科后方可上岗";
         var btn = $("[data-clockin]"); btn.hidden = !!lg.clockIn; btn.disabled = !o.entryConfirmed;
         $("#tasks").innerHTML = lg.items.map(function (it, i) {
           var late = !it.doneAt && !it.skipped && nm - minutes(it.time) > 120, due = !it.doneAt && nm >= minutes(it.time);
@@ -812,6 +825,7 @@
           if (lg.clockIn && !lg.auto && !it.doneAt && !it.skipped && !it.alerted && nm - minutes(it.time) > 120) { it.alerted = true; raise("漏打卡", "“" + it.name + "”（" + it.time + "）超过 2 小时未打卡"); }
         });
         $("#vitals-log").innerHTML = lg.vitals.map(function (v) { return "<li>" + v.at.slice(11) + "　体温 " + v.temp + "℃" + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") + (v.temp >= 38.5 ? '　<span class="pill pill-late">已预警</span>' : "") + "</li>"; }).join("");
+        if (typeof renderLogs === "function") renderLogs();
         $("#summary").textContent = "今日应完成 " + pr.due + " 项，已完成 " + pr.done + " 项" + (pr.late ? "，漏打卡 " + pr.late + " 项" : "") + "；体征记录 " + lg.vitals.length + " 次。" + (lg.submittedAt ? "日报已于 " + lg.submittedAt.slice(11) + " 推送家属。" : "");
         save(db);
       }
@@ -820,15 +834,23 @@
         save(db); toast("已向" + DEPTS[o.dept] + "护士站推送异常预警：" + type, "err");
       }
       $("[data-clockin]").addEventListener("click", function () {
-        var input = document.createElement("input"); input.type = "text"; input.placeholder = "例如 03-12"; input.id = "bedcode";
-        var d = modal("扫描床头码", '<p class="hint">请对准床头二维码扫描；无法扫描时可手动输入床头码（科室代码-床号）。</p><div class="field"><label for="bedcode">床头码</label></div><p class="err" id="bed-err"></p>',
-          [button("模拟扫码", "", function () { input.value = o.dept + "-" + o.bed; }), button("确认上岗", "btn-primary", function () {
-            if (input.value.trim() !== o.dept + "-" + o.bed) { $("#bed-err").textContent = "床头码与派单床位（" + bedLabel(o) + "）不符，请核对。"; return; }
-            lg.clockIn = now(); var inMin = nowMinutes();
-            lg.items.forEach(function (it) { if (minutes(it.time) < inMin - 30) it.skipped = true; });  // 上岗前的项目不计漏打卡
-            d.close(); toast("上岗打卡成功", "ok"); render();
-          })]);
-        $(".field", d).appendChild(input); input.focus();
+        var input = document.createElement("input"); input.type = "text"; input.placeholder = "例如 03-08"; input.id = "bedcode"; input.autocomplete = "off";
+        var stop = function () {};
+        function confirmIn() {
+          var b = parseBed(input.value);
+          if (!b || b.dept !== o.dept || b.bed !== o.bed) { $("#bed-err").textContent = "床头码" + (b ? " " + bedCode(b.dept, b.bed) + " " : "") + "与派单床位（" + bedLabel(o) + "，" + bedCode(o.dept, o.bed) + "）不符，请核对。"; return; }
+          stop(); lg.clockIn = now(); var inMin = nowMinutes();
+          lg.items.forEach(function (it) { if (minutes(it.time) < inMin - 30) it.skipped = true; });  // 上岗前的项目不计漏打卡
+          d.close(); toast("床头码核验通过，上岗打卡成功", "ok"); render();
+        }
+        var buttons = [button("模拟扫码", "", function () { input.value = bedCode(o.dept, o.bed); }), button("确认上岗", "btn-primary", confirmIn)];
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) buttons.unshift(button("打开摄像头扫码", "", function () {
+          stop = scanQR($("#scan-box"), function (text) { input.value = text.replace(/^KHT-BED:/, ""); confirmIn(); }, function (msg) { $("#bed-err").textContent = msg; });
+        }));
+        var d = modal("扫描床头码", '<p class="hint">点“打开摄像头扫码”对准床头二维码；没有二维码时可手动输入床头码（科室代码-床号）。</p><div id="scan-box" class="scan-box" hidden></div><div class="field"><label for="bedcode">床头码</label></div><p class="err" id="bed-err"></p>', buttons);
+        d.addEventListener("close", function () { stop(); });
+        $(".field", d).appendChild(input);
+        input.addEventListener("keydown", function (e) { if (e.key === "Enter") confirmIn(); });
       });
       $("#tasks").addEventListener("change", function (e) {
         var i = e.target.getAttribute("data-i"); if (i === null) return;
@@ -851,10 +873,33 @@
       });
       $("[data-submit-log]").addEventListener("click", function () {
         var pr = progress(lg); lg.submittedAt = now(); save(db); render();
-        toast("护理日报已推送家属（完成 " + pr.done + "/" + pr.total + " 项）", "ok");
+        toast("护理日报已推送家属（完成 " + pr.done + "/" + pr.total + " 项）", "ok"); renderLogs();
       });
       render();
       clearInterval(timer); timer = setInterval(render, 60000);
+    }
+
+    /* ---- 护理日志：护工自己打卡形成的每日记录 ---- */
+    function renderLogs() {
+      var box = $("[data-tab=logs]"), T = today();
+      var mine = db.orders.filter(function (o) { return o.caregiver === me && (o.status === 1 && o.accepted || o.status === 2 || o.status === 3) && parse(o.start) <= T; })
+        .sort(function (a, b) { return a.start < b.start ? 1 : -1; }).slice(0, 3);
+      var html = "";
+      mine.forEach(function (o) {
+        var days = [];
+        for (var d = parse(o.start); d <= T && d <= endDate(o); d = addDays(d, 1)) days.unshift(d);
+        var cards = days.map(function (d) {
+          var key = o.id + "@" + iso(d), lg = iso(d) === iso(T) ? logFor(o) : db.logs[key];
+          if (!lg) return "";
+          var p = progress(lg), isToday = iso(d) === iso(T), done = lg.items.filter(function (x) { return x.doneAt; }).length;
+          return '<details class="log-day"' + (isToday ? " open" : "") + "><summary><b>" + iso(d) + (isToday ? "（今天）" : "") + "</b><span>上岗 " + (lg.clockIn ? lg.clockIn.slice(11) : "—") + "　完成 " + done + " / " + lg.items.filter(function (x) { return !x.skipped; }).length + " 项　体征 " + lg.vitals.length + " 次</span>" +
+            (lg.submittedAt ? '<span class="tag tag-3">日报已推送 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日报</span>') + '</summary><ul class="timeline">' +
+            lg.items.map(function (it) { return '<li class="' + (it.doneAt ? "is-done" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : isToday ? (minutes(it.time) <= nowMinutes() ? "待执行" : "未到时间") : "未打卡") + "</em></li>"; }).join("") + "</ul>" +
+            (lg.vitals.length ? '<p class="hint">体征：' + lg.vitals.map(function (v) { return v.at.slice(11) + " 体温 " + v.temp + "℃" + (v.bp ? " 血压 " + esc(v.bp) : ""); }).join("；") + "</p>" : "") + "</details>";
+        }).join("");
+        if (cards) html += panel(esc(o.patient.name) + " · " + bedLabel(o), cards, o.start + " 至 " + iso(endDate(o)));
+      });
+      box.innerHTML = '<p class="role-note">护理日志由护工在“护理打卡”中逐项打卡自动生成；护士站、客服可在管理端查看，提交日报后推送给家属。</p>' + (html || '<section class="panel empty-state"><h2>暂无护理日志</h2><p>接单并上岗打卡后，这里会按天生成护理日志。</p></section>');
     }
 
     /* ---- 接单：派单确认 + 适合我的订单 ---- */
@@ -924,7 +969,7 @@
         panel("收益明细", table(["订单编号", "床位", "服务期间", "#天数", "#日薪（元）", "#星级系数", "#金额（元）", "状态"], trs, "暂无收益记录"), "日薪：高级 180 · 中级 140 · 初级 90 元/天");
     }
 
-    function renderAll() { renderToday(); renderOrders(); renderSchedule(); renderIncome(); show(); }
+    function renderAll() { renderToday(); renderLogs(); renderOrders(); renderSchedule(); renderIncome(); show(); }
     renderAll();
   };
 
@@ -1210,6 +1255,60 @@
       b = e.target.closest("[data-reset]");
       if (b) toast("账号 " + b.getAttribute("data-reset") + " 的密码已重置为初始密码", "ok");
     });
+  };
+
+  /* 摄像头扫码：优先用浏览器自带的 BarcodeDetector，不支持时加载 jsQR 解码 */
+  function scanQR(box, onCode, onError) {
+    var stream = null, stopped = false, video = document.createElement("video"), canvas = document.createElement("canvas"), ctx = canvas.getContext("2d", { willReadFrequently: true });
+    video.setAttribute("playsinline", ""); video.muted = true;
+    box.hidden = false; box.innerHTML = ""; box.appendChild(video); box.insertAdjacentHTML("beforeend", '<span class="scan-frame"></span>');
+    function stop() { stopped = true; if (stream) stream.getTracks().forEach(function (t) { t.stop(); }); box.hidden = true; box.innerHTML = ""; }
+    function decoder() {
+      if ("BarcodeDetector" in window) { try { var bd = new window.BarcodeDetector({ formats: ["qr_code"] }); return Promise.resolve(function (src) { return bd.detect(src).then(function (r) { return r[0] && r[0].rawValue; }); }); } catch (e) {} }
+      return new Promise(function (ok, fail) {
+        if (window.jsQR) return ok(jsqr);
+        var sc = document.createElement("script"); sc.src = "vendor/jsQR.js"; sc.onload = function () { ok(jsqr); }; sc.onerror = fail; document.head.appendChild(sc);
+      });
+      function jsqr() {
+        canvas.width = video.videoWidth; canvas.height = video.videoHeight; ctx.drawImage(video, 0, 0);
+        var img = ctx.getImageData(0, 0, canvas.width, canvas.height), r = window.jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" });
+        return Promise.resolve(r && r.data);
+      }
+    }
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false }).then(function (s) {
+      if (stopped) { s.getTracks().forEach(function (t) { t.stop(); }); return; }
+      stream = s; video.srcObject = s; return video.play().then(decoder).then(function (detect) {
+        (function loop() {
+          if (stopped) return;
+          if (video.readyState < 2) { requestAnimationFrame(loop); return; }
+          detect(video).then(function (text) { if (text && !stopped) { stop(); onCode(text); } else setTimeout(loop, 180); }, function () { setTimeout(loop, 300); });
+        })();
+      });
+    }).catch(function () { stop(); onError("无法打开摄像头：请允许浏览器使用摄像头，或手动输入床头码。"); });
+    return stop;
+  }
+
+  /* 床头码打印：每张卡片含二维码 KHT-BED:科室-床号，护工上岗时扫描核验 */
+  pages.bedcodes = function (user) {
+    var f = $("#bc-filters"), grid = $("#bc-grid");
+    f.dept.innerHTML = Object.keys(DEPTS).filter(function (k) { return !user.ward || k === user.ward; }).map(function (k) { return '<option value="' + k + '">' + k + " " + DEPTS[k] + "</option>"; }).join("");
+    if (user.ward) f.dept.value = user.ward; else f.dept.value = "03";
+    function card(dept, bed) {
+      var text = "KHT-BED:" + bedCode(dept, bed), qr = window.qrcode(0, "M"); qr.addData(text); qr.make();
+      return '<article class="bed-card"><header><img src="../assets/img/logo.svg" alt="">康护通 · 床头码</header><div class="bed-no"><span>' + DEPTS[dept] + "</span><b>" + bed + "<small>床</small></b></div>" +
+        qr.createSvgTag({ cellSize: 5, margin: 2, scalable: true, alt: "床头码 " + bedCode(dept, bed) }) + "<p>" + text + '</p><footer>护工上岗请扫码核验床位</footer></article>';
+    }
+    function render() {
+      var list = [];
+      if (param("beds") && !f.dirty) param("beds").split(",").forEach(function (b) { var x = parseBed(b); if (x) list.push([x.dept, x.bed]); });
+      else if (f.range.value === "active") db.orders.filter(function (o) { return o.status === 1 && o.dept === f.dept.value; }).sort(function (a, b) { return a.bed - b.bed; }).forEach(function (o) { list.push([o.dept, o.bed]); });
+      else { var r = f.range.value.split("-"); for (var b = +r[0]; b <= +r[1]; b++) list.push([f.dept.value, b]); }
+      grid.innerHTML = list.map(function (x) { return card(x[0], x[1]); }).join("") || '<p class="hint">没有符合条件的床位。</p>';
+      $("#bc-count").textContent = "共 " + list.length + " 张";
+    }
+    f.addEventListener("change", function () { f.dirty = true; render(); });
+    $("[data-print]").addEventListener("click", function () { window.print(); });
+    render();
   };
 
   /* ---------- Boot ---------- */
