@@ -1,4 +1,4 @@
-/* 康护通 Kang Hutong — site styles
+/* 康护通 KanghuCare — site styles
    Deep green for trust, warm sand for home and family, brass only for fine detail. */
 
 /* Noto Serif SC (SIL OFL 1.1), self-hosted and subset by tools/build.py to the characters in use */
@@ -177,7 +177,7 @@ strong { font-weight: 700; }
 .brand:hover { color: var(--ink); }
 .brand-mark { width: 2.3rem; height: 2.3rem; flex: none; }
 .brand-name { font-family: var(--serif); font-weight: 600; font-size: 1.3rem; letter-spacing: 0.08em; line-height: 1.05; }
-.brand-sub { display: block; font-family: var(--sans); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.12em; color: var(--ink-soft); margin-top: 0.15rem; }
+.brand-sub { display: block; font-family: var(--sans); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em; color: var(--ink-soft); margin-top: 0.15rem; }
 
 .site-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 0.15rem; }
 .site-nav li > a {

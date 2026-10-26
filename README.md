@@ -1,4 +1,4 @@
-# 康护通 Kang Hutong 官网
+# 康护通 KanghuCare 官网
 
 从医院到家的长者照护企业官网：医院陪护、康复护理、居家照护与健康管理。纯静态站点（HTML、CSS、JS），无第三方依赖，国内外均可访问。中英双语，默认中文，右上角可切换。
 
@@ -54,7 +54,7 @@ python3 tools/build.py
 ## 课堂演示
 
 - **演示模式**：`tools/build.py` 中 `SITE["demo"] = "1"` 时，未配置提交地址的表单会直接显示“提交成功”，并注明“演示模式：本次提交未发送任何数据”。正式开通在线预约后可改为 `""`。
-- **离线演示版**：运行 `python3 tools/build.py && python3 tools/offline.py`，生成 `dist/kanghutong-offline.zip`。解压后双击 `index.html` 即可打开，无需联网，所有功能可用。
+- **离线演示版**：运行 `python3 tools/build.py && python3 tools/offline.py`，生成 `dist/kanghucare-offline.zip`。解压后双击 `index.html` 即可打开，无需联网，所有功能可用。
 
 ## 部署
 

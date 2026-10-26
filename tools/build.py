@@ -22,7 +22,7 @@ SRC = ROOT / "src" / "pages"
 # Site settings: change these before launch.
 # ---------------------------------------------------------------------------
 SITE = {
-    "url": "https://mevia00.github.io/my-website-MIS",      # production domain, no trailing slash
+    "url": "https://kanghucare.github.io",      # production domain, no trailing slash
     "phone": "400-000-0000",                 # service line shown on the site
     "tel": "4000000000",                     # same number, digits only, for tel: links
     "email": "service@example.com",
@@ -45,45 +45,45 @@ NAV = [
 
 # key, zh title, en title, zh description, en description, nav key, in sitemap
 PAGES = [
-    ("index", "康护通｜从医院到家，全程守护长者健康", "Kang Hutong | Care for older adults, from hospital to home",
+    ("index", "康护通｜从医院到家，全程守护长者健康", "KanghuCare | Care for older adults, from hospital to home",
      "康护通提供医院陪护、康复护理、居家照护与健康管理。持证护工，护理过程每日可查，收费规则公开透明。",
-     "Kang Hutong provides hospital companion care, rehabilitation, home care and health management, with certified caregivers, daily care reports and published pricing.",
+     "KanghuCare provides hospital companion care, rehabilitation, home care and health management, with certified caregivers, daily care reports and published pricing.",
      "index", True),
-    ("services", "服务项目｜康护通", "Services | Kang Hutong",
+    ("services", "服务项目｜康护通", "Services | KanghuCare",
      "医院陪护、康复护理、居家照护、健康管理四项服务，覆盖从住院到回家的全过程。",
      "Hospital companion care, rehabilitation care, home care and health management, covering every stage from admission to home.",
      "services", True),
-    ("how-it-works", "流程与收费｜康护通", "How it works and pricing | Kang Hutong",
+    ("how-it-works", "流程与收费｜康护通", "How it works and pricing | KanghuCare",
      "了解康护通的预约流程、护理等级、收费标准与常见问题。",
      "How booking works, how care levels are set, what care costs, and answers to common questions.",
      "how-it-works", True),
-    ("locations", "服务网点与合作医院｜康护通", "Locations and partner hospitals | Kang Hutong",
+    ("locations", "服务网点与合作医院｜康护通", "Locations and partner hospitals | KanghuCare",
      "查询康护通服务网点与合作医院，了解医院合作方式。",
-     "Find Kang Hutong service centres and partner hospitals, and learn how hospitals can work with us.",
+     "Find KanghuCare service centres and partner hospitals, and learn how hospitals can work with us.",
      "locations", True),
-    ("guides", "照护知识｜康护通", "Care guides | Kang Hutong",
+    ("guides", "照护知识｜康护通", "Care guides | KanghuCare",
      "选择护理等级、预防压疮、鼻饲喂养、术后防跌倒与出院回家准备等实用照护知识。",
      "Practical guides on choosing a care level, preventing pressure sores, tube feeding, fall prevention and coming home from hospital.",
      "guides", True),
-    ("about", "关于我们｜康护通", "About us | Kang Hutong",
+    ("about", "关于我们｜康护通", "About us | KanghuCare",
      "康护通让陪护与照护成为有标准、可追溯的专业服务。了解我们的理念、团队与平台。",
-     "Kang Hutong makes companion care a standardised, traceable professional service. Learn about our approach, teams and platform.",
+     "KanghuCare makes companion care a standardised, traceable professional service. Learn about our approach, teams and platform.",
      "about", True),
-    ("news", "新闻动态｜康护通", "News | Kang Hutong",
-     "康护通的最新消息与合作动态。", "The latest news and partnerships from Kang Hutong.",
+    ("news", "新闻动态｜康护通", "News | KanghuCare",
+     "康护通的最新消息与合作动态。", "The latest news and partnerships from KanghuCare.",
      "about", True),
-    ("careers", "加入我们｜康护通护工招聘", "Careers | Join Kang Hutong as a caregiver",
+    ("careers", "加入我们｜康护通护工招聘", "Careers | Join KanghuCare as a caregiver",
      "康护通招募持证护工：稳定派单、系统培训、清晰的等级与薪酬体系。",
-     "Kang Hutong is hiring certified caregivers: steady assignments, structured training and clear grades and pay.",
+     "KanghuCare is hiring certified caregivers: steady assignments, structured training and clear grades and pay.",
      "", True),
-    ("book", "预约照护｜康护通", "Book care | Kang Hutong",
+    ("book", "预约照护｜康护通", "Book care | KanghuCare",
      "在线预约医院陪护、康复护理或居家照护，或致电康护通服务热线。",
      "Book hospital companion care, rehabilitation or home care online, or call our service line.",
      "", True),
-    ("privacy", "隐私政策｜康护通", "Privacy policy | Kang Hutong",
-     "康护通如何收集、使用和保护您的个人信息。", "How Kang Hutong collects, uses and protects your personal information.",
+    ("privacy", "隐私政策｜康护通", "Privacy policy | KanghuCare",
+     "康护通如何收集、使用和保护您的个人信息。", "How KanghuCare collects, uses and protects your personal information.",
      "", True),
-    ("404", "页面未找到｜康护通", "Page not found | Kang Hutong",
+    ("404", "页面未找到｜康护通", "Page not found | KanghuCare",
      "您访问的页面不存在。", "The page you’re looking for doesn’t exist.", "", False),
 ]
 
@@ -142,7 +142,7 @@ def head(key, tzh, ten, dzh, den, nav_key):
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "康护通",
-            "alternateName": "Kang Hutong",
+            "alternateName": "KanghuCare",
             "url": SITE["url"] + "/",
             "logo": SITE["url"] + "/assets/img/logo.svg",
             "telephone": SITE["phone"],
@@ -159,7 +159,7 @@ def head(key, tzh, ten, dzh, den, nav_key):
 <meta name="description" content="{esc(dzh)}" data-en-content="{esc(den)}">{noindex}
 <link rel="canonical" href="{canonical}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="康护通 Kang Hutong">
+<meta property="og:site_name" content="康护通 KanghuCare">
 <meta property="og:title" content="{esc(tzh)}">
 <meta property="og:description" content="{esc(dzh)}">
 <meta property="og:url" content="{canonical}">
@@ -197,9 +197,9 @@ def head(key, tzh, ten, dzh, den, nav_key):
 </div>
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="./" aria-label="康护通首页" data-en-aria-label="Kang Hutong home">
+    <a class="brand" href="./" aria-label="康护通首页" data-en-aria-label="KanghuCare home">
       <img class="brand-mark" src="assets/img/logo.svg" alt="" width="42" height="42">
-      <span class="brand-name">康护通<span class="brand-sub">KANG HUTONG</span></span>
+      <span class="brand-name">康护通<span class="brand-sub">KanghuCare</span></span>
     </a>
     <nav class="site-nav" id="site-nav" aria-label="主导航" data-en-aria-label="Main">
       <ul>
@@ -260,14 +260,14 @@ def foot(key):
   <div class="container">
     <div class="footer-top">
       <div>
-        <a class="brand" href="./" aria-label="康护通首页" data-en-aria-label="Kang Hutong home">
+        <a class="brand" href="./" aria-label="康护通首页" data-en-aria-label="KanghuCare home">
           <img class="brand-mark" src="assets/img/logo.svg" alt="" width="42" height="42">
-          <span class="brand-name">康护通<span class="brand-sub">KANG HUTONG</span></span>
+          <span class="brand-name">康护通<span class="brand-sub">KanghuCare</span></span>
         </a>
         <p style="margin-top:1.25rem" data-en="Care for older adults from hospital to home: companion care, rehabilitation, home care and health management.">从医院到家，为长者提供陪护、康复、居家照护与健康管理。</p>
         <a class="footer-phone" href="tel:{SITE["tel"]}">{SITE["phone"]}</a>
         <div class="wechat">
-          <div class="wechat-code"><img src="assets/img/wechat-qr.png" alt="康护通微信公众号二维码" data-en-alt="Kang Hutong WeChat QR code" width="88" height="88" onerror="this.replaceWith(document.createTextNode('二维码待放置'))"></div>
+          <div class="wechat-code"><img src="assets/img/wechat-qr.png" alt="康护通微信公众号二维码" data-en-alt="KanghuCare WeChat QR code" width="88" height="88" onerror="this.replaceWith(document.createTextNode('二维码待放置'))"></div>
           <p data-en="Follow us on WeChat to book care and receive daily care reports.">微信扫码关注，在线预约、接收护理日报。</p>
         </div>
       </div>
@@ -306,7 +306,7 @@ def foot(key):
     </div>
     <p class="footer-wordmark" aria-hidden="true">康护通</p>
     <div class="footer-base">
-      <p>&copy; <span data-year>{date.today().year}</span> <span data-en="Kang Hutong. All rights reserved.">康护通 版权所有</span></p>
+      <p>&copy; <span data-year>{date.today().year}</span> <span data-en="KanghuCare. All rights reserved.">康护通 版权所有</span></p>
       <ul>
         <li><a href="privacy.html" data-en="Privacy policy">隐私政策</a></li>
         <li>{icp}</li>

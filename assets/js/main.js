@@ -1,4 +1,4 @@
-/* 康护通 Kang Hutong — site behaviour. No dependencies. */
+/* 康护通 KanghuCare — site behaviour. No dependencies. */
 (function () {
   "use strict";
 

@@ -8,7 +8,7 @@ Browsers block a few things on file:// pages, so this script:
   - points home links at index.html (a bare "./" would open a folder listing).
 
 Usage:  python3 tools/build.py && python3 tools/offline.py
-Output: dist/kanghutong-offline/ and dist/kanghutong-offline.zip
+Output: dist/kanghucare-offline/ and dist/kanghucare-offline.zip
 """
 import base64
 import json
@@ -18,7 +18,7 @@ import shutil
 import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-OUT = ROOT / "dist" / "kanghutong-offline"
+OUT = ROOT / "dist" / "kanghucare-offline"
 
 
 def main():
@@ -65,11 +65,11 @@ def main():
         "3. 在线预约为演示模式：提交后显示成功，但不会发送任何数据。\n",
         encoding="utf-8")
 
-    zip_path = OUT.parent / "kanghutong-offline.zip"
+    zip_path = OUT.parent / "kanghucare-offline.zip"
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(OUT.rglob("*")):
             if f.is_file():
-                z.write(f, pathlib.Path("kanghutong-offline") / f.relative_to(OUT))
+                z.write(f, pathlib.Path("kanghucare-offline") / f.relative_to(OUT))
     print(f"offline demo: {len(pages)} pages -> {zip_path.relative_to(ROOT)} ({zip_path.stat().st_size // 1024} KB)")
 
 
