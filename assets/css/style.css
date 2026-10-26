@@ -851,14 +851,6 @@ html.large-text { font-size: 128%; }
 .search-suggest a { padding: 0.35rem 0.9rem; border-radius: 999px; background: var(--brand-50); color: var(--brand-deep); text-decoration: none; font-size: var(--fs-sm); font-weight: 600; }
 .search-suggest a:hover { background: var(--brand-100); }
 
-/* Footer wordmark */
-.footer-wordmark {
-  margin: var(--space-5) 0 0; max-width: none; line-height: 0.9;
-  font-family: var(--serif); font-weight: 600; letter-spacing: 0.18em;
-  font-size: clamp(4.5rem, 2rem + 13vw, 13rem); color: rgba(255, 255, 255, 0.07);
-  user-select: none; white-space: nowrap; overflow: hidden;
-}
-
 /* Scroll reveal for headings and cards, staggered within a group */
 @media (prefers-reduced-motion: no-preference) {
   .js .rv { opacity: 0; translate: 0 18px; transition: opacity 700ms ease, translate 900ms var(--ease-out); transition-delay: calc(var(--d, 0) * 90ms); }
@@ -893,7 +885,6 @@ html.large-text { font-size: 128%; }
 .site-footer .brand-sub { color: var(--ink-soft); }
 .footer-phone { color: var(--ink) !important; }
 .footer-base { border-top-color: var(--line); }
-.footer-wordmark { color: rgba(31, 41, 51, 0.045); }
 .wechat-code { border: 1px solid var(--line); }
 
 /* Neutral surfaces instead of tinted bands */
