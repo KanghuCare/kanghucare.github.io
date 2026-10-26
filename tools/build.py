@@ -30,6 +30,9 @@ SITE = {
     # Form endpoints: each receives a JSON POST. Leave empty and the form shows a "please call us" message.
     "book_endpoint": "",
     "careers_endpoint": "",
+    # Demo mode: with no endpoint set, forms show their success message without sending anything.
+    # "1" = on (classroom demo), "" = off (forms ask visitors to call instead).
+    "demo": "1",
 }
 
 NAV = [
@@ -304,6 +307,7 @@ def foot(key):
     <p class="footer-wordmark" aria-hidden="true">康护通</p>
     <div class="footer-base">
       <p>&copy; <span data-year>{date.today().year}</span> <span data-en="Kang Hutong. All rights reserved.">康护通 版权所有</span></p>
+      <p class="demo-note" data-en="Coursework demo for Management Information Systems. Kang Hutong is a fictional company and all information is illustrative.">本网站为《管理信息系统》课程作业演示，康护通为虚构企业，所示信息均为示例。</p>
       <ul>
         <li><a href="privacy.html" data-en="Privacy policy">隐私政策</a></li>
         <li>{icp}</li>

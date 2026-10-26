@@ -338,7 +338,9 @@
       dlg.showModal();
       sInput.focus();
       if (!index) {
-        fetch("assets/data/search.json").then(function (r) { return r.json(); })
+        (window.KHT_DATA && window.KHT_DATA.search
+          ? Promise.resolve(window.KHT_DATA.search)
+          : fetch("assets/data/search.json").then(function (r) { return r.json(); }))
           .then(function (d) { index = d; runSearch(); })
           .catch(function () { sStatus.textContent = isEn() ? "Search is unavailable right now." : "搜索暂时不可用。"; });
       }
@@ -441,8 +443,9 @@
     document.addEventListener("kht:lang", render);
     var preset = new URLSearchParams(location.search).get("city");
     if (preset) input.value = preset;
-    fetch(finder.getAttribute("data-source"))
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    (window.KHT_DATA && window.KHT_DATA.locations
+      ? Promise.resolve(window.KHT_DATA.locations)
+      : fetch(finder.getAttribute("data-source")).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }))
       .then(function (data) { locations = data.locations || []; render(); })
       .catch(function () { status.textContent = t("网点信息加载失败，请致电服务热线查询。", "We couldn’t load locations. Please call our service line."); });
   }
@@ -524,6 +527,22 @@
       if (summary) summary.hidden = true;
 
       var endpoint = form.getAttribute("data-endpoint");
+      if (!endpoint && form.getAttribute("data-demo") === "1") {
+        // Demo mode: show the normal confirmation, but nothing is sent anywhere.
+        var demoBtn = form.querySelector('button[type="submit"]');
+        demoBtn.disabled = true;
+        setTimeout(function () {
+          var box = document.getElementById(form.getAttribute("data-success"));
+          if (box && !box.querySelector(".demo-tag")) {
+            var tag = document.createElement("p");
+            tag.className = "demo-tag";
+            tag.textContent = isEn() ? "Demo mode: nothing was sent." : "演示模式：本次提交未发送任何数据";
+            box.appendChild(tag);
+          }
+          showResult(form.getAttribute("data-success"));
+        }, 700);
+        return;
+      }
       if (!endpoint) { showResult(form.getAttribute("data-unavailable")); return; }
 
       var btn = form.querySelector('button[type="submit"]');

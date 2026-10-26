@@ -936,3 +936,7 @@ html.large-text { font-size: 128%; }
 
 /* Honeypot field for bots: kept out of sight and out of the tab order */
 .hp { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Coursework notice in the footer and demo-mode note after a form submission */
+.demo-note { flex-basis: 100%; order: 3; color: var(--ink-soft); }
+.demo-tag { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-size: var(--fs-sm); font-weight: 600; }
