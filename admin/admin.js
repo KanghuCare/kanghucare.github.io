@@ -13,7 +13,7 @@
     { grade: 2, mode: "一对一", rate: 200, action: "派中级护工一对一" },
     { grade: 3, mode: "一对多（1:3）", rate: 120, action: "派初级护工一对多" }
   ];
-  var NEEDS = { turning: "翻身拍背", tube: "鼻饲喂养", catheter: "导尿护理", night: "夜间陪护", rehab: "康复训练" };
+  var NEEDS = { turning: "翻身拍背", tube: "鼻饲喂养", catheter: "导尿护理", night: "夜间陪护", rehab: "康复训练", bp: "血压监测（高血压）" };
   var EXTRAS = { night: 20, rehab: 30 };                        // 附加服务（元/天）
   var DEPOSIT = 500;
   var PAY_TYPES = { 1: "微信支付", 2: "支付宝", 3: "银行卡" };
@@ -99,7 +99,7 @@
     function weighted(pairs) { var x = r(), acc = 0; for (var i = 0; i < pairs.length; i++) { acc += pairs[i][1]; if (x <= acc) return pairs[i][0]; } return pairs[pairs.length - 1][0]; }
     var surnames = "王李张刘陈杨黄赵吴周徐孙马朱胡郭何高林罗郑梁谢宋唐许韩冯邓曹彭曾萧田董袁潘蒋蔡余杜叶程苏魏吕丁任沈姚卢姜崔钟谭陆汪范金石廖贾夏韦付方白邹孟熊秦邱江尹薛闫段雷侯龙史陶黎贺顾毛郝龚邵万钱严覃武戴莫孔向汤".split("");
     var given = "秀兰桂芳玉梅红英华敏静丽娟霞凤琴云莲珍燕萍芬洁淑明建国伟强军平志永春海".split("");
-    var db = { v: 5, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
+    var db = { v: 6, seeded: iso(T), caregivers: [], orders: [], alerts: [], logs: {}, complaints: [] };
     var taken = [];
 
     // Caregivers: a few named ones used in the walkthrough, then a generated roster
@@ -180,6 +180,7 @@
         db.orders.push(o);
       }
     }
+    db.orders.forEach(function (o) { if (strHash(o.id) % 4 === 0 && o.needs.indexOf("bp") < 0) o.needs.push("bp"); });
     // Orders in service were accepted by their caregivers and confirmed by the ward
     db.orders.forEach(function (o) { if (o.status === 1) { o.accepted = true; o.entryConfirmed = true; o.auto = true; } });
     // Orders waiting for dispatch, created today
@@ -194,6 +195,8 @@
     var hot = ortho[0] || live[0], miss = live.filter(function (o) { return o !== hot; })[0];
     if (hot) { hot.sim = "temp"; db.alerts.push({ id: 1, order: hot.id, type: "体温异常", detail: "体温 38.6℃（≥38.5℃）", time: iso(T) + " 07:42", handled: false }); }
     if (miss) db.alerts.push({ id: 2, order: miss.id, type: "漏打卡", detail: "昨日 23:00“夜间巡视与翻身”超过 2 小时未打卡", time: iso(T) + " 01:05", handled: false });
+    var bpo = live.filter(function (o) { return o.dept === "05" && o !== miss; })[0];
+    if (bpo) { if (bpo.needs.indexOf("bp") < 0) bpo.needs.push("bp"); bpo.sim = "bp"; db.alerts.push({ id: 4, order: bpo.id, type: "血压偏高", detail: "血压 186/112 mmHg（高血压病人≥180/110）", time: iso(T) + " 07:36", handled: false }); }
     ["03", "05", "08", "06"].forEach(function (dept) {
       var e = live.filter(function (o) { return o.dept === dept && o !== hot && o !== miss; }).sort(function (a, b) { return a.start < b.start ? 1 : -1; })[0];
       if (e) e.entryConfirmed = false;
@@ -208,10 +211,11 @@
     db.orders.forEach(function (o) { if (o.status === 1 && o.dept === "03" && o.bed === 8) o.bed = 41; });
     var mine = { id: newOrderId(db, "03", y), created: iso(y), dept: "03", bed: 8, level: 0, status: 1, caregiver: li.id, accepted: true, entryConfirmed: true,
       patient: { name: "张*明", gender: "男", age: 81, contact: "张*（女儿）", phone: "137****2086" }, inpatient: "ZY" + ymd6(y).slice(0, 4) + "077",
-      start: iso(y), days: 2, needs: ["turning", "tube", "night"], slot: "24小时", note: "脑梗后左侧肢体偏瘫，需每 2 小时翻身，鼻饲喂养；今日出院", acceptedAt: iso(y) + " 07:20", entryAt: iso(y) + " 07:35" };
+      start: iso(y), days: 2, needs: ["turning", "tube", "night", "bp"], slot: "24小时", note: "脑梗后左侧肢体偏瘫，高血压病史 10 年（服降压药），需每 2 小时翻身，鼻饲喂养；今日出院", acceptedAt: iso(y) + " 07:20", entryAt: iso(y) + " 07:35" };
     db.orders.push(mine);
     db.logs[mine.id + "@" + iso(y)] = { clockIn: iso(y) + " 07:52", submittedAt: iso(y) + " 21:36", vitals: [
-        { at: iso(y) + " 10:35", temp: 36.7, pulse: "76", bp: "132/80" }, { at: iso(y) + " 16:20", temp: 36.9, pulse: "80", bp: "128/78" }],
+        { at: iso(y) + " 07:33", pulse: "82", bp: "158/92" }, { at: iso(y) + " 10:35", temp: 36.7, pulse: "76", bp: "146/86" },
+        { at: iso(y) + " 16:04", pulse: "74", bp: "136/82" }, { at: iso(y) + " 20:33", pulse: "70", bp: "132/80" }],
       items: planFor(mine).map(function (p, i) { var m = minutes(p[0]) + 2 + (i * 3) % 11; return { time: p[0], name: p[1], doneAt: pad(Math.floor(m / 60)) + ":" + pad(m % 60) }; }) };
     var prev = db.orders.filter(function (o) { return o.caregiver === li.id && (o.status === 2 || o.status === 3); }).sort(function (a, b) { return endDate(a) < endDate(b) ? 1 : -1; })[0];
     if (prev) {
@@ -232,7 +236,7 @@
   }
 
   function load() {
-    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 5) return db; } catch (e) {}
+    try { var db = JSON.parse(localStorage.getItem(KEY)); if (db && db.v === 6) return db; } catch (e) {}
     var fresh = seed(); save(fresh); return fresh;
   }
   function save(db) { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {} }
@@ -273,11 +277,37 @@
     if (o.needs.indexOf("catheter") >= 0) plan.push(["16:00", "导尿管护理"]);
     plan.push(["18:00", "协助晚餐"], ["21:00", "睡前护理"]);
     if (o.needs.indexOf("night") >= 0) plan.push(["23:00", "夜间巡视与翻身"]);
-    return plan;
+    if (o.needs.indexOf("bp") >= 0) plan.push(["07:30", "晨起血压测量（服药前）"], ["16:00", "血压测量"], ["20:30", "睡前血压测量"]);
+    return plan.sort(function (a, b) { return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0; });
   }
   /* 床头码：二维码内容为 KHT-BED:科室代码-床号，例如 KHT-BED:03-08 */
   function bedCode(dept, bed) { return dept + "-" + pad(bed); }
   function parseBed(text) { var m = /(\d{2})\s*-\s*(\d{1,2})/.exec(String(text || "")); return m ? { dept: m[1], bed: Number(m[2]) } : null; }
+  /* 体征预警阈值：一般病人血压 ≥160/100 或 <90/60；高血压病人 ≥180/110 或 <100/60；脉搏 >120 或 <50；体温 ≥38.5℃ */
+  function parseBP(bp) { var m = /^(\d{2,3})\s*\/\s*(\d{2,3})$/.exec(String(bp || "")); return m ? { s: +m[1], d: +m[2] } : null; }
+  function vitalAlerts(o, v) {
+    var out = [], hyper = o && o.needs.indexOf("bp") >= 0, b = parseBP(v.bp), hi = hyper ? [180, 110] : [160, 100], lo = hyper ? [100, 60] : [90, 60];
+    if (v.temp && v.temp >= 38.5) out.push(["体温异常", "体温 " + v.temp + "℃（≥38.5℃）"]);
+    if (b && (b.s >= hi[0] || b.d >= hi[1])) out.push(["血压偏高", "血压 " + v.bp + " mmHg（" + (hyper ? "高血压病人" : "") + "≥" + hi.join("/") + "）"]);
+    if (b && (b.s < lo[0] || b.d < lo[1])) out.push(["血压偏低", "血压 " + v.bp + " mmHg（" + (hyper ? "高血压病人" : "") + "<" + lo.join("/") + "）"]);
+    var pl = Number(v.pulse);
+    if (pl && (pl > 120 || pl < 50)) out.push(["脉搏异常", "脉搏 " + pl + " 次/分（" + (pl > 120 ? ">120" : "<50") + "）"]);
+    return out;
+  }
+  function vitalText(o, v) {
+    var al = vitalAlerts(o, v);
+    return v.at.slice(11) + (v.temp ? "　体温 " + v.temp + "℃" : "") + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") +
+      (al.length ? '　<span class="pill pill-late">' + al.map(function (a) { return a[0]; }).join("、") + "</span>" : "");
+  }
+  /* 最近体征：最近一次体温与血压，异常标红 */
+  function latestVitals(o, lg) {
+    if (!lg || !lg.vitals.length) return "—";
+    var t = lg.vitals.filter(function (v) { return v.temp; }).slice(-1)[0], b = lg.vitals.filter(function (v) { return v.bp; }).slice(-1)[0], out = [];
+    function mark(v, text) { return vitalAlerts(o, v).length ? '<b style="color:var(--alert)">' + text + "</b>" : text; }
+    if (t) out.push(mark({ temp: t.temp }, t.temp + "℃"));
+    if (b) out.push(mark({ bp: b.bp }, b.bp));
+    return out.join(" · ") || "—";
+  }
   function strHash(s) { var h = 7; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
   /* 今日护理日志；示例订单按当前时间模拟护工已完成的打卡，新派的订单由护工本人打卡 */
   function logFor(o) {
@@ -292,6 +322,7 @@
         if (!it.doneAt && m + 15 <= nm) { var t = m + Math.floor(rng(strHash(key + i))() * 13); it.doneAt = pad(Math.floor(t / 60)) + ":" + pad(t % 60); }
       });
       if (o.sim === "temp" && !lg.vitals.length) lg.vitals.push({ at: iso(today()) + " 07:40", temp: 38.6, pulse: "96", bp: "136/86" });
+      if (o.needs.indexOf("bp") >= 0 && nm >= 470 && !lg.vitals.some(function (v) { return v.at.slice(11) < "08:00"; })) lg.vitals.unshift({ at: iso(today()) + " 07:3" + (2 + Math.floor(r() * 6)), pulse: String(74 + Math.floor(r() * 12)), bp: o.sim === "bp" ? "186/112" : (148 + Math.floor(r() * 14)) + "/" + (86 + Math.floor(r() * 8)) });
       if (nm >= 640 && !lg.vitals.some(function (v) { return v.at.slice(11) >= "10:30"; })) lg.vitals.push({ at: iso(today()) + " 10:3" + Math.floor(r() * 9), temp: o.sim === "temp" ? 37.8 : Math.round((36.3 + r() * 0.7) * 10) / 10, pulse: String(68 + Math.floor(r() * 20)), bp: (118 + Math.floor(r() * 20)) + "/" + (72 + Math.floor(r() * 12)) });
     }
     return lg;
@@ -567,9 +598,9 @@
         var o = order(a.order), c = carer(o.caregiver) || {};
         return [a.time, o.bed + "床", esc(o.patient.name), esc(c.name || "—"), '<span class="tag tag-alert">' + esc(a.type) + "</span>", esc(a.detail), '<button type="button" class="link-btn" data-alert="' + a.id + '">处理并反馈</button>'];
       }), "暂无未处理预警"), "", "alerts");
-      html += panel("本科室在护患者", table(["床位", "患者", "护理等级", "护工", "上岗时间", "今日护理", "最近体温", "操作"], mine.sort(function (a, b) { return a.bed - b.bed; }).map(function (o) {
+      html += panel("本科室在护患者", table(["床位", "患者", "护理等级", "护工", "上岗时间", "今日护理", "最近体征", "操作"], mine.sort(function (a, b) { return a.bed - b.bed; }).map(function (o) {
         var c = carer(o.caregiver), lg = logFor(o), p = lg ? progress(lg) : { done: 0, total: 0 }, v = lg && lg.vitals.length ? lg.vitals[lg.vitals.length - 1] : null;
-        return [o.bed + "床", esc(o.patient.name), LEVELS[o.level], esc(c.name), lg && lg.clockIn ? lg.clockIn.slice(11) : "未上岗", p.done + " / " + p.total, v ? (v.temp >= 38.5 ? '<b style="color:var(--alert)">' + v.temp + "℃</b>" : v.temp + "℃") : "—", '<a href="logs.html?order=' + o.id + '">护理日志</a>'];
+        return [o.bed + "床", esc(o.patient.name), LEVELS[o.level], esc(c.name), lg && lg.clockIn ? lg.clockIn.slice(11) : "未上岗", p.done + " / " + p.total, latestVitals(o, lg), '<a href="logs.html?order=' + o.id + '">护理日志</a>'];
       }), "本科室暂无在护患者"));
     } else if (role === "ops") {
       var first = new Date(today().getFullYear(), today().getMonth(), 1), F = iso(first);
@@ -824,9 +855,9 @@
         '<section class="panel"><div class="clock-in"><p id="clock-state"></p><button class="btn btn-primary btn-sm" type="button" data-clockin>扫码上岗</button></div></section>' +
         '<section class="panel"><h2 class="panel-title">护理项目打卡 <span class="aside" id="progress"></span></h2><div id="tasks"></div></section></div><div>' +
         '<form class="panel" id="vitals" novalidate><h2 class="panel-title">体征与情况记录</h2>' +
-        '<div class="field"><label for="temp">体温℃</label><input id="temp" name="temp" type="number" step="0.1" inputmode="decimal" placeholder="35～42"></div><p class="err" id="temp-err"></p>' +
+        '<div class="field"><label for="temp">体温℃</label><input id="temp" name="temp" type="number" step="0.1" inputmode="decimal" placeholder="35～42（测血压时可不填）"></div><p class="err" id="temp-err"></p>' +
         '<div class="field"><label for="pulse">脉搏</label><input id="pulse" name="pulse" type="number" inputmode="numeric" placeholder="次/分"></div>' +
-        '<div class="field" style="margin-top:.6rem"><label for="bp">血压</label><input id="bp" name="bp" type="text" placeholder="如 128/80"></div>' +
+        '<div class="field" style="margin-top:.6rem"><label for="sbp">血压</label><div class="bp-pair"><input id="sbp" name="sbp" type="number" inputmode="numeric" placeholder="收缩压" aria-label="收缩压"><span>/</span><input id="dbp" name="dbp" type="number" inputmode="numeric" placeholder="舒张压" aria-label="舒张压"><em>mmHg</em></div></div>' +
         '<button class="btn" type="submit" style="margin-top:.8rem;width:100%">记录体征</button><ul class="hint" id="vitals-log"></ul></form>' +
         '<div class="duo today-actions"><button class="btn btn-primary" type="button" data-submit-log>提交护理日志</button><button class="btn btn-danger" type="button" data-report>异常上报</button></div>' +
         "</div></div>";
@@ -845,7 +876,7 @@
         lg.items.forEach(function (it) {
           if (lg.clockIn && !lg.auto && !it.doneAt && !it.skipped && !it.alerted && nm - minutes(it.time) > 120) { it.alerted = true; raise("漏打卡", "“" + it.name + "”（" + it.time + "）超过 2 小时未打卡"); }
         });
-        $("#vitals-log").innerHTML = lg.vitals.map(function (v) { return "<li>" + v.at.slice(11) + "　体温 " + v.temp + "℃" + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") + (v.temp >= 38.5 ? '　<span class="pill pill-late">已预警</span>' : "") + "</li>"; }).join("");
+        $("#vitals-log").innerHTML = lg.vitals.map(function (v) { return "<li>" + vitalText(o, v) + "</li>"; }).join("");
         if (typeof renderLogs === "function") renderLogs();
         save(db);
       }
@@ -878,14 +909,28 @@
       });
       $("#vitals").addEventListener("submit", function (e) {
         e.preventDefault();
-        var t = Number(this.temp.value), err = $("#temp-err");
-        if (!this.temp.value || !(t >= 35 && t <= 42)) { err.textContent = "体温应在 35～42℃ 之间，请复测。"; this.temp.classList.add("is-invalid"); return; }
-        err.textContent = ""; this.temp.classList.remove("is-invalid");
-        lg.vitals.push({ at: now(), temp: t, pulse: this.pulse.value, bp: this.bp.value.trim() });
-        var vit = lg.items.filter(function (x) { return !x.doneAt && !x.skipped && x.name.indexOf("体征") === 0; })[0];
-        if (vit && lg.clockIn) vit.doneAt = now().slice(11);
-        if (t >= 38.5) raise("体温异常", "体温 " + t + "℃（≥38.5℃）"); else toast("体征已记录", "ok");
-        this.reset(); render();
+        var f = this, err = $("#temp-err"), t = f.temp.value ? Number(f.temp.value) : null, sb = f.sbp.value ? Number(f.sbp.value) : null, db_ = f.dbp.value ? Number(f.dbp.value) : null, msg = "";
+        $all("input", f).forEach(function (x) { x.classList.remove("is-invalid"); });
+        if (t === null && sb === null && db_ === null) msg = "请至少填写体温或血压。";
+        else if (t !== null && !(t >= 35 && t <= 42)) { msg = "体温应在 35～42℃ 之间，请复测。"; f.temp.classList.add("is-invalid"); }
+        else if ((sb === null) !== (db_ === null)) { msg = "请同时填写收缩压和舒张压。"; (sb === null ? f.sbp : f.dbp).classList.add("is-invalid"); }
+        else if (sb !== null && (!(sb >= 60 && sb <= 260) || !(db_ >= 30 && db_ <= 160) || sb <= db_)) { msg = "血压数值不合理（收缩压 60～260、舒张压 30～160，且收缩压应高于舒张压），请复测。"; f.sbp.classList.add("is-invalid"); f.dbp.classList.add("is-invalid"); }
+        else if (f.pulse.value && !(Number(f.pulse.value) >= 30 && Number(f.pulse.value) <= 200)) { msg = "脉搏应在 30～200 次/分之间，请复测。"; f.pulse.classList.add("is-invalid"); }
+        err.textContent = msg; if (msg) return;
+        var v = { at: now(), temp: t, pulse: f.pulse.value, bp: sb !== null ? sb + "/" + db_ : "" };
+        lg.vitals.push(v);
+        // 记录体征后，自动勾选到点的“体征测量”或“血压测量”项目
+        function tick(word) {  // 勾选离现在最近、已到时间的同类测量项目
+          var due = lg.items.filter(function (x) { return !x.doneAt && !x.skipped && x.name.indexOf(word) >= 0 && minutes(x.time) <= nowMinutes() + 30; });
+          if (due.length && lg.clockIn) due[due.length - 1].doneAt = now().slice(11);
+          return due.length > 0;
+        }
+        if (t !== null) tick("体征");
+        if (sb !== null && !tick("血压") && t === null) tick("体征");
+        var al = vitalAlerts(o, v);
+        al.forEach(function (a) { raise(a[0], a[1]); });
+        if (!al.length) toast("体征已记录", "ok");
+        f.reset(); render();
       });
       $("[data-report]").addEventListener("click", function () {
         var d = modal("异常上报", '<div class="field"><label for="ab-type">类型</label><select id="ab-type"><option>病情变化</option><option>跌倒/坠床</option><option>管路异常</option><option>家属纠纷</option><option>其他</option></select></div><div class="field" style="margin-top:.6rem"><label for="ab-text">情况说明</label><textarea id="ab-text"></textarea></div>',
@@ -916,7 +961,7 @@
             (lg.submittedAt ? '<span class="tag tag-3">已提交 · 日报已推送 ' + lg.submittedAt.slice(11) + "</span>" : isToday ? '<span class="tag tag-0">今日进行中</span>' : '<span class="tag tag-2">未提交日志</span>') + '</summary><ul class="timeline">' +
             lg.items.map(function (it) { return '<li class="' + (it.doneAt ? "is-done" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : isToday ? (minutes(it.time) <= nowMinutes() ? "待执行" : "未到时间") : "未打卡") + "</em></li>"; }).join("") + "</ul>" +
             '<p class="hint">' + (isToday ? "截至现在应完成 " + p.due + " 项，已完成 " + done + " 项" + (p.late ? "，漏打卡 " + p.late + " 项" : "") + "。" : "") + "</p>" +
-            (lg.vitals.length ? '<p class="hint">体征：' + lg.vitals.map(function (v) { return v.at.slice(11) + " 体温 " + v.temp + "℃" + (v.bp ? " 血压 " + esc(v.bp) : ""); }).join("；") + "</p>" : "") + "</details>";
+            (lg.vitals.length ? '<p class="hint">体征：</p><ul class="hint">' + lg.vitals.map(function (v) { return "<li>" + vitalText(o, v) + "</li>"; }).join("") + "</ul>" : "") + "</details>";
         }).join("");
         if (cards) html += panel(esc(o.patient.name) + " · " + bedLabel(o), cards, o.start + " 至 " + iso(endDate(o)));
       });
@@ -1161,7 +1206,7 @@
         var last = lg.items.filter(function (x) { return x.doneAt; }).slice(-1)[0];
         var pct = p.due ? Math.round(p.done / p.due * 100) : 100;
         return "<tr><td>" + bedLabel(o) + "</td><td>" + esc(o.patient.name) + "</td><td>" + LEVELS[o.level] + "</td><td>" + esc(c.name) + "</td><td>" + (lg.clockIn ? lg.clockIn.slice(11) : '<span class="tag tag-0">未上岗</span>') +
-          '</td><td><div class="bar"><i style="width:' + pct + '%"></i></div>' + p.done + " / " + p.due + "（全天 " + p.total + "）</td><td>" + (last ? last.doneAt + " " + esc(last.name) : "—") + "</td><td>" + (v ? (v.temp >= 38.5 ? '<b style="color:var(--alert)">' + v.temp + "℃</b>" : v.temp + "℃") : "—") +
+          '</td><td><div class="bar"><i style="width:' + pct + '%"></i></div>' + p.done + " / " + p.due + "（全天 " + p.total + "）</td><td>" + (last ? last.doneAt + " " + esc(last.name) : "—") + "</td><td>" + latestVitals(o, lg) +
           "</td><td>" + (al.length ? '<span class="tag tag-alert">' + esc(al[0].type) + "</span>" : '<span class="tag tag-3">正常</span>') + '</td><td><button type="button" class="link-btn" data-log="' + o.id + '">查看日志</button></td></tr>';
       }).join("") || '<tr><td colspan="10" class="hint">没有符合条件的记录</td></tr>';
     }
@@ -1171,7 +1216,7 @@
         '<p class="hint">护工 ' + esc(c.name) + "（" + c.id + "）　上岗 " + (lg.clockIn ? lg.clockIn.slice(11) : "—") + "　日期 " + iso(today()) + '</p><ul class="timeline">' + lg.items.map(function (it) {
           var late = !it.doneAt && !it.skipped && nm - minutes(it.time) > 120;
           return '<li class="' + (it.doneAt ? "is-done" : late ? "is-late" : "") + '"><time>' + it.time + "</time><span>" + esc(it.name) + "</span><em>" + (it.doneAt ? "已完成 " + it.doneAt : it.skipped ? "上岗前" : late ? "漏打卡" : minutes(it.time) <= nm ? "待执行" : "未到时间") + "</em></li>";
-        }).join("") + "</ul>" + (lg.vitals.length ? "<p><b>体征记录</b></p><ul>" + lg.vitals.map(function (v) { return "<li>" + v.at.slice(11) + "　体温 " + v.temp + "℃" + (v.pulse ? "　脉搏 " + v.pulse : "") + (v.bp ? "　血压 " + esc(v.bp) : "") + "</li>"; }).join("") + "</ul>" : "") +
+        }).join("") + "</ul>" + (lg.vitals.length ? "<p><b>体征记录</b></p><ul>" + lg.vitals.map(function (v) { return "<li>" + vitalText(o, v) + "</li>"; }).join("") + "</ul>" : "") +
         (lg.submittedAt ? '<p class="hint">护理日志已于 ' + lg.submittedAt.slice(11) + " 提交，护理日报已推送家属</p>" : ""));
     }
     f.addEventListener("change", render);
