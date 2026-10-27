@@ -407,3 +407,5 @@ table.bill-table tr.refund td { color: var(--teal-text); }
   .bed-card { border: 1px dashed #888; }
 }
 .today-actions { margin-top: 1rem; }
+.bp-pair { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 0.4rem; align-items: center; }
+.bp-pair span, .bp-pair em { color: var(--ink-soft); font-style: normal; font-size: 13px; }
