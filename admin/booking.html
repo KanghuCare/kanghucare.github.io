@@ -36,7 +36,10 @@
         <div class="field"><label for="carerGender">护工性别</label><select id="carerGender" name="carerGender"><option>不限</option><option>女</option><option>男</option></select></div>
         <div class="field full"><span class="label" id="need-label">特殊需求</span><div class="choices" role="group" aria-labelledby="need-label">
           <label><input type="checkbox" name="needs" value="turning">翻身拍背</label><label><input type="checkbox" name="needs" value="tube">鼻饲喂养</label><label><input type="checkbox" name="needs" value="catheter">导尿护理</label>
-          <label><input type="checkbox" name="needs" value="night">夜间陪护（+20元/天）</label><label><input type="checkbox" name="needs" value="rehab">康复训练（+30元/天）</label><label><input type="checkbox" name="needs" value="bp">血压监测（高血压，每日定时测 3 次）</label></div></div>
+          <label><input type="checkbox" name="needs" value="night">夜间陪护（+20元/天）</label><label><input type="checkbox" name="needs" value="rehab">康复训练（+30元/天）</label><label><input type="checkbox" name="needs" value="bp">血压监测（高血压，每日定时测 3 次）</label><label><input type="checkbox" name="needs" value="glucose">血糖监测（糖尿病）</label><label><input type="checkbox" name="needs" value="sleep">睡眠监测</label></div></div>
+        <div class="field span-2"><label for="glucoseFreq">血糖频次</label><select id="glucoseFreq" name="glucoseFreq"><option value="d4">每日 4 次（空腹＋三餐后 2 小时，胰岛素治疗）</option><option value="d2" selected>每日 2 次（空腹＋晚餐后 2 小时）</option><option value="d1">每日 1 次（空腹）</option><option value="w2">每周 2 次（周一、周四空腹）</option><option value="w1">每周 1 次（周一空腹）</option></select></div>
+        <div class="field span-2"><label for="sleepMode">睡眠监测</label><select id="sleepMode" name="sleepMode"><option value="device">智能睡眠监测带（床垫下，无感，自动预警）</option><option value="observe">护工观察记录（无设备时）</option></select></div>
+        <p class="hint full" style="margin:-.3rem 0 0 6.4em">血糖频次按医嘱填写，医院病人由护士测量、护工记录；睡眠监测带放在床垫下，夜间无需打扰病人。勾选对应需求后生效。</p>
         <div class="field full"><label for="note">备　　注</label><input id="note" name="note" type="text" placeholder="如：术后第 2 天，需协助翻身，家属白天不在院"></div>
       </div>
     </section>
