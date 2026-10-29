@@ -53,8 +53,8 @@ def main():
         html = html.replace('href="./#', 'href="index.html#').replace('href="./"', 'href="index.html"')
         html = re.sub(r'<link rel="preload"[^>]*>\n?', "", html)
         html = re.sub(r'<link rel="manifest"[^>]*>\n?', "", html)
-        html = html.replace('<script src="assets/js/main.js" defer></script>',
-                            data_script + '<script src="assets/js/main.js" defer></script>', 1)
+        html = re.sub(r'<script src="assets/js/main\.js(\?v=\w+)?" defer></script>',
+                      lambda m: data_script + m.group(0), html, count=1)
         html = html.replace("<body>\n", "<body>\n" + sprite + "\n", 1)
         (OUT / page.name).write_text(html, encoding="utf-8")
 

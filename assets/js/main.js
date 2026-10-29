@@ -83,6 +83,8 @@
     onScroll();
   }
 
+  document.querySelectorAll(".photo-brief").forEach(function (n) { n.remove(); });  // never show placeholder notes
+
   /* ---------- Photos: soft background while loading, then fade the photo in ---------- */
   document.querySelectorAll(".photo img").forEach(function (img) {
     var fig = img.closest(".photo");
