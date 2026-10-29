@@ -518,3 +518,5 @@ body.fam { background: #eef3f8; }
   .topbar-brand { font-size: 15px; }
   .portal-top .topbar-brand small { display: none; }
 }
+.guide-time { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 13px; }
+.guide-total { color: var(--ink-soft); }
