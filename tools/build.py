@@ -18,6 +18,10 @@ from html.parser import HTMLParser
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "src" / "pages"
 
+import hashlib
+# Version stamp for the stylesheet and script URLs, so browsers never pair a new page with an old cached asset
+ASSET_V = hashlib.md5(b"".join((ROOT / "assets" / f).read_bytes() for f in ("css/style.css", "js/main.js"))).hexdigest()[:8]
+
 # ---------------------------------------------------------------------------
 # Site settings: change these before launch.
 # ---------------------------------------------------------------------------
@@ -173,8 +177,8 @@ def head(key, tzh, ten, dzh, den, nav_key):
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="assets/fonts/kht-serif-cjk-500.woff2" as="font" type="font/woff2" crossorigin>
 <script>try{{var d=document.documentElement;if(localStorage.getItem("khtLarge")==="1")d.classList.add("large-text");if(!sessionStorage.getItem("khtIntro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){{d.classList.add("intro-on");sessionStorage.setItem("khtIntro","1")}}}}catch(e){{}}</script>
-<link rel="stylesheet" href="assets/css/style.css">
-<script src="assets/js/main.js" defer></script>{jsonld}
+<link rel="stylesheet" href="assets/css/style.css?v={ASSET_V}">
+<script src="assets/js/main.js?v={ASSET_V}" defer></script>{jsonld}
 </head>
 <body>
 <div class="intro" aria-hidden="true"><div class="intro-mark"><img src="assets/img/logo.svg" alt="" width="64" height="64"><span class="intro-name">康护通</span><span class="intro-rule"></span></div></div>

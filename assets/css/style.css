@@ -963,3 +963,6 @@ html.large-text { font-size: 128%; }
 .read-progress span { background: var(--logo-gradient); }
 .standard-figure { background: var(--logo-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--brand); }
 .standard-figure small { -webkit-text-fill-color: var(--accent-ink); }
+
+/* Placeholder photo notes must never be visible, even from a stale cached page */
+.photo-brief { display: none !important; }
