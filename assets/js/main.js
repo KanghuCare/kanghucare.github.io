@@ -83,13 +83,13 @@
     onScroll();
   }
 
-  /* ---------- Photos: show the brief until a real photo exists ---------- */
+  /* ---------- Photos: soft background while loading, then fade the photo in ---------- */
   document.querySelectorAll(".photo img").forEach(function (img) {
     var fig = img.closest(".photo");
-    var ok = function () { fig.classList.add("has-photo"); };
+    var ok = function () { fig.classList.add("has-photo"); img.style.opacity = "1"; };
     var fail = function () { img.remove(); };
     if (img.complete) { if (img.naturalWidth) ok(); else fail(); }
-    else { img.addEventListener("load", ok); img.addEventListener("error", fail); }
+    else { img.style.opacity = "0"; img.addEventListener("load", ok); img.addEventListener("error", fail); }
   });
 
   /* ---------- Hero: one orchestrated entrance ---------- */
