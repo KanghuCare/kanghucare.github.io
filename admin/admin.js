@@ -1707,20 +1707,21 @@
   function guideSteps() {
     var li = db.caregivers[0].id;
     return [
-      { who: "开场", title: "官网首页：面向家属的入口", url: "../index.html", say: "康护通做“从医院到家”的长者照护。官网面向家属：看服务、查收费、在线预约；右上角可切英文、开大字模式，还有“家属日报查询”和“员工登录”。", todo: "浏览首页，再点顶栏“员工登录”进入管理系统。" },
-      { who: "客服专员", acct: "kf001", title: "登记预约", url: "booking.html?demo=1", say: "家属来电预约，客服在系统里登记。选护理等级后，系统按判断表自动确定护工等级、服务方式、折扣和预估费用。", todo: "表单已填好示例（王*华，骨科 12 床，完全失能，10 天，明天开始），核对后点“仅提交”。" },
-      { who: "护工 · 李秀兰", acct: li, title: "护工申请接单", url: "nurse.html#orders", say: "护工端会按等级和档期筛出适合她的订单，并显示她在智能派单里的匹配排名，她可以主动申请。", todo: "在“适合我的订单”里找到刚登记的王*华，点“申请接单”。" },
-      { who: "排班专员", acct: "pb001", title: "智能派单", url: "dispatch.html", say: "排班专员派单：先按判断表定护工等级，剔除档期冲突、证书过期、本月超时的护工，再按星级40%+好评率30%+科室经验30%打分推荐。李秀兰已申请，默认选中。", todo: "确认选中的是李秀兰，点“确认派单”。" },
-      { who: "护工 · 李秀兰", acct: li, title: "护工确认接单", url: "nurse.html#orders", say: "派单后要护工确认才算接单；她也可以拒单，订单会退回排班部重新派。", todo: "在“派单通知”里点“接单”。" },
-      { who: "护士站 · 骨科", acct: "hs03", title: "进科报备", url: "home.html#entry", say: "护士站是医院病区的护士。护工进病区前要由护士站核对证件和床位，这叫进科报备；每个科室有各自的护士站。", todo: "在“进科报备”里点“核对并确认进科”。" },
-      { who: "护工 · 李秀兰", acct: li, title: "扫码上岗、打卡、记录体征", url: "nurse.html#today", say: "今天她护理的是张*明（骨科 8 床）：高血压 + 糖尿病 + 睡眠监测。上岗要扫床头二维码核验床位，扫错床位会被拒绝。", todo: "点“扫码上岗”（扫打印的 8 床二维码，或“模拟扫码”），勾选护理项目；记录血压 186/112，会触发紧急预警。" },
-      { who: "护士站 · 骨科", acct: "hs03", title: "处理紧急预警", url: "home.html#alerts", say: "预警分紧急和关注两级，紧急的置顶。这条血压 186/112 超过 180/110，属于紧急。", todo: "点“处理并反馈”，填写处理结果，护工会收到反馈。" },
-      { who: "护工 · 李秀兰", acct: li, title: "提交护理日志", url: "nurse.html#today", say: "下班前提交护理日志，系统汇总成护理日报推送给家属。“护理日志”标签里可以回看今天和以往每一天。", todo: "点“提交护理日志”，再点上面的“护理日志”标签看历史记录。" },
-      { who: "家属端", title: "家属收到的护理日报", url: function () { var o = db.orders.filter(function (x) { return x.patient.name === "张*明" && x.status === 1; })[0]; return o ? "family.html?order=" + o.id + "&demo=1" : "family.html?demo=1"; },
-        say: "这就是家属在微信里看到的日报：今日护理进度、体征、血压血糖趋势图、昨晚睡眠、异常与处理结果、费用。家属还能留言和评价。", todo: "上下滑动看各部分；试着提交一条反馈，再回到护工端“今日护理”看家属留言。" },
-      { who: "客服专员", acct: "kf001", title: "电子结算单", url: "bill.html", say: "服务结束时按“天数 × 日价 × 折扣 + 附加服务 − 押金”自动生成结算单，推送家属，确认收款后入账。", todo: "选一个待支付订单，点“推送家属”“确认收款”。" },
-      { who: "运营经理", acct: "yy001", title: "经营数据", url: "home.html", say: "管理层关注收入、订单量、满意度、应收未收和需要关注的事项；运营统计里有科室柱状图、满意度环形图和趋势图。", todo: "看首页，再点“运营统计”。" },
-      { who: "系统管理员", acct: "admin", title: "权限与收尾", url: "users.html", say: "一套系统、多个岗位：每个角色只看到自己的功能。管理员维护账号权限，“数据备份”可以一键重置演示数据。", todo: "展示“用户权限”；演示结束后可点“重置演示数据”。" }
+      { who: "开场 · 官网", title: "官网首页与功能", url: "../index.html", sec: 25 },
+      { who: "登录", title: "员工登录与角色权限", url: "index.html", sec: 15 },
+      { who: "客服专员", acct: "kf001", title: "登记预约", url: "booking.html?demo=1", sec: 30 },
+      { who: "护工 · 李秀兰", acct: li, title: "护工查看并申请订单", url: "nurse.html#orders", sec: 20 },
+      { who: "排班专员", acct: "pb001", title: "智能派单", url: "dispatch.html", sec: 30 },
+      { who: "排班专员", acct: "pb001", title: "排班总览与临时换班", url: "schedule.html", sec: 15 },
+      { who: "护工 · 李秀兰", acct: li, title: "护工确认接单", url: "nurse.html#orders", sec: 10 },
+      { who: "护士站 · 骨科", acct: "hs03", title: "进科报备", url: "home.html#entry", sec: 15 },
+      { who: "护工 · 李秀兰", acct: li, title: "扫码上岗、打卡、体征监测", url: "nurse.html#today", sec: 40 },
+      { who: "护士站 · 骨科", acct: "hs03", title: "紧急预警处理", url: "home.html#alerts", sec: 20 },
+      { who: "护工 · 李秀兰", acct: li, title: "提交护理日志", url: "nurse.html#today", sec: 20 },
+      { who: "家属端", title: "家属端护理日报", url: function () { var o = db.orders.filter(function (x) { return x.patient.name === "张*明" && x.status === 1; })[0]; return o ? "family.html?order=" + o.id + "&demo=1" : "family.html?demo=1"; }, sec: 30 },
+      { who: "客服专员", acct: "kf001", title: "订单查询与电子结算", url: "orders.html", sec: 20 },
+      { who: "运营经理", acct: "yy001", title: "经营数据与运营统计", url: "home.html", sec: 25 },
+      { who: "系统管理员", acct: "admin", title: "权限管理与收尾", url: "users.html", sec: 15 }
     ];
   }
   function initGuide() {
@@ -1728,6 +1729,13 @@
     try { st = JSON.parse(localStorage.getItem(KEY2) || "null"); } catch (e) {}
     st = st || { i: 0, open: false };
     var steps = guideSteps();
+    // 手动点进下一步对应的页面时，自动把进度推进到下一步（例如在官网点“员工登录”后进入第 2 步）
+    (function () {
+      var nx = steps[st.i + 1]; if (!nx) return;
+      var u = typeof nx.url === "function" ? nx.url() : nx.url, f1 = u.split(/[?#]/)[0].split("/").pop(), h1 = u.indexOf("#") >= 0 ? "#" + u.split("#")[1] : "";
+      var f0 = location.pathname.split("/").pop() || "index.html";
+      if (f0 === f1 && (!h1 || location.hash === h1)) { st.i++; try { localStorage.setItem("kht-guide", JSON.stringify(st)); } catch (e) {} }
+    })();
     function put() { try { localStorage.setItem(KEY2, JSON.stringify(st)); } catch (e) {} }
     var root = document.createElement("aside"); root.className = "guide"; root.setAttribute("aria-label", "演示向导");
     document.body.appendChild(root);
@@ -1741,9 +1749,9 @@
       var sp = steps[st.i];
       root.innerHTML = '<button class="guide-toggle" type="button" aria-expanded="' + st.open + '">演示向导 <b>' + (st.i + 1) + " / " + steps.length + "</b>" + (st.open ? "" : '<span class="guide-cur">' + esc(sp.title) + "</span>") + "</button>" +
         (st.open ? '<div class="guide-panel"><header><b>演示向导</b><button type="button" data-g="close" aria-label="收起">×</button></header>' +
-          '<div class="guide-now"><span class="guide-role">第 ' + (st.i + 1) + " 步 · " + esc(sp.who) + "</span><h3>" + esc(sp.title) + "</h3><p><b>讲：</b>" + esc(sp.say) + "</p><p><b>做：</b>" + esc(sp.todo) + '</p><div class="guide-actions"><button type="button" class="btn btn-sm" data-g="prev"' + (st.i ? "" : " disabled") + '>‹ 上一步</button><button type="button" class="btn btn-sm btn-primary" data-g="go">前往此步骤</button><button type="button" class="btn btn-sm" data-g="next"' + (st.i < steps.length - 1 ? "" : " disabled") + '>完成 ›</button></div></div>' +
-          '<ol class="guide-list">' + steps.map(function (x, i) { return '<li class="' + (i < st.i ? "is-done" : i === st.i ? "is-now" : "") + '"><button type="button" data-g="jump" data-i="' + i + '"><i>' + (i < st.i ? "✓" : i + 1) + "</i>" + esc(x.title) + "<small>" + esc(x.who) + "</small></button></li>"; }).join("") + "</ol>" +
-          '<footer><button type="button" class="link-btn" data-g="restart">从头开始</button><button type="button" class="link-btn" data-g="reset">重置演示数据</button></footer></div>' : "");
+          '<div class="guide-now"><span class="guide-role">第 ' + (st.i + 1) + " 步 · " + esc(sp.who) + "</span><h3>" + esc(sp.title) + '</h3><p class="guide-time">建议用时 ' + sp.sec + ' 秒</p><div class="guide-actions"><button type="button" class="btn btn-sm" data-g="prev"' + (st.i ? "" : " disabled") + '>‹ 上一步</button><button type="button" class="btn btn-sm btn-primary" data-g="go">前往此步骤</button><button type="button" class="btn btn-sm" data-g="next"' + (st.i < steps.length - 1 ? "" : " disabled") + '>完成 ›</button></div></div>' +
+          '<ol class="guide-list">' + steps.map(function (x, i) { return '<li class="' + (i < st.i ? "is-done" : i === st.i ? "is-now" : "") + '"><button type="button" data-g="jump" data-i="' + i + '"><i>' + (i < st.i ? "✓" : i + 1) + "</i>" + esc(x.title) + "<small>" + esc(x.who) + " · " + x.sec + "秒</small></button></li>"; }).join("") + "</ol>" +
+          '<footer><span class="guide-total">全程约 ' + Math.floor(steps.reduce(function (a, x) { return a + x.sec; }, 0) / 60) + " 分 " + steps.reduce(function (a, x) { return a + x.sec; }, 0) % 60 + ' 秒</span><button type="button" class="link-btn" data-g="restart">从头开始</button><button type="button" class="link-btn" data-g="reset">重置演示数据</button></footer></div>' : "");
     }
     root.addEventListener("click", function (e) {
       var t = e.target.closest("button"); if (!t) return;
@@ -1765,6 +1773,6 @@
   var user = null;
   if (page !== "login" && page !== "nurse" && page !== "family") { user = shell(page); if (!user) return; }
   if (pages[page]) pages[page](user);
-  if (page !== "login") initGuide();
+  initGuide();
   window.KHTAdmin = { db: function () { return db; }, validOrderId: validOrderId, checkDigit: checkDigit };
 })();
