@@ -1707,21 +1707,21 @@
   function guideSteps() {
     var li = db.caregivers[0].id;
     return [
-      { who: "开场 · 官网", title: "官网首页与功能", url: "../index.html", sec: 25 },
-      { who: "登录", title: "员工登录与角色权限", url: "index.html", sec: 15 },
-      { who: "客服专员", acct: "kf001", title: "登记预约", url: "booking.html?demo=1", sec: 30 },
-      { who: "护工 · 李秀兰", acct: li, title: "护工查看并申请订单", url: "nurse.html#orders", sec: 20 },
-      { who: "排班专员", acct: "pb001", title: "智能派单", url: "dispatch.html", sec: 30 },
-      { who: "排班专员", acct: "pb001", title: "排班总览与临时换班", url: "schedule.html", sec: 15 },
-      { who: "护工 · 李秀兰", acct: li, title: "护工确认接单", url: "nurse.html#orders", sec: 10 },
-      { who: "护士站 · 骨科", acct: "hs03", title: "进科报备", url: "home.html#entry", sec: 15 },
-      { who: "护工 · 李秀兰", acct: li, title: "扫码上岗、打卡、体征监测", url: "nurse.html#today", sec: 40 },
-      { who: "护士站 · 骨科", acct: "hs03", title: "紧急预警处理", url: "home.html#alerts", sec: 20 },
-      { who: "护工 · 李秀兰", acct: li, title: "提交护理日志", url: "nurse.html#today", sec: 20 },
-      { who: "家属端", title: "家属端护理日报", url: function () { var o = db.orders.filter(function (x) { return x.patient.name === "张*明" && x.status === 1; })[0]; return o ? "family.html?order=" + o.id + "&demo=1" : "family.html?demo=1"; }, sec: 30 },
-      { who: "客服专员", acct: "kf001", title: "订单查询与电子结算", url: "orders.html", sec: 20 },
-      { who: "运营经理", acct: "yy001", title: "经营数据与运营统计", url: "home.html", sec: 25 },
-      { who: "系统管理员", acct: "admin", title: "权限管理与收尾", url: "users.html", sec: 15 }
+      { who: "开场 · 官网", title: "官网首页与功能", url: "../index.html" },
+      { who: "登录", title: "员工登录与角色权限", url: "index.html" },
+      { who: "客服专员", acct: "kf001", title: "登记预约", url: "booking.html?demo=1" },
+      { who: "护工 · 李秀兰", acct: li, title: "护工查看并申请订单", url: "nurse.html#orders" },
+      { who: "排班专员", acct: "pb001", title: "智能派单", url: "dispatch.html" },
+      { who: "排班专员", acct: "pb001", title: "排班总览与临时换班", url: "schedule.html" },
+      { who: "护工 · 李秀兰", acct: li, title: "护工确认接单", url: "nurse.html#orders" },
+      { who: "护士站 · 骨科", acct: "hs03", title: "进科报备", url: "home.html#entry" },
+      { who: "护工 · 李秀兰", acct: li, title: "扫码上岗、打卡、体征监测", url: "nurse.html#today" },
+      { who: "护士站 · 骨科", acct: "hs03", title: "紧急预警处理", url: "home.html#alerts" },
+      { who: "护工 · 李秀兰", acct: li, title: "提交护理日志", url: "nurse.html#today" },
+      { who: "家属端", title: "家属端护理日报", url: function () { var o = db.orders.filter(function (x) { return x.patient.name === "张*明" && x.status === 1; })[0]; return o ? "family.html?order=" + o.id + "&demo=1" : "family.html?demo=1"; } },
+      { who: "客服专员", acct: "kf001", title: "订单查询与电子结算", url: "orders.html" },
+      { who: "运营经理", acct: "yy001", title: "经营数据与运营统计", url: "home.html" },
+      { who: "系统管理员", acct: "admin", title: "权限管理与收尾", url: "users.html" }
     ];
   }
   function initGuide() {
@@ -1746,23 +1746,23 @@
       st.i = i; st.open = false; put(); location.href = urlOf(sp);  // 前往后收起面板，不遮挡页面
     }
     function render() {
-      var sp = steps[st.i];
-      root.innerHTML = '<button class="guide-toggle" type="button" aria-expanded="' + st.open + '">演示向导 <b>' + (st.i + 1) + " / " + steps.length + "</b>" + (st.open ? "" : '<span class="guide-cur">' + esc(sp.title) + "</span>") + "</button>" +
-        (st.open ? '<div class="guide-panel"><header><b>演示向导</b><button type="button" data-g="close" aria-label="收起">×</button></header>' +
-          '<div class="guide-now"><span class="guide-role">第 ' + (st.i + 1) + " 步 · " + esc(sp.who) + "</span><h3>" + esc(sp.title) + '</h3><p class="guide-time">建议用时 ' + sp.sec + ' 秒</p><div class="guide-actions"><button type="button" class="btn btn-sm" data-g="prev"' + (st.i ? "" : " disabled") + '>‹ 上一步</button><button type="button" class="btn btn-sm btn-primary" data-g="go">前往此步骤</button><button type="button" class="btn btn-sm" data-g="next"' + (st.i < steps.length - 1 ? "" : " disabled") + '>完成 ›</button></div></div>' +
-          '<ol class="guide-list">' + steps.map(function (x, i) { return '<li class="' + (i < st.i ? "is-done" : i === st.i ? "is-now" : "") + '"><button type="button" data-g="jump" data-i="' + i + '"><i>' + (i < st.i ? "✓" : i + 1) + "</i>" + esc(x.title) + "<small>" + esc(x.who) + " · " + x.sec + "秒</small></button></li>"; }).join("") + "</ol>" +
-          '<footer><span class="guide-total">全程约 ' + Math.floor(steps.reduce(function (a, x) { return a + x.sec; }, 0) / 60) + " 分 " + steps.reduce(function (a, x) { return a + x.sec; }, 0) % 60 + ' 秒</span><button type="button" class="link-btn" data-g="restart">从头开始</button><button type="button" class="link-btn" data-g="reset">重置演示数据</button></footer></div>' : "");
+      var sp = steps[st.i], last = steps.length - 1;
+      var nav = '<div class="guide-bar"><button type="button" class="guide-nav" data-g="prev"' + (st.i ? "" : " disabled") + '>‹ 上一步</button>' +
+        '<button class="guide-toggle" type="button" aria-expanded="' + st.open + '">第 <b>' + (st.i + 1) + " / " + steps.length + '</b> 步<span class="guide-cur">' + esc(sp.title) + "</span></button>" +
+        '<button type="button" class="guide-nav" data-g="next"' + (st.i < last ? "" : " disabled") + '>下一步 ›</button></div>';
+      root.innerHTML = (st.open ? '<div class="guide-panel"><header><b>演示向导</b><button type="button" data-g="close" aria-label="收起">×</button></header>' +
+          '<ol class="guide-list">' + steps.map(function (x, i) { return '<li class="' + (i < st.i ? "is-done" : i === st.i ? "is-now" : "") + '"><button type="button" data-g="jump" data-i="' + i + '"><i>' + (i < st.i ? "✓" : i + 1) + "</i>" + esc(x.title) + "<small>" + esc(x.who) + "</small></button></li>"; }).join("") + "</ol>" +
+          '<footer><button type="button" class="link-btn" data-g="restart">从头开始</button><button type="button" class="link-btn" data-g="reset">重置演示数据</button></footer></div>' : "") + nav;
     }
     root.addEventListener("click", function (e) {
-      var t = e.target.closest("button"); if (!t) return;
+      var t = e.target.closest("button"); if (!t || t.disabled) return;
       if (t.classList.contains("guide-toggle")) { st.open = !st.open; put(); render(); return; }
       var g = t.getAttribute("data-g");
       if (g === "close") { st.open = false; put(); render(); }
-      else if (g === "go") go(st.i);
-      else if (g === "prev" && st.i > 0) { st.i--; put(); render(); }
-      else if (g === "next" && st.i < steps.length - 1) { st.i++; put(); render(); }
-      else if (g === "jump") { st.i = Number(t.getAttribute("data-i")); put(); render(); }
-      else if (g === "restart") { st.i = 0; put(); render(); }
+      else if (g === "prev" && st.i > 0) go(st.i - 1);
+      else if (g === "next" && st.i < steps.length - 1) go(st.i + 1);
+      else if (g === "jump") go(Number(t.getAttribute("data-i")));
+      else if (g === "restart") go(0);
       else if (g === "reset") resetData();
     });
     render();

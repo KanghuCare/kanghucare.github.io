@@ -428,8 +428,12 @@ table.bill-table tr.refund td { color: var(--teal-text); }
 .role-switch select { width: auto; min-height: 28px; padding: 0.1rem 1.4rem 0.1rem 0.6rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.55); background-color: rgba(255, 255, 255, 0.18); color: #fff; font-size: 13px; cursor: pointer; }
 .role-switch select option { color: var(--ink); background: #fff; }
 .guide { position: fixed; right: 1rem; bottom: 1rem; z-index: 90; display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; }
-.guide-toggle { border: 0; border-radius: 999px; padding: 0.55rem 1.1rem; background: var(--fill-gradient); color: #fff; font-weight: 700; cursor: pointer; box-shadow: 0 8px 22px rgba(23, 115, 184, 0.35); }
-.guide-toggle b { margin-left: 0.35rem; padding: 0.05rem 0.5rem; border-radius: 999px; background: rgba(255, 255, 255, 0.25); font-size: 12px; }
+.guide-bar { display: flex; align-items: center; gap: 0.4rem; }
+.guide-nav { border: 1px solid var(--line); border-radius: 999px; padding: 0.5rem 0.95rem; background: #fff; color: var(--brand); font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(16, 42, 67, 0.18); white-space: nowrap; }
+.guide-nav:disabled { opacity: 0.45; cursor: default; }
+.guide-nav:not(:disabled):hover { background: var(--brand-50); }
+.guide-toggle { border: 0; border-radius: 999px; padding: 0.55rem 1.1rem; white-space: nowrap; background: var(--fill-gradient); color: #fff; font-weight: 700; cursor: pointer; box-shadow: 0 8px 22px rgba(23, 115, 184, 0.35); }
+.guide-toggle b { margin: 0 0.2rem; padding: 0.05rem 0.5rem; border-radius: 999px; background: rgba(255, 255, 255, 0.25); font-size: 12px; }
 .guide-panel { width: min(400px, calc(100vw - 2rem)); max-height: 72vh; overflow: auto; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 48px rgba(16, 42, 67, 0.28); order: -1; }
 .guide-panel > header { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; background: var(--gradient); color: #fff; position: sticky; top: 0; }
 .guide-panel > header button { background: none; border: 0; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; }
@@ -509,7 +513,7 @@ body.fam { background: #eef3f8; }
 @media (max-width: 900px) { .role-switch span { display: none; } .guide { right: 0.6rem; bottom: 0.6rem; } .guide-panel { max-height: 66vh; } }
 @media print { .guide, .role-switch { display: none !important; } }
 .guide-cur { display: inline-block; max-width: 15rem; margin-left: 0.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; font-weight: 500; opacity: 0.95; }
-@media (max-width: 600px) { .guide-cur { display: none; } }
+@media (max-width: 600px) { .guide-cur { display: none; } .guide-nav { padding: 0.5rem 0.7rem; } }
 @media (max-width: 900px) {
   .topbar { gap: 0.5rem; }
   .topbar-right { gap: 0.4rem; min-width: 0; margin-left: auto; }
@@ -518,5 +522,3 @@ body.fam { background: #eef3f8; }
   .topbar-brand { font-size: 15px; }
   .portal-top .topbar-brand small { display: none; }
 }
-.guide-time { margin: 0.2rem 0 0; color: var(--ink-soft); font-size: 13px; }
-.guide-total { color: var(--ink-soft); }
