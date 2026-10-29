@@ -340,8 +340,7 @@ def expand(body):
         load = 'fetchpriority="high"' if eager else 'loading="lazy" decoding="async"'
         return (f'<figure class="{cls}"{style}>'
                 f'<img src="assets/img/photos/{a["name"]}.jpg" alt="{a.get("alt", "")}" data-en-alt="{a.get("alt-en", "")}" '
-                f'width="{a.get("w", "1200")}" height="{a.get("h", "900")}" {load}>'
-                f'<p class="photo-brief" aria-hidden="true">建议画面（{a["name"]}.jpg）：{a.get("brief", "")}</p></figure>')
+                f'width="{a.get("w", "1200")}" height="{a.get("h", "900")}" {load}></figure>')
     body = re.sub(r"<kht-photo ([^>]*)></kht-photo>", photo, body)
 
     # <kht-crumb zh="服务项目" en="Services"></kht-crumb>
