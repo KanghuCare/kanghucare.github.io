@@ -422,3 +422,99 @@ table.bill-table tr.refund td { color: var(--teal-text); }
 .field > * { min-width: 0; }
 @media (max-width: 900px) { #booking-form .hint.full { margin-left: 0 !important; } }
 @media (max-width: 900px) { .choices label { white-space: normal; } }
+
+/* ---------- Demo: role switcher and guide ---------- */
+.role-switch { display: inline-flex; align-items: center; gap: 0.4rem; color: rgba(255, 255, 255, 0.92); font-size: 12.5px; white-space: nowrap; }
+.role-switch select { width: auto; min-height: 28px; padding: 0.1rem 1.4rem 0.1rem 0.6rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.55); background-color: rgba(255, 255, 255, 0.18); color: #fff; font-size: 13px; cursor: pointer; }
+.role-switch select option { color: var(--ink); background: #fff; }
+.guide { position: fixed; right: 1rem; bottom: 1rem; z-index: 90; display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; }
+.guide-toggle { border: 0; border-radius: 999px; padding: 0.55rem 1.1rem; background: var(--fill-gradient); color: #fff; font-weight: 700; cursor: pointer; box-shadow: 0 8px 22px rgba(23, 115, 184, 0.35); }
+.guide-toggle b { margin-left: 0.35rem; padding: 0.05rem 0.5rem; border-radius: 999px; background: rgba(255, 255, 255, 0.25); font-size: 12px; }
+.guide-panel { width: min(400px, calc(100vw - 2rem)); max-height: 72vh; overflow: auto; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 48px rgba(16, 42, 67, 0.28); order: -1; }
+.guide-panel > header { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 1rem; background: var(--gradient); color: #fff; position: sticky; top: 0; }
+.guide-panel > header button { background: none; border: 0; color: #fff; font-size: 20px; cursor: pointer; line-height: 1; }
+.guide-now { padding: 0.9rem 1rem 0.8rem; border-bottom: 1px solid var(--line); }
+.guide-role { display: inline-block; padding: 0.05rem 0.6rem; border-radius: 999px; background: var(--brand-100); color: var(--brand); font-size: 12.5px; font-weight: 600; }
+.guide-now h3 { font-size: 16px; margin: 0.45rem 0 0.4rem; }
+.guide-now p { margin: 0.3rem 0; line-height: 1.6; }
+.guide-now p b { color: var(--brand); }
+.guide-actions { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+.guide-actions .btn-primary { flex: 1; }
+.guide-list { list-style: none; margin: 0; padding: 0.4rem 0.5rem; }
+.guide-list button { display: flex; align-items: baseline; gap: 0.5rem; width: 100%; text-align: left; border: 0; background: none; padding: 0.4rem 0.5rem; border-radius: 8px; cursor: pointer; }
+.guide-list button:hover { background: var(--brand-50); }
+.guide-list i { flex: none; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--surface); color: var(--ink-soft); font: 600 12px/1.4rem var(--sans); text-align: center; }
+.guide-list small { margin-left: auto; color: var(--ink-soft); font-size: 12px; white-space: nowrap; }
+.guide-list .is-done i { background: var(--teal); color: #fff; }
+.guide-list .is-now i { background: var(--fill); color: #fff; }
+.guide-list .is-now button { background: var(--brand-50); font-weight: 600; }
+.guide-panel footer { display: flex; justify-content: space-between; padding: 0.6rem 1rem; border-top: 1px solid var(--line); font-size: 13px; }
+
+/* ---------- Trend charts ---------- */
+.trend { margin: 0.8rem 0 0; }
+.trend figcaption { display: flex; flex-wrap: wrap; gap: 0.2rem 0.8rem; align-items: baseline; margin-bottom: 0.2rem; }
+.trend figcaption span { color: var(--ink-soft); font-size: 12.5px; }
+.legend-line { margin: 0.1rem 0 0; font-size: 12px; color: var(--ink-soft); }
+.legend-line i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin: 0 0.25rem 0 0.7rem; vertical-align: -1px; }
+.legend-line i:first-child { margin-left: 0; }
+.legend-line i.band { border-radius: 2px; background: #cfeee9; }
+.legend-line i.bad { background: var(--alert); }
+.modal-sub { font-size: 15px; margin: 1rem 0 0; padding-top: 0.8rem; border-top: 1px solid var(--line); }
+dialog.modal { max-height: 90vh; overflow: auto; }
+
+/* ---------- Family page ---------- */
+body.fam { background: #eef3f8; }
+.fam-top { display: flex; justify-content: center; padding: 0.7rem 1rem; background: var(--gradient); }
+.fam-brand { display: inline-flex; align-items: center; gap: 0.55rem; color: #fff; text-decoration: none; font-weight: 700; font-size: 17px; }
+.fam-brand img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); }
+.fam-brand small { font-weight: 500; opacity: 0.92; font-size: 13px; }
+.fam-main { max-width: 600px; margin: 0 auto; padding: 1rem 0.9rem 4rem; }
+.fam-card { background: #fff; border-radius: 14px; padding: 1rem 1.1rem; box-shadow: var(--shadow); margin-bottom: 0.9rem; }
+.fam-card h1 { font-size: 20px; margin-bottom: 0.4rem; }
+.fam-card form .field { grid-template-columns: 5em 1fr; margin-top: 0.7rem; }
+.fam-sub { font-size: 16px; margin-bottom: 0.6rem; display: flex; align-items: baseline; gap: 0.5rem; }
+.fam-sub small { color: var(--ink-soft); font-weight: 500; font-size: 12.5px; }
+.fam-hero { background: linear-gradient(150deg, #f4f9fe 0%, #e8f6f4 100%); }
+.fam-patient b { font-size: 24px; margin-right: 0.6rem; }
+.fam-patient span { color: var(--ink-soft); }
+.fam-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.8rem 0 0.6rem; }
+.fam-meta div { background: rgba(255, 255, 255, 0.75); border-radius: 10px; padding: 0.5rem 0.7rem; }
+.fam-meta span { display: block; font-size: 12px; color: var(--ink-soft); }
+.fam-meta b { font-size: 16px; }
+.fam-meta em { display: block; font-style: normal; font-size: 12.5px; color: var(--ink-soft); }
+.fam-push { margin: 0; font-size: 13px; color: var(--ink-soft); }
+.fam-push b { color: var(--teal-text); }
+.fam-banner { border-radius: 12px; padding: 0.7rem 1rem; margin-bottom: 0.9rem; display: grid; gap: 0.15rem; }
+.fam-banner span { font-size: 13px; }
+.fam-banner.is-ok { background: var(--teal-soft); color: var(--teal-text); }
+.fam-banner.is-warn { background: var(--accent-soft); color: var(--accent-ink); }
+.fam-bar { display: block; width: 100%; height: 8px; margin: 0 0 0.6rem; }
+.fam-chips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+.fam-chip { background: var(--brand-50); border-radius: 10px; padding: 0.55rem 0.7rem; display: grid; gap: 0.05rem; }
+.fam-chip span { font-size: 12px; color: var(--ink-soft); }
+.fam-chip b { font-size: 18px; font-variant-numeric: tabular-nums; }
+.fam-chip em { font-style: normal; font-size: 12.5px; color: var(--teal-text); }
+.fam-chip.is-bad { background: var(--alert-soft); }
+.fam-chip.is-bad em { color: var(--alert); font-weight: 700; }
+.fam-hist { list-style: none; margin: 0; padding: 0; }
+.fam-hist li { display: grid; gap: 0.1rem; padding: 0.5rem 0; border-top: 1px solid var(--line); }
+.fam-hist li:first-child { border-top: 0; }
+.fam-hist span { color: var(--ink-soft); font-size: 13px; }
+.fam-hist em { font-style: normal; font-size: 13px; color: var(--teal-text); }
+#fam-fb textarea { margin: 0.7rem 0; }
+.fam-ok { margin: 0; color: var(--teal-text); }
+.fam-foot { text-align: center; color: var(--ink-soft); font-size: 12.5px; line-height: 1.7; }
+.fam .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.fam .timeline li { grid-template-columns: 3.4em 1fr auto; }
+@media (max-width: 900px) { .role-switch span { display: none; } .guide { right: 0.6rem; bottom: 0.6rem; } .guide-panel { max-height: 66vh; } }
+@media print { .guide, .role-switch { display: none !important; } }
+.guide-cur { display: inline-block; max-width: 15rem; margin-left: 0.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; font-weight: 500; opacity: 0.95; }
+@media (max-width: 600px) { .guide-cur { display: none; } }
+@media (max-width: 900px) {
+  .topbar { gap: 0.5rem; }
+  .topbar-right { gap: 0.4rem; min-width: 0; margin-left: auto; }
+  .topbar-right .user-chip { display: none; }
+  .role-switch select { max-width: 9.5rem; }
+  .topbar-brand { font-size: 15px; }
+  .portal-top .topbar-brand small { display: none; }
+}
